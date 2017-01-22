@@ -19,9 +19,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="description" content="Codeforces Visualizer">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <title>Material Design Lite</title>
+    <title>CF Visualizer</title>
 
     <!-- Add to homescreen for Chrome on Android -->
     <meta name="mobile-web-app-capable" content="yes">
@@ -87,16 +87,13 @@
                 <label class="mdl-textfield__label" for="handle">Handle</label>
                 <span class="mdl-textfield__error">Couldn't find user</span>
               </div>
+              <div class="mdl-spinner mdl-js-spinner handle-spinner"></div>
             </form>
           </div>
 
-          <div id="verdicts" class="hidden chart-card mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--6-col-desktop">
-            <div class="mdl-card__title mdl-card--expand mdl-color--teal-300">
-              <div class="mdl-spinner mdl-js-spinner loading-spinner is-active"></div>
-            </div>
-            <div class="mdl-card__actions mdl-card--border">
-             <div class="card-heading">Verdicts</div>
-            </div>
+          <div class="hidden chart-card mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--6-col-desktop">
+            <div id="verdictsSpinner" class="mdl-spinner mdl-js-spinner loading-spinner is-active"></div>
+            <div class="chart-holder" id="verdicts"></div>
           </div>
 
         </div>
