@@ -1,118 +1,134 @@
-html, body {
-  font-family: 'Roboto', 'Helvetica', sans-serif;
+html,
+body {
+    font-family: 'Roboto', 'Helvetica', sans-serif;
 }
+
 .handle-card {
-  padding: 20px 50px;
-  margin-left: auto;
-  margin-right: auto;
-  max-height: 200px
+    padding: 20px 50px;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 200px
 }
-.handle-spinner {
-  margin: 20px;
-}
+
 #handleDiv {
+    margin: auto;
+}
+
+/* Not necessary for now. 
+.loading-spinner {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+    z-index: 10;
+}*/
+
+#mainSpinner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left:  0;
+  right: 0;
   margin: auto;
 }
 
-.loading-spinner {
-  width: 100px;
-  height: 100px;
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  margin: auto;
-  z-index: 10;
-}
-.card-heading {
-  font-weight: 500;
-  text-transform: uppercase;
-  margin: 10px;
-}
 .avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
 }
+
 .layout .mdl-layout__header .mdl-layout__drawer-button {
-  color: rgba(0, 0, 0, 0.54);
+    color: rgba(0, 0, 0, 0.54);
 }
+
 .mdl-layout__drawer .avatar {
-  margin-bottom: 16px;
+    margin-bottom: 16px;
 }
+
 .drawer {
-  border: none;
+    border: none;
 }
+
+
 /* iOS Safari specific workaround */
+
 .drawer .mdl-menu__container {
-  z-index: -1;
+    z-index: -1;
 }
+
 .drawer .navigation {
-  z-index: -2;
+    z-index: -2;
 }
+
+
 /* END iOS Safari specific workaround */
+
 .drawer .mdl-menu .mdl-menu__item {
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
 }
+
 .drawer-header {
-  box-sizing: border-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
-  padding: 16px;
-  height: 151px;
+    box-sizing: border-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-justify-content: flex-end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    padding: 16px;
+    height: 151px;
 }
 
 .navigation {
-  -webkit-flex-grow: 1;
-      -ms-flex-positive: 1;
-          flex-grow: 1;
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
 }
+
 .layout .navigation .mdl-navigation__link {
-  display: -webkit-flex !important;
-  display: -ms-flexbox !important;
-  display: flex !important;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  color: rgba(255, 255, 255, 0.56);
-  font-weight: 500;
+    display: -webkit-flex !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.56);
+    font-weight: 500;
 }
+
 .layout .navigation .mdl-navigation__link:hover {
-  background-color: #00BCD4;
-  color: #37474F;
+    background-color: #00BCD4;
+    color: #37474F;
 }
+
 .navigation .mdl-navigation__link .material-icons {
-  font-size: 24px;
-  color: rgba(255, 255, 255, 0.56);
-  margin-right: 32px;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.56);
+    margin-right: 32px;
 }
 
 .content {
-  max-width: 1080px;
+    max-width: 1080px;
 }
-
 
 .chart-card {
-  min-height: 300px;
-  margin: auto;
-  margin-top: 20px;
-}
-.chart-holder {
-  min-height: 300px;
+    min-height: 300px;
+    margin: auto;
+    margin-top: 20px;
 }
