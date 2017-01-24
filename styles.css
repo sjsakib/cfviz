@@ -36,6 +36,16 @@ body {
   margin: auto;
 }
 
+#logo {
+  font-size: 80px;
+  margin: auto;
+}
+
+td {
+  color: rgb(117, 117, 117);
+  font-weight: 500;
+}
+
 .avatar {
     width: 48px;
     height: 48px;
@@ -131,4 +141,27 @@ body {
     min-height: 300px;
     margin: auto;
     margin-top: 20px;
+}
+
+.num-card {
+  margin: auto;
+  margin-top: 20px;
+}
+
+#unsolved-con {
+  padding: 20px 50px;
+}
+
+.lnk {
+  margin: 10px;
+  float: left;
+}
+
+
+table {
+  width: 100%;
+}
+
+#tags {
+  min-height: 80%;
 }
