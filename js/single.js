@@ -188,7 +188,7 @@ function drawCharts() {
       levelTable.push([level, levels[level]]);
     }
     levelTable.sort(function(a,b) {
-      if(a[0] == 'Level') return 0;
+      if(a[0] == 'Level') return -1;
       if(a[0] > b[0]) return -1;
       else return 1;
     });
