@@ -13,7 +13,6 @@ $(document).ready(function() {
     
     handle = $("#handle").val();
     document.title+=": "+handle;
-    setShareUrl();
 
     $.get(api_url+ "user.rating", {'handle': handle}, function(data,status) {
       console.log(data);
@@ -56,6 +55,7 @@ $(document).ready(function() {
       $("#maxDown").html(maxDown+"<a href=\""+con_url+maxDownCon+"\" target=\"_blank\"> ("+maxDownCon+") </a>");
 
       $(".share-div").removeClass("hidden");
+      setShareUrl();
     });
     if (typeof google.visualization === 'undefined') {
       google.charts.setOnLoadCallback(drawCharts);
@@ -296,8 +296,7 @@ function setShareUrl() {
   var url = "http://cfviz.netlifly.com/index.html?handle="+handle;
   $(".fb-share-button").data('href',url);
   $(".fb-send").data('href',url);
-  FB.XFBML.parse(document.getElementById('send'));
-  FB.XFBML.parse(document.getElementById('share'));
+  FB.XFBML.parse();
 }
 
 function resetData() {
