@@ -13,7 +13,8 @@ $(document).ready(function() {
     
     handle = $("#handle").val();
     document.title+=": "+handle;
-    
+    setShareUrl();
+
     $.get(api_url+ "user.rating", {'handle': handle}, function(data,status) {
       console.log(data);
       var best = 1e10;
@@ -287,6 +288,12 @@ function drawCharts() {
   .always(function() {
     $("#mainSpinner").removeClass("is-active");
   });
+}
+
+function setShareUrl() {
+  url = "http://cfviz.netlifly.com/index.html?handle="+handle;
+  $(".fb-share-button").data(href,url);
+   $(".fb-send").data(href,url);
 }
 
 function resetData() {

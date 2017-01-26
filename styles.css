@@ -38,8 +38,9 @@
     text-transform: uppercase;
     font-weight: 500;
 }
-.fb-save {
-  clear: both;
+
+.fb-button {
+  margin: 10px;
 }
 
 .chart-card {
