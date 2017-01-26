@@ -55,7 +55,7 @@ $(document).ready(function() {
       $("#maxUp").html(maxUp+"<a href=\""+con_url+maxUpCon+"\" target=\"_blank\"> ("+maxUpCon+") </a>");
       $("#maxDown").html(maxDown+"<a href=\""+con_url+maxDownCon+"\" target=\"_blank\"> ("+maxDownCon+") </a>");
 
-      $(".share").removeClass("hidden");
+      $(".share-div").removeClass("hidden");
     });
     if (typeof google.visualization === 'undefined') {
       google.charts.setOnLoadCallback(drawCharts);
@@ -305,7 +305,7 @@ function resetData() {
   $(".chart-card")
     .empty()
     .addClass("hidden");
-  $(".share").addClass("hidden");
+  $(".share-div").addClass("hidden");
   $(".num-card").addClass("hidden");
   $("#unsolvedList").empty();
 
