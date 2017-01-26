@@ -33,9 +33,14 @@
     text-align: center;
     background-color: white;
     min-height: 100px;
+    padding: 50px;
     color: #292d3e;
+    text-transform: uppercase;
+    font-weight: 500;
 }
-
+.fb-save {
+  clear: both;
+}
 
 .chart-card {
     min-height: 300px;
