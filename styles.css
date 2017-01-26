@@ -34,9 +34,6 @@
     background-color: white;
     min-height: 100px;
     padding: 50px;
-    color: #292d3e;
-    text-transform: uppercase;
-    font-weight: 500;
 }
 
 .fb-button {
@@ -44,6 +41,7 @@
 }
 .fb-save, .fb-like {
   clear: both;
+  display: block;
 }
 
 .chart-card {

@@ -292,8 +292,8 @@ function drawCharts() {
 
 function setShareUrl() {
   url = "http://cfviz.netlifly.com/index.html?handle="+handle;
-  $(".fb-share-button").data(href,url);
-  $(".fb-send").data(href,url);
+  $(".fb-share-button").data('href',url);
+  $(".fb-send").data('href',url);
 }
 
 function resetData() {
