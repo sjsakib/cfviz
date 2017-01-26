@@ -293,7 +293,7 @@ function drawCharts() {
 }
 
 function setShareUrl() {
-  url = "http://cfviz.netlifly.com/index.html?handle="+handle;
+  var url = "http://cfviz.netlifly.com/index.html?handle="+handle;
   $(".fb-share-button").data('href',url);
   $(".fb-send").data('href',url);
   FB.XFBML.parse(document.getElementById('send'));
