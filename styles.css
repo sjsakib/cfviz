@@ -29,6 +29,14 @@
   z-index: 10;
 }
 
+.share {
+    text-align: center;
+    background-color: white;
+    min-height: 100px;
+    color: #292d3e;
+}
+
+
 .chart-card {
     min-height: 300px;
     margin: auto;

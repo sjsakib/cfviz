@@ -1,17 +1,59 @@
 var api_url = "http://codeforces.com/api/";
 //var api_url = "/mnt/BAC4BB93C4BB4FFD/web/cfviz/";
-$handle = "";
+var handle = "";
 
 google.charts.load('current', { 'packages': ['corechart'] });
 
 $(document).ready(function() {
   $("#handleform").submit(function(e) {
     e.preventDefault();
+    $("#handleform").blur();
 
     resetData();
     
     handle = $("#handle").val();
+    document.title+=": "+handle;
+    
+    $.get(api_url+ "user.rating", {'handle': handle}, function(data,status) {
+      console.log(data);
+      var best = 1e10;
+      var worst = -1e10;
+      var maxUp = 0;
+      var maxDown = 1e10;
+      var bestCon = "";
+      var worstCon  = "";
+      var maxUpCon = "";
+      var maxDownCon = "";
+      var tot = data.result.length;
 
+      data.result.forEach(function(con) {
+        if(con.rank < best) {
+          best = con.rank;
+          bestCon = con.contestId;
+        }
+        if(con.rank > worst) {
+          worst = con.rank;
+          worstCon  = con.contestId;
+        }
+        var ch = con.newRating - con.oldRating;
+        if(ch > maxUp) {
+          maxUp = ch;
+          maxUpCon = con.contestId;
+        }
+        if( ch < maxDown ) {
+          maxDown = ch;
+          maxDownCon = con.contestId;
+        }
+      });
+
+      var con_url = "http:codeforces.com/contest/";
+      $("#contests").removeClass("hidden");
+      $("#contestCount").html(tot);
+      $("#best").html(best+"<a href=\""+con_url+bestCon+"\" target=\"_blank\"> ("+bestCon+") </a>");
+      $("#worst").html(worst+"<a href=\""+con_url+worstCon+"\" target=\"_blank\"> ("+worstCon+") </a>");
+      $("#maxUp").html(maxUp+"<a href=\""+con_url+maxUpCon+"\" target=\"_blank\"> ("+maxUpCon+") </a>");
+      $("#maxDown").html(maxDown+"<a href=\""+con_url+maxDownCon+"\" target=\"_blank\"> ("+maxDownCon+") </a>");
+    });
     if (typeof google.visualization === 'undefined') {
       google.charts.setOnLoadCallback(drawCharts);
     } else {
@@ -19,6 +61,13 @@ $(document).ready(function() {
     }
 
   });
+
+  handle = getParameterByName("handle");
+  if(handle !== null) {
+    $("#handle").val(handle);
+    $("#handleform").submit();
+  }
+  $("#handleDiv").removeClass("hidden");
 });
 
 function drawCharts() {
@@ -259,4 +308,17 @@ function get_url(p) {
   else url = "http://codeforces.com/problemset/gymProblem/"+con+"/"+index;
 
   return url;
+}
+
+//Copied from stackoverflow :D
+function getParameterByName(name, url) {
+    if (!url) {
+      url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
