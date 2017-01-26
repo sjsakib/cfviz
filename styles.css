@@ -33,15 +33,11 @@
     text-align: center;
     background-color: white;
     min-height: 100px;
-    padding: 50px;
+    padding: 30px;
 }
 
 .fb-button {
   margin: 10px;
-}
-.fb-save, .fb-like {
-  clear: both;
-  display: block;
 }
 
 .chart-card {
