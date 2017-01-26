@@ -42,6 +42,9 @@
 .fb-button {
   margin: 10px;
 }
+.fb-save, .fb-like {
+  clear: both;
+}
 
 .chart-card {
     min-height: 300px;
