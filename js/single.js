@@ -305,6 +305,7 @@ function resetData() {
   $(".chart-card")
     .empty()
     .addClass("hidden");
+  $(".share").addClass("hidden");
   $(".num-card").addClass("hidden");
   $("#unsolvedList").empty();
 
