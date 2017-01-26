@@ -4,16 +4,6 @@ $handle = "";
 
 google.charts.load('current', { 'packages': ['corechart'] });
 
-function resetData() {
-  $("#mainSpinner").addClass("is-active");
-  $(".chart-card")
-    .empty()
-    .addClass("hidden");
-  $(".num-card").addClass("hidden");
-  $("#unsolvedList").empty();
-
-}
-
 $(document).ready(function() {
   $("#handleform").submit(function(e) {
     e.preventDefault();
@@ -32,7 +22,6 @@ $(document).ready(function() {
 });
 
 function drawCharts() {
-  //TODO: remove json
   $.get(api_url + "user.status", { "handle": handle }, function(data, status) {
     console.log(data);
 
@@ -44,16 +33,17 @@ function drawCharts() {
     var tags = {};
     var levels = {};
     var problems = {};
-
-    data.result.forEach(function(sub) {
+ 
+    for(var i = data.result.length-1;i>=0;i--) {
+      var sub = data.result[i];
       var problemId = sub.problem.contestId+'-'+sub.problem.index;
       if(problems[problemId] === undefined) {
         problems[problemId] = {
           attempts: 1,
-          solved: false,
+          solved: 0,
         };
       } else {
-        problems[problemId].attempts++;
+        if(problems[problemId].solved === 0) problems[problemId].attempts++;
       }
 
       if (verdicts[sub.verdict] === undefined) verdicts[sub.verdict] = 1;
@@ -71,10 +61,10 @@ function drawCharts() {
         if(levels[sub.problem.index] === undefined) levels[sub.problem.index] = 1;
         else levels[sub.problem.index]++;
 
-        problems[problemId].solved = true;
+        problems[problemId].solved++;
 
       }
-    });
+    }
 
 
     //Plotting the verdicts chart
@@ -182,7 +172,7 @@ function drawCharts() {
 
     //Plotting levels
     var levelTable = [
-      ['Level', 'Count']
+      ['Level', 'Solved']
     ];
     for (var level in levels) {
       levelTable.push([level, levels[level]]);
@@ -210,26 +200,37 @@ function drawCharts() {
     var tried = 0;
     var solved = 0;
     var maxAttempt = 0;
+    var maxAttemptProblem = "";
+    var maxAc = "";
+    var maxAcProblem = "";
     var unsolved = [];
     for(var p in problems) {
       tried++;
-      if(problems[p].solved) solved++;
-      maxAttempt = Math.max(maxAttempt,problems[p].attempts);
-      if(!problems[p].solved) unsolved.push(p);
+      if(problems[p].solved > 0) solved++;
+      if(problems[p].solved === 0) unsolved.push(p);
+
+      if(problems[p].attempts > maxAttempt) {
+        maxAttempt = problems[p].attempts;
+        maxAttemptProblem = p;
+      }
+      if(problems[p].solved > maxAc) {
+        maxAc = problems[p].solved;
+        maxAcProblem = p;
+      }
     }
     $(".num-card").removeClass("hidden");
     $("#tried").html(tried);
     $("#solved").html(solved);
-    $("#maxAttempt").html(maxAttempt);
+    $("#maxAttempt").html(maxAttempt+"<a href=\""+get_url(maxAttemptProblem)+"\" target=\"blank\" > ("+maxAttemptProblem+") </a>");
+    if(maxAc > 1) $("#maxAc").html(maxAc+"<a href=\""+get_url(maxAcProblem)+"\" target=\"blank\" > ("+maxAcProblem+") </a>");
+    else $("#maxAc").html(1);
+    $("#averageAttempt").html((data.result.length/solved).toFixed(2));
 
     unsolved.forEach(function(p) {
-      var con = p.split('-')[0];
-      var index = p.split('-')[1];
-      var url = "";
-      if(con.length < 4) url = "http://codeforces.com/contest/"+con+"/problem/"+index;
-      else url = "http://codeforces.com/problemset/gymProblem/"+con+"/"+index;
+      var url = get_url(p);
       $("#unsolvedList").append("<div><a href=\""+url+"\" target=\"_blank\" class=\"lnk\">"+p+"</a></div>");
     });
+
   })
   .fail(function() {
     $("#handleDiv").addClass("is-invalid");
@@ -237,4 +238,25 @@ function drawCharts() {
   .always(function() {
     $("#mainSpinner").removeClass("is-active");
   });
+}
+
+function resetData() {
+  $("#mainSpinner").addClass("is-active");
+  $(".chart-card")
+    .empty()
+    .addClass("hidden");
+  $(".num-card").addClass("hidden");
+  $("#unsolvedList").empty();
+
+}
+
+function get_url(p) {
+  var con = p.split('-')[0];
+  var index = p.split('-')[1];
+
+  var url = "";
+  if(con.length < 4) url = "http://codeforces.com/contest/"+con+"/problem/"+index;
+  else url = "http://codeforces.com/problemset/gymProblem/"+con+"/"+index;
+
+  return url;
 }

@@ -1,26 +1,10 @@
 <!doctype html>
-<!--
-  Material Design Lite
-  Copyright 2015 Google Inc. All rights reserved.
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-      https://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License
--->
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="description" content="Codeforces Visualizer">
+  <meta name="description" content="Codeforces Visualizer. Analyze and compare codeforces profiles">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <title>CF Visualizer</title>
   <!-- Add to homescreen for Chrome on Android -->
@@ -54,8 +38,7 @@
 
   ga('create', 'UA-90813960-1', 'auto');
   ga('send', 'pageview');
-
-</script>
+  </script>
 </head>
 
 <body>
@@ -72,21 +55,21 @@
       </header>
       <nav class="navigation mdl-navigation mdl-color--blue-grey-800">
         <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
-        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">compare</i>Inbox</a>
+        <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">compare</i>Compare</a>
       </nav>
     </div>
     <main class="mdl-layout__content mdl-color--grey-100">
       <div class="mdl-grid content">
-        <div id="mainSpinner" class="mdl-spinner mdl-js-spinner"></div>
         <div class="handle-card mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--8-col">
           <form action="" id="handleform">
             <div class="mdl-textfield mdl-js-textfield" id="handleDiv">
               <input type="text" class="mdl-textfield__input" name="handle" id="handle">
               <label class="mdl-textfield__label" for="handle">Handle</label>
-              <span class="mdl-textfield__error">Couldn't find user</span>
+              <span class="mdl-textfield__error">Couldn't find user. Could be a network problem</span>
             </div>
           </form>
         </div>
+        <div id="mainSpinner" class="mdl-spinner mdl-js-spinner"></div>
         <div id="verdicts" class="hidden chart-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--6-col-desktop">
         </div>
         <div id="langs" class="hidden chart-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--6-col-desktop">
@@ -112,8 +95,16 @@
                 <td id="solved"></td>
               </tr>
               <tr>
-                <td class="mdl-data-table__cell--non-numeric">Max submissions</td>
+                <td class="mdl-data-table__cell--non-numeric">Average Attempts</td>
+                <td id="averageAttempt"></td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">Max Attempts</td>
                 <td id="maxAttempt"></td>
+              </tr>
+              <tr>
+                <td class="mdl-data-table__cell--non-numeric">Max AC(s)</td>
+                <td id="maxAc"></td>
               </tr>
             </tbody>
           </table>
