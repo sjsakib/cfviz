@@ -7,7 +7,7 @@ google.charts.load('current', { 'packages': ['corechart'] });
 $(document).ready(function() {
   $("#handleform").submit(function(e) {
     e.preventDefault();
-    $("#handleform").blur();
+    $("#handle").blur();
 
     resetData();
     
@@ -55,6 +55,7 @@ $(document).ready(function() {
       $("#maxDown").html(maxDown+"<a href=\""+con_url+maxDownCon+"\" target=\"_blank\"> ("+maxDownCon+") </a>");
 
       $(".share-div").removeClass("hidden");
+      $(".sharethis").removeClass("hidden");
       setShareUrl();
     });
     if (typeof google.visualization === 'undefined') {
@@ -294,9 +295,10 @@ function drawCharts() {
 
 function setShareUrl() {
   var url = "http://cfviz.netlifly.com/index.html?handle="+handle;
+  url = encodeURIComponent(url);
   $(".fb-share-button").data('href',url);
   $(".fb-send").data('href',url);
-  FB.XFBML.parse();
+  if(typeof FB !== 'undefined') FB.XFBML.parse();
 }
 
 function resetData() {

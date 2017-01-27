@@ -32,8 +32,15 @@
 .share-div {
     text-align: center;
     background-color: white;
-    min-height: 100px;
+    min-height: 200px;
+    margin-top: 20px;
     padding: 30px;
+}
+
+.sharethis {
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #292d3e;
 }
 
 .fb-button {
