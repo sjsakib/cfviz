@@ -335,3 +335,11 @@ function getParameterByName(name, url) {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
+function fbShareResult() {
+  var url;
+  if(handle) url = window.location.href+"?handle="+handle;
+  else url = window.location.href;
+  window.open("https://www.facebook.com/sharer/sharer.php?u="+escape(url), '', 
+    'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');
+}

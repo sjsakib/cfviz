@@ -40,7 +40,10 @@
 .sharethis {
   text-transform: uppercase;
   font-weight: 600;
-  color: #292d3e;
+  color: white;
+  padding: 6px 18px;
+  border-radius: 5px;
+  background-color:#4267b2;
 }
 
 .fb-button {
