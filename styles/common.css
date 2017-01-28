@@ -18,14 +18,16 @@
     }
 }
 
-.fb-like {
+.fb-recommend {
     padding: 10px;
     background-color: #617cb4;
+    height: 100px;
 }
-.fb-button {
+.fb-like, .fb-save, .fb-recommend {
     box-shadow: 2px 2px 4px black;
     border-radius: 5px;
 }
+
 .sharethis {
     text-transform: uppercase;
     font-weight: 600;
