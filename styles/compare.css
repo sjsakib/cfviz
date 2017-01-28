@@ -30,15 +30,6 @@
     overflow-y: hidden;
 }
 
-td {
-  color: rgb(117, 117, 117);
-  font-weight: 500;
-}
-
-table {
-  width: 100%;
-}
-
 #submit {
     margin: auto;
 }

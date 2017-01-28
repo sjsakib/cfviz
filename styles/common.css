@@ -27,10 +27,8 @@
   background-color:#4267b2;
 }
 
-.chart-card {
-    min-height: 300px;
-    margin: auto;
-    margin-top: 20px;
+.card {
+    margin: 10px auto;
 }
 
 .share-div {
@@ -40,6 +38,22 @@
     margin-top: 20px;
     padding: 30px;
 }
+
+.vertical-space {
+    width: 100%;
+    height: 20px;
+}
+
+
+td {
+  color: rgb(117, 117, 117);
+  font-weight: 500;
+}
+
+table {
+  width: 100%;
+}
+
 /*things I don't know much about*/
 html,
 body {

@@ -48,7 +48,6 @@ function getContestStat(data) {
 }
 
 
-//TODO: Fix this function
 function alignTimeline(r1,r2) {
   ret = [];
   var i = 0;

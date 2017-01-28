@@ -55,7 +55,7 @@ $(document).ready(function() {
 
 function drawConCharts() {
 
-  var colors = ['#a52714', '#097138']
+  var colors = ['#009688', '#3F51B5']
   //Rating
   var rating = new google.visualization.arrayToDataTable([
     ['Handle', handle1, handle2],
