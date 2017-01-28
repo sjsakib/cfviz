@@ -3,38 +3,19 @@
   margin: auto;
 }
 
-.handle-card {
-    padding: 20px 50px;
-    margin-left: auto;
-    margin-right: auto;
-    max-height: 150px;
-    clear: both;
-}
-
-#handleDiv {
-    margin: auto;
-}
-
-#submit {
-  margin: auto;
-  margin-top: 20px;
-}
-
 #mainSpinner {
-  position: absolute;
-  top: 300px;
-  left: 0px;
-  right: 0px;
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: calc(50% - 14px);
   margin: auto;
   z-index: 10;
 }
 
-.share-div {
-    text-align: center;
-    background-color: white;
-    min-height: 200px;
-    margin-top: 20px;
-    padding: 30px;
+@media only screen and (min-width: 1025px) {
+    #mainSpinner {
+    left: calc(50% + 106px);
+    }
 }
 
 .sharethis {
@@ -46,51 +27,20 @@
   background-color:#4267b2;
 }
 
-.fb-button {
-  margin-top: 30px;
-}
-
 .chart-card {
     min-height: 300px;
     margin: auto;
     margin-top: 20px;
 }
 
-.num-card {
-  margin: auto;
-  margin-top: 20px;
+.share-div {
+    text-align: center;
+    background-color: white;
+    min-height: 200px;
+    margin-top: 20px;
+    padding: 30px;
 }
-
-#tags {
-  min-height: 80%;
-}
-
-#unsolved-con {
-  padding: 20px 50px;
-}
-
-.lnk {
-  margin: 10px;
-  float: left;
-}
-
-td {
-  color: rgb(117, 117, 117);
-  font-weight: 500;
-}
-
-table {
-  width: 100%;
-}
-
-a {
-  text-decoration: none;
-}
-
-
-
-
-/*The things I don't know much about*/
+/*things I don't know much about*/
 html,
 body {
     font-family: 'Roboto', 'Helvetica', sans-serif;

@@ -33,10 +33,11 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
   <link rel="stylesheet" href="styles/common.css">
-  <link rel="stylesheet" href="styles/single.css">
+  <link rel="stylesheet" href="styles/compare.css">
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script src="js/single.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/compare.js"></script>
   <script>
   (function(i, s, o, g, r, a, m) {
     i['GoogleAnalyticsObject'] = r;
@@ -80,91 +81,62 @@
         <div id="logo">CFV</div>
       </header>
       <nav class="navigation mdl-navigation mdl-color--blue-grey-800">
-        <a class="mdl-navigation__link" href="/index.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+        <a class="mdl-navigation__link" href="/"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
         <a class="mdl-navigation__link" href="/compare.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">compare</i>Compare</a>
       </nav>
     </div>
     <main class="mdl-layout__content mdl-color--grey-100">
+      <div id="mainSpinner" class="mdl-spinner mdl-js-spinner"></div>
       <div class="mdl-grid content">
         <div class="handle-card mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--8-col">
           <form action="" id="handleform">
-            <div class="hidden mdl-textfield mdl-js-textfield" id="handleDiv">
-              <input type="text" class="mdl-textfield__input" name="handle" id="handle">
-              <label class="mdl-textfield__label" for="handle">Handle</label>
+            <div class="mdl-textfield mdl-js-textfield" id="handle1Div">
+              <input type="text" class="mdl-textfield__input" name="handle1" id="handle1">
+              <label class="mdl-textfield__label" for="handle1">Handle 1</label>
               <span class="mdl-textfield__error">Couldn't find user. Could be a network problem</span>
             </div>
+            <div class="mdl-textfield mdl-js-textfield" id="handle2Div">
+              <input type="text" class="mdl-textfield__input" name="handle2" id="handle2">
+              <label class="mdl-textfield__label" for="handle2">Handle 2</label>
+              <span class="mdl-textfield__error">Couldn't find user. Could be a network problem</span>
+            </div>
+            <br>
+            <button id="submit" type="submit" class="mdl-button mdl-button--raised mdl-js-button">Compare</button>
           </form>
         </div>
-        <div id="mainSpinner" class="mdl-spinner mdl-js-spinner"></div>
-        <div id="verdicts" class="hidden chart-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--6-col-desktop">
+        <div id="ratings" class="hidden chart-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--8-col-desktop">
         </div>
-        <div id="langs" class="hidden chart-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--6-col-desktop">
+        <div id="contestsCount" class="hidden chart-card mdl-shadow--2dp mdl-cell mdl-cell--4-col">
         </div>
-        <div id="tags" class="hidden chart-card mdl-shadow--2dp mdl-cell mdl-cell--8-col">
+        <div id="upDowns" class="hidden chart-card mdl-shadow--2dp mdl-cell mdl-cell--4-col mdl-cell--6-col-desktop">
         </div>
         <div id="levels" class="hidden chart-card mdl-shadow--2dp mdl-cell mdl-cell--8-col mdl-cell--10-col-desktop">
         </div>
-        <div class="hidden num-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">
+        <div id="bestWorst" class="hidden num-card mdl-shadow--2dp mdl-cell mdl-cell--8-col">
           <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
             <thead>
               <tr>
-                <th class="mdl-data-table__cell--non-numeric">Some Numbers</th>
+                <th class="mdl-data-table__cell--non-numeric">Worst and Best</th>
+                <th id="user1" ></th>
+                <th id="user2" ></th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td class="mdl-data-table__cell--non-numeric">Tried</td>
-                <td id="tried"></td>
+                <td class="mdl-data-table__cell--non-numeric">Best</td>
+                <td id="user1Best"></td>
+                <td id="user2Best"></td>
               </tr>
               <tr>
-                <td class="mdl-data-table__cell--non-numeric">Solved</td>
-                <td id="solved"></td>
-              </tr>
-              <tr>
-                <td class="mdl-data-table__cell--non-numeric">Average Attempts</td>
-                <td id="averageAttempt"></td>
-              </tr>
-              <tr>
-                <td class="mdl-data-table__cell--non-numeric">Max Attempts</td>
-                <td id="maxAttempt"></td>
-              </tr>
-              <tr>
-                <td class="mdl-data-table__cell--non-numeric">Max AC(s)</td>
-                <td id="maxAc"></td>
+                <td class="mdl-data-table__cell--non-numeric">Worst</td>
+                <td id="user1Worst"></td>
+                <td id="user2Worst"></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <div id="contests" class="hidden num-card mdl-shadow--2dp mdl-cell mdl-cell--6-col">
-          <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-            <tr>
-              <th class="mdl-data-table__cell--non-numeric">About contests</th>
-            </tr>
-            <tr>
-              <td class="mdl-data-table__cell--non-numeric">Contests</td>
-              <td id="contestCount"></td>
-            </tr>
-            <tr>
-              <td class="mdl-data-table__cell--non-numeric">Best Rank</td>
-              <td id="best"></td>
-            </tr>
-            <tr>
-              <td class="mdl-data-table__cell--non-numeric">Worst Rank</td>
-              <td id="worst"></td>
-            </tr>
-            <tr>
-              <td class="mdl-data-table__cell--non-numeric">Max Up</td>
-              <td id="maxUp"></td>
-            </tr>
-            <tr>
-              <td class="mdl-data-table__cell--non-numeric">Max Down</td>
-              <td id="maxDown"></td>
-            </tr>
-          </table>
-        </div>
-        <div id="unsolved-con" class="hidden num-card mdl-shadow--2dp mdl-cell mdl-cell--8-col">
-          <h4>Unsolved</h4>
-          <div id="unsolvedList"></div>
+        <div id="timelineCon" class="hidden timelineCon mdl-shadow--2dp mdl-cell mdl-cell--8-col mdl-cell--10-col-desktop">
+          <div id="timeline"></div>
         </div>
         <div class="share-div mdl-shadow--2dp mdl-cell mdl-cell--12-col">
           <a href="javascript:fbShareResult()" class="fb-button hidden sharethis">share this result</a>

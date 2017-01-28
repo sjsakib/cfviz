@@ -1,0 +1,44 @@
+.handle-card {
+    padding: 20px 50px;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 250px;
+    clear: both;
+    text-align: center;
+}
+
+.chart-card {
+    padding: 30px 0px;
+    background-color: white;
+}
+.num-card {
+    background-color: white;
+    margin: auto;
+    margin-top: 30px;
+}
+#bestWorst {
+    max-height: auto;
+}
+#timelineCon {
+    margin: auto;
+    margin-top: 20px;
+    padding: 30px 10px;
+    background-color: white;
+}
+#timeline {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+td {
+  color: rgb(117, 117, 117);
+  font-weight: 500;
+}
+
+table {
+  width: 100%;
+}
+
+#submit {
+    margin: auto;
+}

@@ -1,65 +1,46 @@
 var api_url = "http://codeforces.com/api/";
-var handle = "";
+var handle1 = "";
+var handle2 = "";
 
-google.charts.load('current', { 'packages': ['corechart'] });
+var conData1 = {};
+var conData2 = {};
+
+google.charts.load('current', { 'packages': ['corechart', 'line'] });
 
 $(document).ready(function() {
   $("#handleform").submit(function(e) {
     e.preventDefault();
-    $("#handle").blur();
+    $("#handle1").blur();
+    $("#handle2").blur();
 
     resetData();
     
-    handle = $("#handle").val();
+    handle1 = $("#handle1").val();
+    handle2 = $("#handle2").val();
 
-    $.get(api_url+ "user.rating", {'handle': handle}, function(data,status) {
+    //Getting handle1 contest data
+    var req1 = $.get(api_url+ "user.rating", {'handle': handle1}, function(data,status) {
       console.log(data);
-      var best = 1e10;
-      var worst = -1e10;
-      var maxUp = 0;
-      var maxDown = 1e10;
-      var bestCon = "";
-      var worstCon  = "";
-      var maxUpCon = "";
-      var maxDownCon = "";
-      var tot = data.result.length;
-
-      data.result.forEach(function(con) {
-        if(con.rank < best) {
-          best = con.rank;
-          bestCon = con.contestId;
-        }
-        if(con.rank > worst) {
-          worst = con.rank;
-          worstCon  = con.contestId;
-        }
-        var ch = con.newRating - con.oldRating;
-        if(ch > maxUp) {
-          maxUp = ch;
-          maxUpCon = con.contestId;
-        }
-        if( ch < maxDown ) {
-          maxDown = ch;
-          maxDownCon = con.contestId;
-        }
-      });
-
-      var con_url = "http:codeforces.com/contest/";
-      $("#contests").removeClass("hidden");
-      $("#contestCount").html(tot);
-      $("#best").html(best+"<a href=\""+con_url+bestCon+"\" target=\"_blank\"> ("+bestCon+") </a>");
-      $("#worst").html(worst+"<a href=\""+con_url+worstCon+"\" target=\"_blank\"> ("+worstCon+") </a>");
-      $("#maxUp").html(maxUp+"<a href=\""+con_url+maxUpCon+"\" target=\"_blank\"> ("+maxUpCon+") </a>");
-      $("#maxDown").html(maxDown+"<a href=\""+con_url+maxDownCon+"\" target=\"_blank\"> ("+maxDownCon+") </a>");
-
-      $(".share-div").removeClass("hidden");
-      $(".sharethis").removeClass("hidden");
+      conData1 = getContestStat(data);
+    }).fail(function() {
+      $("handle1Div").addClass("is-invalid");
     });
-    if (typeof google.visualization === 'undefined') {
-      google.charts.setOnLoadCallback(drawCharts);
-    } else {
-      drawCharts();
-    }
+
+    //Getting handle1 contest data
+    var req2 = $.get(api_url+ "user.rating", {'handle': handle2}, function(data,status) {
+      console.log(data);
+      conData2 = getContestStat(data);
+    }).fail(function() {
+      $("handle2Div").addClass("is-invalid");
+    });
+
+    $.when(req1,req2).then(function() {
+      if (typeof google.visualization === 'undefined') {
+        google.charts.setOnLoadCallback(drawConCharts);
+      } else {
+        drawConCharts();
+      }
+    });
 
   });
 
@@ -70,6 +51,145 @@ $(document).ready(function() {
   }
   $("#handleDiv").removeClass("hidden");
 });
+
+
+function drawConCharts() {
+
+  var colors = ['#a52714', '#097138']
+  //Rating
+  var rating = new google.visualization.arrayToDataTable([
+    ['Handle', handle1, handle2],
+    ['Current Rating', conData1.rating, conData2.rating],
+    ['Max Rating', conData1.maxRating, conData2.maxRating],
+    ['Min Rating', conData1.minRating, conData2.minRating]
+  ]);
+  var ratingOptions = {
+    title: "Rating",
+    titleTextStyle: {
+      fontSize: 18,
+      bold: false
+    },
+    fontName: 'Roboto',
+    vAxis: {
+      viewWindow: {
+        min: 400
+      }
+    },
+    bar: { groupWidth: '30%' },
+    legend: {
+      position: 'top',
+      alignment: 'end'
+    },
+    animation: {
+      duration: 4000,
+      easing: 'in',
+      startup: true
+    },
+    colors: colors
+  };
+  var ratingChart = new google.visualization.ColumnChart(document.getElementById('ratings'));
+  $("#ratings").removeClass('hidden');
+  ratingChart.draw(rating,ratingOptions);
+
+  //Contests Count
+  var contests = new google.visualization.arrayToDataTable([
+    ['Handle', 'Contests', {role: 'style'}],
+    [ handle1, conData1.tot, colors[0] ],
+    [ handle2,  conData2.tot, colors[1] ]
+  ]);
+  var contestsOptions = {
+    title: "Contests",
+    fontName: 'Roboto',
+    titleTextStyle: {
+      fontSize: 18,
+      bold: false
+    },
+    bar: { groupWidth: '30%' },
+    legend: 'none',
+    animation: {
+      duration: 4000,
+      easing: 'in',
+      startup: true
+    },
+  };
+  var contestsChart = new google.visualization.ColumnChart(document.getElementById('contestsCount'));
+  $("#contestsCount").removeClass('hidden');
+  contestsChart.draw(contests,contestsOptions);
+
+  //Max up and downs
+  var upDowns = new google.visualization.arrayToDataTable([
+    ['Handle', handle1, handle2],
+    ['Max Up', conData1.maxUp, conData2.maxUp],
+    ['Max Down', conData1.maxDown, conData2.maxDown],
+  ]);
+  var upDownsOptions = {
+    title: "Ups and Donws",
+    fontName: 'Roboto',
+    legend: { 
+      position: 'top',
+      alignment: 'end'
+    },
+    titleTextStyle: {
+      fontSize: 18,
+      bold: false
+    },
+    bar: {groupWidth: '30%'},
+    animation: {
+      duration: 1000,
+      easing: 'in',
+      startup: true
+    },
+    colors: colors
+  };
+  var upDownsChart = new google.visualization.ColumnChart(document.getElementById('upDowns'));
+  $("#upDowns").removeClass('hidden');
+  upDownsChart.draw(upDowns,upDownsOptions);
+
+  //Worst Best
+  $("#bestWorst").removeClass("hidden");
+  $("#user1").html(handle1);
+  $("#user2").html(handle2);
+  $("#user1Best").html(conData1.best);
+  $("#user2Best").html(conData2.best);
+  $("#user1Worst").html(conData1.worst);
+  $("#user2Worst").html(conData2.worst);
+
+  //Rating Timeline
+  var timeline = new google.visualization.DataTable();
+  timeline.addColumn('date','Date');
+  timeline.addColumn('number',handle1);
+  timeline.addColumn('number',handle2);
+
+  timeline.addRows(alignTimeline(conData1.timeline,conData2.timeline));
+
+  $("#timelineCon").removeClass('hidden');
+  var timelineOptions = {
+    title: 'Timeline',
+    fontName: 'Roboto',
+    titleTextStyle: {
+      fontSize: 18,
+      bold: false
+    },
+    legend: {
+      position: 'top',
+      alignment: 'end',
+    },
+    width: Math.max(timeline.getNumberOfRows()*10,$("#timelineCon").width()),
+    height: 300,
+    hAxis: {
+      format: 'MMM yy',
+    },
+    vAxis: {
+      minValue: 0,
+    },
+    colors: colors
+  };
+  var timelineChart = new google.visualization.LineChart(document.getElementById('timeline'));
+  timelineChart.draw(timeline,timelineOptions);
+
+
+}
+
 
 function drawCharts() {
   $.get(api_url + "user.status", { "handle": handle }, function(data, status) {
@@ -159,7 +279,6 @@ function drawCharts() {
       },
       is3D: true
     };
-    //$("#verdicts").height($("#verdicts").width());
     var verChart = new google.visualization.PieChart(document.getElementById('verdicts'));
     verChart.draw(verdicts, verOptions);
     $("#verdictsSpinner").removeClass("is-active");
@@ -185,7 +304,6 @@ function drawCharts() {
       },
       is3D: true
     };
-    //$("#langs").height($("#langs").width());
     langs = new google.visualization.arrayToDataTable(langTable);
     var langChart = new google.visualization.PieChart(document.getElementById('langs'));
     langChart.draw(langs, langOptions);

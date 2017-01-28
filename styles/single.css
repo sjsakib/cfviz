@@ -1,0 +1,42 @@
+.handle-card {
+    padding: 20px 50px;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 150px;
+    clear: both;
+}
+
+#handleDiv {
+    margin: auto;
+}
+
+.num-card {
+  margin: auto;
+  margin-top: 20px;
+}
+
+#tags {
+  min-height: 80%;
+}
+
+#unsolved-con {
+  padding: 20px 50px;
+}
+
+.lnk {
+  margin: 10px;
+  float: left;
+}
+
+td {
+  color: rgb(117, 117, 117);
+  font-weight: 500;
+}
+
+table {
+  width: 100%;
+}
+
+a {
+  text-decoration: none;
+}
