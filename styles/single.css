@@ -1,5 +1,5 @@
 .handle-card {
-    padding: 20px 0px;
+    padding: 20px 10px;
     margin: auto;
     max-height: 150px;
     text-align: center;
@@ -18,7 +18,7 @@
 }
 
 #unsolvedCon {
-  padding: 30px 50px 50px 50px;
+  padding: 30px 20px 50px 50px;
 
 }
 #unsolvedTitle {
@@ -30,7 +30,7 @@
 
 
 .lnk {
-  margin: 5px;
+  margin: 2px 5px;
   float: left;
 }
 table {

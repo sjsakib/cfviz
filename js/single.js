@@ -260,7 +260,6 @@ function drawCharts() {
   var levelOptions = {
     width: Math.max($('#levels').width(),levels.getNumberOfRows()*50),
     height: 300,
-    chartArea: {width: '85%'},
     title: 'Levels (Index in contest)',
     legend: 'none',
     fontName: 'Roboto',

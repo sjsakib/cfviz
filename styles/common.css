@@ -1,39 +1,52 @@
 #logo {
-  font-size: 80px;
-  margin: auto;
+    font-size: 80px;
+    margin: auto;
 }
 
 #mainSpinner {
-  position: fixed;
-  top: 0px;
-  bottom: 0px;
-  left: calc(50% - 14px);
-  margin: auto;
-  z-index: 10;
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: calc(50% - 14px);
+    margin: auto;
+    z-index: 10;
 }
 
 @media only screen and (min-width: 1025px) {
     #mainSpinner {
-    left: calc(50% + 106px);
+        left: calc(50% + 106px);
     }
 }
 
+.fb-like {
+    padding: 10px;
+    background-color: #617cb4;
+}
+.fb-button {
+    box-shadow: 2px 2px 4px black;
+    border-radius: 5px;
+}
 .sharethis {
-  text-transform: uppercase;
-  font-weight: 600;
-  color: white;
-  padding: 6px 18px;
-  border-radius: 5px;
-  background-color:#4267b2;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: white;
+    padding: 6px 18px;
+    border-radius: 5px;
+    background-color: #4267b2;
+}
+.sharethis:hover {
+    background-color: #365899;
 }
 
 .card {
     margin: 10px auto;
+    overflow-y: hidden;
+    overflow-x: auto;
 }
 
 .share-div {
     text-align: center;
-    background-color: white;
+    background-color: #37474f;
     min-height: 200px;
     margin-top: 20px;
     padding: 30px;
@@ -44,17 +57,18 @@
     height: 20px;
 }
 
-
 td {
-  color: rgb(117, 117, 117);
-  font-weight: 500;
+    color: rgb(117, 117, 117);
+    font-weight: 500;
 }
 
 table {
-  width: 100%;
+    width: 100%;
 }
 
+
 /*things I don't know much about*/
+
 html,
 body {
     font-family: 'Roboto', 'Helvetica', sans-serif;
