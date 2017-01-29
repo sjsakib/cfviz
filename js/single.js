@@ -157,7 +157,7 @@ function drawCharts() {
   verdicts = new google.visualization.arrayToDataTable(verTable);
   var verOptions = {
     height: $('#verdicts').width(),
-    title: 'Verdicts',
+    title: 'Verdicts of '+handle,
     legend: 'none',
     pieSliceText: 'label',
     slices: verSliceColors,
@@ -188,7 +188,7 @@ function drawCharts() {
   langs = new google.visualization.arrayToDataTable(langTable);
   var langOptions = {
     height: $('#langs').width(),
-    title: 'Languages',
+    title: 'Languages of '+handle,
     legend: 'none',
     pieSliceText: 'label',
     fontName: 'Roboto',
@@ -212,12 +212,16 @@ function drawCharts() {
   for (var tag in tags) {
     tagTable.push([tag + ": " + tags[tag], tags[tag]]);
   }
+  tagTable.sort(function(a,b) {
+    if(a[1] == 'Cound') return -1;
+    return b[1] - a[1];
+  });
   tags = new google.visualization.arrayToDataTable(tagTable);
   var tagOptions = {
     width: Math.max(600,$('#tags').width()),
     height: Math.max(600,$('#tags').width())*0.75,
     chartArea: {width: '80%', height: '70%'},
-    title: 'Tags',
+    title: 'Tags of '+handle,
     pieSliceText: 'none',
     legend: {
       position: 'right',
@@ -260,7 +264,7 @@ function drawCharts() {
   var levelOptions = {
     width: Math.max($('#levels').width(),levels.getNumberOfRows()*50),
     height: 300,
-    title: 'Levels (Index in contest)',
+    title: 'Levels (index in contest) of '+handle,
     legend: 'none',
     fontName: 'Roboto',
     titleTextStyle: {
@@ -301,6 +305,7 @@ function drawCharts() {
   }
   $('#numbers').removeClass('hidden');
   $('#unsolvedCon').removeClass('hidden');
+  $('.handle-text').html(handle);
   $("#tried").html(tried);
   $("#solved").html(solved);
   $("#maxAttempt").html(maxAttempt + "<a href=\"" + get_url(maxAttemptProblem) + "\" target=\"blank\" > (" + maxAttemptProblem + ") </a>");

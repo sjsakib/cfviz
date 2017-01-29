@@ -18,12 +18,16 @@
     }
 }
 
+.fb_iframe_widget_fluid {
+    display: inline-block !important;
+}
+
 .fb-recommend {
     padding: 10px;
     background-color: #617cb4;
     height: 100px;
 }
-.fb-like, .fb-save, .fb-recommend {
+.sharethis, .fb-save, .fb-recommend {
     box-shadow: 2px 2px 4px black;
     border-radius: 5px;
 }
@@ -46,6 +50,10 @@
     overflow-x: auto;
 }
 
+.card, .handle-card, .share-div {
+    border-radius: 5px;
+}
+
 .share-div {
     text-align: center;
     background-color: #37474f;
@@ -66,6 +74,7 @@ td {
 
 table {
     width: 100%;
+    border-radius: 5px;
 }
 
 
