@@ -149,6 +149,12 @@ function drawCharts() {
     } else if (ver == "COMPILATION_ERROR") {
       verTable.push(["CPE", verdicts[ver]]);
       verSliceColors.push({ color: '#607D8B' });
+    } else if (ver == "SKIPPED") {
+      verTable.push(["SKIPPED", verdicts[ver]]);
+      verSliceColors.push({ color: '#EEEEEE' });
+    } else if (ver == "CLALLENGED") {
+      verTable.push(["CLALLENGED", verdicts[ver]]);
+      verSliceColors.push({ color: '#E91E63' });
     } else {
       verTable.push([ver, verdicts[ver]]);
       verSliceColors.push({});
