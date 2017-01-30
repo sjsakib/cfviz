@@ -22,8 +22,6 @@
 #timelineCon {
     margin: auto;
     margin-top: 20px;
-    padding: 30px 10px;
-    background-color: white;
 }
 #timeline {
     overflow-x: auto;

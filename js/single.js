@@ -47,8 +47,8 @@ $(document).ready(function() {
             else tags[t]++;
           });
 
-          if (levels[sub.problem.index] === undefined) levels[sub.problem.index] = 1;
-          else levels[sub.problem.index]++;
+          if (levels[sub.problem.index[0]] === undefined) levels[sub.problem.index[0]] = 1;
+          else levels[sub.problem.index[0]]++;
 
           problems[problemId].solved++;
 
@@ -103,6 +103,7 @@ $(document).ready(function() {
 
       var con_url = "http:codeforces.com/contest/";
       $("#contests").removeClass("hidden");
+      $('.handle-text').html(handle);
       $("#contestCount").html(tot);
       $("#best").html(best + "<a href=\"" + con_url + bestCon + "\" target=\"_blank\"> (" + bestCon + ") </a>");
       $("#worst").html(worst + "<a href=\"" + con_url + worstCon + "\" target=\"_blank\"> (" + worstCon + ") </a>");
