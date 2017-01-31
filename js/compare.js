@@ -22,23 +22,29 @@ $(document).ready(function() {
 
     resetData();
 
-    handle1 = $("#handle1").val();
-    handle2 = $("#handle2").val();
+    handle1 = $("#handle1").val().trim();
+    handle2 = $("#handle2").val().trim();
 
     //Getting handle1 contest data
     req1 = $.get(api_url + "user.rating", { 'handle': handle1 }, function(data, status) {
       console.log(data);
       conData1 = getContestStat(data);
     }).fail(function(xhr, status) {
-      if (status != 'abort') $("handle1Div").addClass("is-invalid");
+      if (status != 'abort') {
+        $("#handle1Div").addClass("is-invalid");
+        $('#mainSpinner').removeClass('is-active');
+      }
     });
 
-    //Getting handle1 contest data
+    //Getting handle2 contest data
     req2 = $.get(api_url + "user.rating", { 'handle': handle2 }, function(data, status) {
       console.log(data);
       conData2 = getContestStat(data);
     }).fail(function(xhr, status) {
-      if (status != 'abort') $("handle2Div").addClass("is-invalid");
+      if (status != 'abort') {
+        $("#handle1Div").addClass("is-invalid");
+        $('#mainSpinner').removeClass('is-active');
+      }
     });
 
     $.when(req1, req2).then(function() {
@@ -64,14 +70,19 @@ $(document).ready(function() {
         } else {
           drawSubCharts();
         }
+        $('.share-div').removeClass('hidden');
+        $('#mainSpinner').removeClass('is-active');
+        $(".sharethis").removeClass("hidden");
       });
     });
 
   });
 
-  handle = getParameterByName("handle");
-  if (handle !== null) {
-    $("#handle").val(handle);
+  handle1 = getParameterByName("handle1");
+  handle2 = getParameterByName("handle2");
+  if (handle1 !== null && handle2 !== null) {
+    $("#handle1").val(handle1);
+    $("#handle2").val(handle2);
     $("#handleform").submit();
   }
   $("#handleDiv").removeClass("hidden");
@@ -98,6 +109,7 @@ var commonOptions = {
   animation: {
     duration: 4000,
     easing: 'in',
+    startup: true
   },
   tooltip: {
     textStyle: { fontSize: 14 },
@@ -256,7 +268,9 @@ function drawSubCharts() {
     ],
     alignTags(subData1.tags, subData2.tags)
   ));
+  console.log("creating view");
   var tagsView = new google.visualization.DataView(tags);
+  console.log("adding columns");
   tagsView.setColumns([0, 1, {
       calc: "stringify",
       sourceColumn: 1,
@@ -270,7 +284,6 @@ function drawSubCharts() {
       role: "annotation"
     }
   ]);
-  
   var tagsOptions = $.extend({},scrollableOptions, commonOptions, {
     width: Math.max($('#tags').width(),tags.getNumberOfRows()*75),
     height: 400,
@@ -278,10 +291,15 @@ function drawSubCharts() {
     legend: legend,
     colors: colors,
     bar: {groupWidth: '60%'},
-    annotations: annotation
+    annotations: annotation,
+    chartArea: { top: 100, bottom: 120, left: 100, right: 75},
   });
+  console.log("creating chart");
+  console.log(tags);
   var tagsChart = new google.visualization.ColumnChart(document.getElementById('tags'));
+  console.log("drawing");
   tagsChart.draw(tagsView, tagsOptions);
+  console.log("done drawing");
 }
 
 function plotTwo(div, n1, n2, title) {
@@ -305,13 +323,13 @@ function plotTwo(div, n1, n2, title) {
 
 function resetData() {
   $("#mainSpinner").addClass("is-active");
-  $(".chart-card")
-    .empty()
-    .addClass("hidden");
-  $(".share-div").addClass("hidden");
-  $(".num-card").addClass("hidden");
-  $("#unsolvedList").empty();
+  $(".to-clear").empty();
+  $(".to-hide").addClass("hidden");
 
+  if(req1) req1.abort();
+  if(req2) req2.abort();
+  if(req3) req3.abort();
+  if(req4) req4.abort();
 }
 
 function get_url(p) {
@@ -340,7 +358,7 @@ function getParameterByName(name, url) {
 
 function fbShareResult() {
   var url;
-  if (handle) url = window.location.href + "?handle=" + handle;
+  if (handle && handle2) url = window.location.href + "?handle1=" + handle1+"&handle2="+handle2;
   else url = window.location.href;
   window.open("https://www.facebook.com/sharer/sharer.php?u=" + escape(url), '',
     'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');

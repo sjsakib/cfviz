@@ -18,7 +18,7 @@ $(document).ready(function() {
     e.preventDefault();
     $("#handle").blur();
     resetData();
-    handle = $("#handle").val();
+    handle = $("#handle").val().trim();
 
     req1 = $.get(api_url + "user.status", { "handle": handle }, function(data, status) {
       console.log(data);
@@ -172,7 +172,7 @@ function drawCharts() {
     titleTextStyle: {
       fontSize: 18,
       bold: false,
-      color: '#757575'
+      color: '#393939'
     },
     is3D: true
   };

@@ -20,7 +20,7 @@
   <!-- Add to homescreen for Safari on iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+  <meta name="apple-mobile-web-app-title" content="Codeforces Visualize">
   <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
   <!-- Tile icon for Win8 (144x144 + tile color) -->
   <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
@@ -35,6 +35,7 @@
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="js/common.js"></script>
+  <script src="js/compare_helper.js"></script>
   <script src="js/compare.js"></script>
   <script>
   (function(i, s, o, g, r, a, m) {
@@ -131,8 +132,8 @@
             </tbody>
           </table>
         </div>
-        <div id="timelineCon" class="hidden card mdl-shadow--2dp mdl-cell mdl-cell--8-col mdl-cell--12-col-desktop">
-          <div id="timeline"></div>
+        <div id="timelineCon" class="hidden card to-hide mdl-shadow--2dp mdl-cell mdl-cell--8-col mdl-cell--12-col-desktop">
+          <div class="to-clear" id="timeline"></div>
         </div>
         <div id="solvedTried" class="hidden card to-clear to-hide mdl-shadow--2dp mdl-cell mdl-cell--4-col">
         </div>

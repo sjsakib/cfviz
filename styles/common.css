@@ -24,6 +24,7 @@
 
 .fb-recommend {
     padding: 10px;
+    background-color: white;
 }
 .sharethis, .fb-save, .fb-recommend {
     box-shadow: 1px 1px 2px black;
@@ -73,6 +74,24 @@ td {
 table {
     width: 100%;
     border-radius: 5px;
+}
+
+a {
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+ 
+::-webkit-scrollbar-track {
+    display: none;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #607D8B;
 }
 
 
@@ -167,3 +186,5 @@ body {
 .content {
     max-width: 1080px;
 }
+
+
