@@ -12,6 +12,11 @@
     z-index: 10;
 }
 
+.fb-comments {
+    width: 100%;
+    padding: 20px;
+}
+
 .about {
     text-align: center;
     margin: auto;
