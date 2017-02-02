@@ -315,7 +315,7 @@ function getParameterByName(name, url) {
 
 function fbShareResult() {
   var url;
-  if (handle && handle2) url = window.location.href + "?handle1=" + handle1+"&handle2="+handle2;
+  if (handle1 && handle2) url = window.location.href + "?handle1=" + handle1+"&handle2="+handle2;
   else url = window.location.href;
   window.open("https://www.facebook.com/sharer/sharer.php?u=" + escape(url), '',
     'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');
