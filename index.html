@@ -7,13 +7,11 @@
   <meta name="description" content="Codeforces Visualizer. Visualize, analyze and compare codeforces profiles">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <title>CF Visualizer</title>
-
   <!-- Open Graph meta -->
   <meta property="og:url" content="http://cfviz.netlify.com" />
   <meta property="og:title" content="Codeforces Visualizer" />
   <meta property="og:description" content="Visualize, analyze and compare codeforces profiles" />
   <meta property="og:image" content="http://cfviz.netlify.com/images/og.jpg" />
-
   <!-- Add to homescreen for Chrome on Android -->
   <meta name="mobile-web-app-capable" content="yes">
   <link rel="icon" sizes="192x192" href="images/android-desktop.png">
@@ -26,7 +24,6 @@
   <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
   <meta name="msapplication-TileColor" content="#3372DF">
   <link rel="shortcut icon" href="images/favicon.png">
-
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
   <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
@@ -58,12 +55,23 @@
 <body>
   <div id="fb-root"></div>
   <script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId: '1843052242620434',
+      xfbml: true,
+      version: 'v2.8'
+    });
+    FB.AppEvents.logPageView();
+  };
+
   (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
+    if (d.getElementById(id)) {
+      return;
+    }
     js = d.createElement(s);
     js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.6";
+    js.src = "//connect.facebook.net/en_US/sdk.js";
     fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));
   </script>
@@ -91,7 +99,7 @@
             <div class="hidden mdl-textfield mdl-js-textfield" id="handleDiv">
               <input type="text" class="mdl-textfield__input" name="handle" id="handle">
               <label class="mdl-textfield__label" for="handle">Handle</label>
-              <span class="mdl-textfield__error">Couldn't find user. Could be a network problem</span>
+              <span class="mdl-textfield__error">Couldn't find user. Network problem?</span>
             </div>
           </form>
         </div>
@@ -103,12 +111,12 @@
         </div>
         <div id="levels" class="hidden to-clear to-hide card mdl-shadow--2dp mdl-cell mdl-cell--8-col mdl-cell--10-col-desktop">
         </div>
-        <span class="mdl-tooltip" for="levels">All the subindexes like A1 A2 has been merged</span>
+        <span class="mdl-tooltip" for="levels">Indexes in contest of the problems they have solved. All the subindexes like A1 A2 has been merged</span>
         <div id='numbers' class="hidden to-hide card mdl-shadow--2dp mdl-cell mdl-cell--8-col">
           <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
             <thead>
               <tr>
-                <th class="mdl-data-table__cell--non-numeric">Some Numbers About</th>
+                <th class="mdl-data-table__cell--non-numeric">Some numbers about</th>
                 <th class="handle-text"></th>
               </tr>
             </thead>
@@ -122,20 +130,24 @@
                 <td id="solved"></td>
               </tr>
               <tr>
-                <td class="mdl-data-table__cell--non-numeric">Average Attempts</td>
+                <td class="mdl-data-table__cell--non-numeric">Average attempts</td>
                 <td id="averageAttempt"></td>
+                <span class="mdl-tooltip" for="averageAttempt">Average submissions they had to make to solve a single problem</span>
               </tr>
               <tr>
-                <td class="mdl-data-table__cell--non-numeric">Max Attempts</td>
+                <td class="mdl-data-table__cell--non-numeric">Max attempts</td>
                 <td id="maxAttempt"></td>
+                <span class="mdl-tooltip" for="maxAttempt">Maximum submissions they had to make to solve a single problem</span>
               </tr>
               <tr>
-                <td class="mdl-data-table__cell--non-numeric">Solved With One Submission</td>
+                <td class="mdl-data-table__cell--non-numeric">Solved with one submission</td>
                 <td id="solvedWithOneSub"></td>
+                <span class="mdl-tooltip" for="solvedWithOneSub">Number of problems they solved with just one submission</span>
               </tr>
               <tr>
                 <td class="mdl-data-table__cell--non-numeric">Max AC(s)</td>
                 <td id="maxAc"></td>
+                <span class="mdl-tooltip" for="maxAc">Number of AC verdicts they got for a single problem. </span>
               </tr>
             </tbody>
           </table>
@@ -143,27 +155,27 @@
         <div id="contests" class="hidden to-hide card mdl-shadow--2dp mdl-cell mdl-cell--8-col">
           <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
             <tr>
-              <th class="mdl-data-table__cell--non-numeric">Contests Of</th>
+              <th class="mdl-data-table__cell--non-numeric">Contests of</th>
               <th class="handle-text"></th>
             </tr>
             <tr>
-              <td class="mdl-data-table__cell--non-numeric">Contests</td>
+              <td class="mdl-data-table__cell--non-numeric">Number of contests</td>
               <td id="contestCount"></td>
             </tr>
             <tr>
-              <td class="mdl-data-table__cell--non-numeric">Best Rank</td>
+              <td class="mdl-data-table__cell--non-numeric">Best rank</td>
               <td id="best"></td>
             </tr>
             <tr>
-              <td class="mdl-data-table__cell--non-numeric">Worst Rank</td>
+              <td class="mdl-data-table__cell--non-numeric">Worst rank</td>
               <td id="worst"></td>
             </tr>
             <tr>
-              <td class="mdl-data-table__cell--non-numeric">Max Up</td>
+              <td class="mdl-data-table__cell--non-numeric">Max up</td>
               <td id="maxUp"></td>
             </tr>
             <tr>
-              <td class="mdl-data-table__cell--non-numeric">Max Down</td>
+              <td class="mdl-data-table__cell--non-numeric">Max down</td>
               <td id="maxDown"></td>
             </tr>
           </table>
@@ -178,7 +190,7 @@
           <div class="vertical-space"></div>
           <div class="fb-save" data-size="large" data-uri="http://cfviz.netlify.com"></div>
           <div class="vertical-space"></div>
-          <div  class="fb-like fb-recommend" data-width="200" data-href="http://cfviz.netlify.com" data-layout="standard" data-action="recommend" data-size="large" data-show-faces="true" data-share="false"></div>
+          <div class="fb-like fb-recommend" data-width="200" data-href="http://cfviz.netlify.com" data-layout="standard" data-action="recommend" data-size="large" data-show-faces="true" data-share="false"></div>
         </div>
       </div>
     </main>

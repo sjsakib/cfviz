@@ -12,6 +12,14 @@
     z-index: 10;
 }
 
+.about {
+    text-align: center;
+    margin: auto;
+    border-radius: 50%;
+    background-color: white;
+    padding: 50px;
+}
+
 @media only screen and (min-width: 1025px) {
     #mainSpinner {
         left: calc(50% + 106px);
@@ -24,7 +32,6 @@
 
 .fb-recommend {
     padding: 10px;
-    background-color: white;
 }
 .sharethis, .fb-save, .fb-recommend {
     box-shadow: 1px 1px 2px black;

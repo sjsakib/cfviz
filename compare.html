@@ -82,6 +82,7 @@
       <nav class="navigation mdl-navigation mdl-color--blue-grey-800">
         <a class="mdl-navigation__link" href="/"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
         <a class="mdl-navigation__link" href="/compare.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">compare</i>Compare</a>
+        <a class="mdl-navigation__link" href="/about.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">info</i>About</a>
       </nav>
     </div>
     <main class="mdl-layout__content mdl-color--grey-100">
@@ -92,12 +93,12 @@
             <div class="mdl-textfield mdl-js-textfield" id="handle1Div">
               <input type="text" class="mdl-textfield__input" name="handle1" id="handle1">
               <label class="mdl-textfield__label" for="handle1">Handle 1</label>
-              <span class="mdl-textfield__error">Couldn't find user. Could be a network problem</span>
+              <span class="mdl-textfield__error">Couldn't find user. Network problem?</span>
             </div>
             <div class="mdl-textfield mdl-js-textfield" id="handle2Div">
               <input type="text" class="mdl-textfield__input" name="handle2" id="handle2">
               <label class="mdl-textfield__label" for="handle2">Handle 2</label>
-              <span class="mdl-textfield__error">Couldn't find user. Could be a network problem</span>
+              <span class="mdl-textfield__error">Couldn't find user. Network problem?</span>
             </div>
             <br>
             <button id="submit" type="submit" class="mdl-button mdl-button--raised mdl-js-button">Compare</button>
@@ -141,9 +142,14 @@
         </div>
         <div id="averageSub" class="hidden card to-clear to-hide mdl-shadow--2dp mdl-cell mdl-cell--4-col">
         </div>
+        <span class="mdl-tooltip" for="averageSub">Average submissions they had to make to solve a single problem</span>
         <div id="maxSub" class="hidden card to-clear to-hide mdl-shadow--2dp mdl-cell mdl-cell--4-col">
         </div>
+        <span class="mdl-tooltip" for="maxSub">Maximum submissions they had to make to solve a single problem</span>
         <div id="oneSub" class="hidden card to-clear to-hide mdl-shadow--2dp mdl-cell mdl-cell--4-col">
+        </div>
+        <span class="mdl-tooltip" for="oneSub">Percentage of problems they've solved with just one submission</span>
+        <div id="maxAc" class="hidden card to-clear to-hide mdl-shadow--2dp mdl-cell mdl-cell--4-col">
         </div>
         <div id="levels" class="hidden card to-clear to-hide mdl-shadow--2dp mdl-cell mdl-cell--12-col">
         </div>

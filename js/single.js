@@ -10,6 +10,12 @@ var totalSub = 0;
 
 var req1,req2;
 
+var titleTextStyle = {
+  fontSize: 18,
+  color: '#393939',
+  bold: false
+};
+
 google.charts.load('current', { 'packages': ['corechart'] });
 
 $(document).ready(function() {
@@ -169,11 +175,7 @@ function drawCharts() {
     pieSliceText: 'label',
     slices: verSliceColors,
     fontName: 'Roboto',
-    titleTextStyle: {
-      fontSize: 18,
-      bold: false,
-      color: '#393939'
-    },
+    titleTextStyle: titleTextStyle,
     is3D: true
   };
   var verChart = new google.visualization.PieChart(document.getElementById('verdicts'));
@@ -199,11 +201,7 @@ function drawCharts() {
     legend: 'none',
     pieSliceText: 'label',
     fontName: 'Roboto',
-    titleTextStyle: {
-      fontSize: 18,
-      bold: false,
-      color: '#757575'
-    },
+    titleTextStyle: titleTextStyle,
     is3D: true,
     colors: colors.slice(0,Math.min(colors.length,langs.getNumberOfRows()))
   };
@@ -244,11 +242,7 @@ function drawCharts() {
       text: 'value'
     },
     fontName: 'Roboto',
-    titleTextStyle: {
-      fontSize: 18,
-      bold: false,
-      color: '#757575'
-    },
+    titleTextStyle: titleTextStyle,
     colors: colors.slice(0,Math.min(colors.length,tags.getNumberOfRows()))
   };
   var tagChart = new google.visualization.PieChart(document.getElementById('tags'));
@@ -271,14 +265,10 @@ function drawCharts() {
   var levelOptions = {
     width: Math.max($('#levels').width(),levels.getNumberOfRows()*50),
     height: 300,
-    title: 'Levels (index in contest) of '+handle,
+    title: 'Levels of '+handle,
     legend: 'none',
     fontName: 'Roboto',
-    titleTextStyle: {
-      fontSize: 18,
-      bold: false,
-      color: '#757575'
-    },
+    titleTextStyle: titleTextStyle,
     vAxis: { format: '0' },
     colors: ['#3F51B5']
   };

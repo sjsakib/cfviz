@@ -89,50 +89,6 @@ $(document).ready(function() {
 });
 
 
-var legend = {
-  position: 'top',
-  alignment: 'end'
-};
-var commonOptions = {
-  height: 300,
-  titleTextStyle: {
-    fontSize: 18,
-    color: '#393939',
-    bold: false
-  },
-  fontName: 'Roboto',
-  bar: { groupWidth: '30%' },
-  legend: {
-    position: 'top',
-    alignment: 'end'
-  },
-  animation: {
-    duration: 4000,
-    easing: 'in',
-    startup: true
-  },
-  tooltip: {
-    textStyle: { fontSize: 14 },
-    ignoreBounds: true
-  }
-};
-var scrollableOptions = {
-  chartArea: { top: 100, bottom: 80, left: 100, right: 75},
-  vAxis: {
-    textStyle: { fontSize: 14 }
-  },
-  hAxis: {
-    textStyle: { fontSize: 14 }
-  },
-};
-
-var annotation = {
-  alwaysOutside: true,
-  textStyle: {
-    fontSize: 10
-  },
-};
-
 
 
 function drawConCharts() {
@@ -224,7 +180,8 @@ function drawSubCharts() {
   plotTwo('unsolved', subData1.unsolved, subData2.unsolved, 'Unsolved');
   plotTwo('averageSub', subData1.averageSub, subData2.averageSub, 'Average Submission');
   plotTwo('maxSub', subData1.maxSub, subData2.maxSub, 'Max submission');
-  plotTwo('oneSub', subData1.solvedWithOneSub, subData2.solvedWithOneSub, 'Solved with one sub');
+  plotTwo('maxAc', subData1.maxAc, subData2.maxAc, 'Max AC');
+  plotTwo('oneSub', subData1.solvedWithOneSub/subData1.solved*100, subData2.solvedWithOneSub/subData2.solved*100, 'Solved with one submission (%)');
 
   //levels
   $('#levels').removeClass('hidden');
