@@ -29,6 +29,10 @@ $(document).ready(function() {
     req1 = $.get(api_url + "user.status", { "handle": handle }, function(data, status) {
       console.log(data);
 
+      $(".sharethis").removeClass("hidden");
+
+      if(data.result.length < 1) return;
+
       for (var i = data.result.length - 1; i >= 0; i--) {
         var sub = data.result[i];
         var problemId = sub.problem.contestId + '-' + sub.problem.index;
@@ -73,10 +77,12 @@ $(document).ready(function() {
     })
     .always(function() {
       $("#mainSpinner").removeClass("is-active");
+      $(".share-div").removeClass("hidden");
     });
 
     req2 = $.get(api_url + "user.rating", { 'handle': handle }, function(data, status) {
       console.log(data);
+      if(data.result.length < 1) return;
       var best = 1e10;
       var worst = -1e10;
       var maxUp = 0;
@@ -115,9 +121,6 @@ $(document).ready(function() {
       $("#worst").html(worst + "<a href=\"" + con_url + worstCon + "\" target=\"_blank\"> (" + worstCon + ") </a>");
       $("#maxUp").html(maxUp + "<a href=\"" + con_url + maxUpCon + "\" target=\"_blank\"> (" + maxUpCon + ") </a>");
       $("#maxDown").html(maxDown + "<a href=\"" + con_url + maxDownCon + "\" target=\"_blank\"> (" + maxDownCon + ") </a>");
-
-      $(".share-div").removeClass("hidden");
-      $(".sharethis").removeClass("hidden");
     });
 
   });
@@ -273,7 +276,7 @@ function drawCharts() {
     colors: ['#3F51B5']
   };
   var levelChart = new google.visualization.ColumnChart(document.getElementById('levels'));
-  levelChart.draw(levels, levelOptions);
+  if(levelTable.length>1) levelChart.draw(levels, levelOptions);
 
   //The numbers
   var tried = 0;
@@ -307,9 +310,9 @@ function drawCharts() {
   $("#solved").html(solved);
   $("#maxAttempt").html(maxAttempt + "<a href=\"" + get_url(maxAttemptProblem) + "\" target=\"blank\" > (" + maxAttemptProblem + ") </a>");
   if (maxAc > 1) $("#maxAc").html(maxAc + "<a href=\"" + get_url(maxAcProblem) + "\" target=\"blank\" > (" + maxAcProblem + ") </a>");
-  else $("#maxAc").html(1);
+  else $("#maxAc").html(solved?1:0);
   $("#averageAttempt").html((totalSub / solved).toFixed(2));
-  $("#solvedWithOneSub").html(solvedWithOneSub+" ("+(solvedWithOneSub/solved*100).toFixed(2)+"%)");
+  $("#solvedWithOneSub").html(solvedWithOneSub+" ("+(solved?(solvedWithOneSub/solved*100).toFixed(2):0)+"%)");
 
   unsolved.forEach(function(p) {
     var url = get_url(p);

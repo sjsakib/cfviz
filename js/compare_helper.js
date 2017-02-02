@@ -45,7 +45,7 @@ function getSubData(data) {
   ret.tried = 0;
   ret.solved = 0;
   ret.maxSub = 0;
-  ret.maxAc = "";
+  ret.maxAc = 0;
   ret.unsolved = 0;
   ret.solvedWithOneSub = 0;
   for (var p in problems) {
@@ -59,6 +59,7 @@ function getSubData(data) {
     if (problems[p].solved == problems[p].subs) ret.solvedWithOneSub++;
   }
   ret.averageSub = (ret.totalSub/ret.solved);
+  console.log(ret);
 
   return ret;
 }

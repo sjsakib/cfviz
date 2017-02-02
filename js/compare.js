@@ -28,7 +28,8 @@ $(document).ready(function() {
     //Getting handle1 contest data
     req1 = $.get(api_url + "user.rating", { 'handle': handle1 }, function(data, status) {
       console.log(data);
-      conData1 = getContestStat(data);
+      if(data.result.length > 0) conData1 = getContestStat(data);
+      else conData1 = null;
     }).fail(function(xhr, status) {
       if (status != 'abort') {
         $("#handle1Div").addClass("is-invalid");
@@ -39,10 +40,11 @@ $(document).ready(function() {
     //Getting handle2 contest data
     req2 = $.get(api_url + "user.rating", { 'handle': handle2 }, function(data, status) {
       console.log(data);
-      conData2 = getContestStat(data);
+      if(data.result.length > 0) conData2 = getContestStat(data);
+      else conData2 = null;
     }).fail(function(xhr, status) {
       if (status != 'abort') {
-        $("#handle1Div").addClass("is-invalid");
+        $("#handle2Div").addClass("is-invalid");
         $('#mainSpinner').removeClass('is-active');
       }
     });
@@ -51,24 +53,26 @@ $(document).ready(function() {
       if (typeof google.visualization === 'undefined') {
         google.charts.setOnLoadCallback(drawConCharts);
       } else {
-        drawConCharts();
+        if(conData2 && conData2 ) drawConCharts();
       }
 
       //getting handle1 submission data
       req3 = $.get(api_url + "user.status", { 'handle': handle1 }, function(data, status) {
         console.log(data);
-        subData1 = getSubData(data);
+        if(data.result.length > 0) subData1 = getSubData(data);
+        else subData1 = null;
       });
       req4 = $.get(api_url + "user.status", { 'handle': handle2 }, function(data, status) {
         console.log(data);
-        subData2 = getSubData(data);
+        if(data.result.length > 0) subData2 = getSubData(data);
+        else subData2 = null;
       });
 
       $.when(req3, req4).then(function() {
         if (typeof google.visualization === 'undefined') {
           google.charts.setOnLoadCallback(drawSubCharts);
         } else {
-          drawSubCharts();
+          if(subData1 && subData2) drawSubCharts();
         }
         $('.share-div').removeClass('hidden');
         $('#mainSpinner').removeClass('is-active');
@@ -225,9 +229,7 @@ function drawSubCharts() {
     ],
     alignTags(subData1.tags, subData2.tags)
   ));
-  console.log("creating view");
   var tagsView = new google.visualization.DataView(tags);
-  console.log("adding columns");
   tagsView.setColumns([0, 1, {
       calc: "stringify",
       sourceColumn: 1,
@@ -251,15 +253,12 @@ function drawSubCharts() {
     annotations: annotation,
     chartArea: { top: 100, bottom: 120, left: 100, right: 75},
   });
-  console.log("creating chart");
-  console.log(tags);
   var tagsChart = new google.visualization.ColumnChart(document.getElementById('tags'));
-  console.log("drawing");
   tagsChart.draw(tagsView, tagsOptions);
-  console.log("done drawing");
 }
 
 function plotTwo(div, n1, n2, title) {
+  if(!(n1 || n2)) return;
   var table = new google.visualization.arrayToDataTable([
     ['Handle', title, { role: 'style' }],
     [handle1, n1, colors[0]],
