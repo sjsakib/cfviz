@@ -14,7 +14,11 @@
 
 .fb-comments {
     width: 100%;
-    padding: 20px;
+}
+.comments-con {
+    padding: 30px;
+    background-color: white;
+    border-radius: 5px;
 }
 
 .about {
