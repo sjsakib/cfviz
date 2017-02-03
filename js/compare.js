@@ -105,7 +105,10 @@ function drawConCharts() {
   ]);
   var ratingOptions = $.extend({}, commonOptions, {
     legend: legend,
-    colors: colors
+    colors: colors,
+    vAxis: {
+      minValue: 0,
+    }
   });
   var ratingChart = new google.visualization.ColumnChart(document.getElementById('ratings'));
   $("#ratings").removeClass('hidden');
@@ -174,7 +177,10 @@ function drawSubCharts() {
   ]);
   var solvedTriedOptions = $.extend({}, commonOptions, {
     legend: legend,
-    colors: colors
+    colors: colors,
+    vAxis: {
+      minValue: 0
+    }
   });
   var solvedTriedChart = new google.visualization.ColumnChart(document.getElementById('solvedTried'));
   $("#solvedTried").removeClass('hidden');
