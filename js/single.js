@@ -81,8 +81,8 @@ $(document).ready(function() {
         drawCharts();
       }
     }).fail(function(xhr,status) {
-      console.log(xhr.status);
-      if(status != 'abort') err_message("handleDiv","Couldn't find user")
+      //console.log(xhr.status);
+      if(status != 'abort') err_message("handleDiv","Couldn't find user");
     })
     .always(function() {
       $("#mainSpinner").removeClass("is-active");
