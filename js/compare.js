@@ -214,7 +214,7 @@ function drawSubCharts() {
   plotTwo('averageSub', subData1.averageSub, subData2.averageSub, 'Average Submission');
   plotTwo('maxSub', subData1.maxSub, subData2.maxSub, 'Max submission');
   plotTwo('maxAc', subData1.maxAc, subData2.maxAc, 'Max AC');
-  plotTwo('oneSub', (subData1.solvedWithOneSub/subData1.solved*100).toFixed(2), (subData2.solvedWithOneSub/subData2.solved*100).toFixed(2), 'Solved with one submission (%)');
+  plotTwo('oneSub', subData1.solved?subData1.solvedWithOneSub/subData1.solved*100:0, subData2.solved?subData2.solvedWithOneSub/subData2.solved*100:0, 'Solved with one submission (%)');
 
   //levels
   $('#levels').removeClass('hidden');
