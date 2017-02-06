@@ -1,5 +1,53 @@
 var MAX_TIME_DIFF = 7200;
 
+
+//common Options
+var legend = {
+  position: 'top',
+  alignment: 'end'
+};
+
+var commonOptions = {
+  height: 300,
+  titleTextStyle: {
+    fontSize: 18,
+    color: '#393939',
+    bold: false
+  },
+  fontName: 'Roboto',
+  bar: { groupWidth: '30%' },
+  legend: {
+    position: 'top',
+    alignment: 'end'
+  },
+  animation: {
+    duration: 4000,
+    easing: 'in',
+    startup: true
+  },
+  tooltip: {
+    textStyle: { fontSize: 14 },
+  }
+};
+
+var scrollableOptions = {
+  chartArea: { top: 100, bottom: 80, left: 100, right: 75},
+  vAxis: {
+    textStyle: { fontSize: 14 }
+  },
+  hAxis: {
+    textStyle: { fontSize: 14 }
+  },
+};
+
+var annotation = {
+  alwaysOutside: true,
+  textStyle: {
+    fontSize: 10
+  },
+};
+
+//helper functions
 function getSubData(data) {
   var ret = {};
   ret.levels = {};
@@ -18,15 +66,6 @@ function getSubData(data) {
     } else {
       if (problems[problemId].solved === 0) problems[problemId].subs++;
     }
-
-    /*
-    if (ret.verdicts[sub.verdict] === undefined) ret.verdicts[sub.verdict] = 1;
-    else ret.verdicts[sub.verdict]++;
-
-    if (ret.langs[sub.programmingLanguage] === undefined) ret.langs[sub.programmingLanguage] = 1;
-    else ret.langs[sub.programmingLanguage]++;
-
-    */
 
     if (sub.verdict == 'OK') {
       sub.problem.tags.forEach(function(t) {
@@ -191,4 +230,9 @@ function compDate(d1, d2) {
     return 0;
   }
   return d1 - d2;
+}
+
+function err_message(div,msg) {
+  $("#"+div+"Err").html(msg);
+  $("#"+div).addClass("is-invalid");
 }

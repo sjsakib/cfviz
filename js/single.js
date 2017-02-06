@@ -253,7 +253,6 @@ function drawCharts() {
     },
     pieHole: 0.5,
     tooltip: {
-      ignoreBounds: true,
       text: 'value'
     },
     fontName: 'Roboto',
@@ -378,4 +377,9 @@ function fbShareResult() {
   var left = screen.width / 2 - 300;
   window.open("https://facebook.com/sharer/sharer.php?u=" + escape(url), 'Share',
     'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600,top=' + top + ',left=' + left);
+}
+
+function err_message(div,msg) {
+  $("#"+div+"Err").html(msg);
+  $("#"+div).addClass("is-invalid");
 }

@@ -12,53 +12,20 @@
     z-index: 10;
 }
 
-.fb-comments {
-    width: 100%;
-}
-.comments-con {
-    padding: 30px;
-    background-color: white;
-    border-radius: 5px;
-    margin: auto;
-}
-
-.about {
-    text-align: center;
-    margin: auto;
-    border-radius: 50%;
-    background-color: white;
-    padding: 50px;
-}
-
 @media only screen and (min-width: 1025px) {
     #mainSpinner {
         left: calc(50% + 106px);
     }
 }
 
-.fb_iframe_widget_fluid {
-    display: inline-block !important;
+.handle-card {
+    padding: 20px 50px;
+    margin: auto;
+    max-height: 250px;
+    clear: both;
+    text-align: center;
 }
 
-.fb-recommend {
-    padding: 10px;
-}
-.sharethis, .fb-save, .fb-recommend {
-    box-shadow: 1px 1px 2px black;
-    border-radius: 5px;
-}
-
-.sharethis {
-    text-transform: uppercase;
-    font-weight: 600;
-    color: white;
-    padding: 6px 18px;
-    border-radius: 5px;
-    background-color: #4267b2;
-}
-.sharethis:hover {
-    background-color: #365899;
-}
 
 .card {
     margin: 10px auto;
@@ -68,19 +35,6 @@
 
 .card, .handle-card, .share-div, .fb-share-button {
     border-radius: 5px;
-}
-
-.share-div {
-    text-align: center;
-    background-color: #37474f;
-    min-height: 200px;
-    margin-top: 20px;
-    padding: 30px 0px;
-}
-
-.vertical-space {
-    width: 100%;
-    height: 20px;
 }
 
 td {
@@ -97,6 +51,96 @@ a {
   text-decoration: none;
 }
 
+
+
+
+/* for footer */
+.sharethis {
+    text-transform: uppercase;
+    font-weight: 600;
+    color: white;
+    padding: 6px 18px;
+    border-radius: 5px;
+    background-color: #4267b2;
+}
+.sharethis:hover {
+    background-color: #365899;
+}
+
+.fb_iframe_widget_fluid {
+    display: inline-block !important;
+}
+
+.fb-recommend {
+    padding: 10px;
+}
+.sharethis, .fb-save, .fb-recommend {
+    box-shadow: 1px 1px 2px black;
+    border-radius: 5px;
+}
+
+.share-div {
+    text-align: center;
+    background-color: #37474f;
+    min-height: 200px;
+    margin-top: 20px;
+    padding: 30px 0px;
+}
+
+.vertical-space {
+    width: 100%;
+    height: 20px;
+}
+
+
+/*only for the about page*/
+.fb-comments {
+    width: 100%;
+}
+
+.comments-con {
+    padding: 30px;
+    background-color: white;
+    border-radius: 5px;
+    margin: auto;
+}
+
+.about {
+    text-align: center;
+    margin: auto;
+    border-radius: 50%;
+    background-color: white;
+    padding: 40px;
+}
+
+
+/* only for index */
+#unsolvedCon {
+  padding: 30px 20px 50px 50px;
+
+}
+
+#unsolvedTitle {
+  color: #393939;
+  font-weight: 500;
+  font-size: 20px;
+  margin: -20px;
+}
+
+.lnk {
+  margin: 2px 5px;
+  float: left;
+}
+
+
+
+/* only for compare */
+#submitButton {
+    margin: auto;
+}
+
+
+/* scrollbar (only for chrome and safari) */
 ::-webkit-scrollbar {
     height: 5px;
     width: 2px;
@@ -110,6 +154,7 @@ a {
     border-radius: 5px;
     background-color: #607D8B;
 }
+
 
 
 /*things I don't know much about*/
