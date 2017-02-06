@@ -11,7 +11,7 @@ header {
 
 #logo {
     font-size: 80px;
-    margin: auto;
+    margin: 30px auto;
 }
 
 #mainSpinner {
@@ -23,11 +23,12 @@ header {
     z-index: 10;
 }
 
+/*
 @media only screen and (min-width: 1025px) {
     #mainSpinner {
         left: calc(50% + 106px);
     }
-}
+}*/
 
 .handle-card {
     padding: 20px 50px;
@@ -157,7 +158,7 @@ a {
 /* scrollbar (only for chrome and safari) */
 ::-webkit-scrollbar {
     height: 5px;
-    width: 2px;
+    width: 5px;
 }
 
 ::-webkit-scrollbar-track {
