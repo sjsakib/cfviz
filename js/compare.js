@@ -51,9 +51,9 @@ $(document).ready(function() {
 
     $.when(req1, req2).then(function() {
       if (typeof google.visualization === 'undefined') {
-        google.charts.setOnLoadCallback(drawConCharts);
+        if(conData1 && conData2) google.charts.setOnLoadCallback(drawConCharts);
       } else {
-        if(conData2 && conData2 ) drawConCharts();
+        if(conData1 && conData2 ) drawConCharts();
       }
 
       //getting handle1 submission data
@@ -70,7 +70,7 @@ $(document).ready(function() {
 
       $.when(req3, req4).then(function() {
         if (typeof google.visualization === 'undefined') {
-          google.charts.setOnLoadCallback(drawSubCharts);
+          if(subData1 && subData2) google.charts.setOnLoadCallback(drawSubCharts);
         } else {
           if(subData1 && subData2) drawSubCharts();
         }
