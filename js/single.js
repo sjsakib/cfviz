@@ -125,7 +125,7 @@ $(document).ready(function() {
         }
       });
 
-      var con_url = "http:codeforces.com/contest/";
+      var con_url = "http://codeforces.com/contest/";
       $("#contests").removeClass("hidden");
       $('.handle-text').html(handle);
       $("#contestCount").html(tot);
