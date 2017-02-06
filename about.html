@@ -37,21 +37,14 @@
   <div id="fb-root"></div>
   <div class="layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
     <header class="header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
-      <div class="mdl-layout__header-row">
-        <span class="mdl-layout-title">Codeforces Visualizer</span>
-        <div class="mdl-layout-spacer"></div>
-      </div>
+        <div class="mdl-layout__header-row">
+            <span class="mdl-layout-title">Codeforces Visualizer</span>
+            <div class="mdl-layout-spacer"></div>
+            <a href="index.html" class="mdl-button mdl-js-button mdl-js-ripple-effect" data-upgraded=",MaterialButton,MaterialRipple"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i> Home<span class="mdl-button__ripple-container"><span class="mdl-ripple is-animating" style="width: 231.938px; height: 231.938px; transform: translate(-50%, -50%) translate(57px, 20px);"></span></span></a>
+            <a href="compare.html" class="mdl-button mdl-js-button mdl-js-ripple-effect" data-upgraded=",MaterialButton,MaterialRipple"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">compare</i> Compare<span class="mdl-button__ripple-container"><span class="mdl-ripple is-animating" style="width: 231.938px; height: 231.938px; transform: translate(-50%, -50%) translate(57px, 20px);"></span></span></a>
+            <a href="about.html" class="mdl-button mdl-js-button mdl-js-ripple-effect" data-upgraded=",MaterialButton,MaterialRipple"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">feedback</i> Say something<span class="mdl-button__ripple-container"><span class="mdl-ripple is-animating" style="width: 231.938px; height: 231.938px; transform: translate(-50%, -50%) translate(57px, 20px);"></span></span></a>
+        </div>
     </header>
-    <div class="drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
-      <header class="drawer-header">
-        <div id="logo">CFV</div>
-      </header>
-      <nav class="navigation mdl-navigation mdl-color--blue-grey-800">
-        <a class="mdl-navigation__link" href="/"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
-        <a class="mdl-navigation__link" href="/compare.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">compare</i>Compare</a>
-        <a class="mdl-navigation__link" href="/about.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">feedback</i>Say something</a>
-      </nav>
-    </div>
     <main class="mdl-layout__content mdl-color--grey-100">
       <div class="mdl-grid content">
         <div class="mdl-shadow--2dp mdl-cell  about">
@@ -65,14 +58,14 @@
         <div class="mdl-shadow--2dp mdl-cell comments-con mdl-cell--10-col">
           <div class="fb-comments" data-href="http://cfviz.netlify.com" data-width="100%" data-numposts="10"></div>
         </div>
-        <div class="share-div to-hide mdl-shadow--2dp mdl-cell mdl-cell--12-col">
-          <div class="fb-share-button" data-href="http://cfviz.netlify.com" data-layout="button" data-size="large" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fcfviz.netlify.com%2F&amp;src=sdkpreparse">Share</a></div>
-          <div class="vertical-space"></div>
-          <div class="fb-save" data-size="large" data-uri="http://cfviz.netlify.com"></div>
-          <div class="vertical-space"></div>
-          <div  class="fb-like fb-recommend" data-width="200" data-href="http://cfviz.netlify.com" data-layout="standard" data-action="recommend" data-size="large" data-show-faces="true" data-share="false"></div>
-          <div class="vertical-space"></div>
-          <p> Developed by <a href="http://facebook.com/sjsakib">sjsakib</a></p>
+        <div class="share-div to-hide mdl-cell mdl-cell--12-col">
+            <a class="hidden sharethis" href="javascript:fbShareResult()">share result</a>
+            <div class="vertical-space"></div>
+            <div class="fb-save" data-size="large" data-uri="http://cfviz.netlify.com"></div>
+            <div class="vertical-space"></div>
+            <div class="fb-like fb-recommend" data-width="200" data-href="http://cfviz.netlify.com" data-layout="standard" data-action="recommend" data-size="large" data-show-faces="true" data-share="false"></div>
+            <div class="vertical-space"></div>
+            <p> Developed by <a href="http://facebook.com/sjsakib">sjsakib</a></p>
         </div>
       </div>
     </main>
