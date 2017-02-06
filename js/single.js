@@ -26,12 +26,21 @@ $(document).ready(function() {
     resetData();
     handle = $("#handle").val().trim();
 
+    if(!handle) {
+      err_message("handleDiv","Enter a name");
+      $("#mainSpinner").removeClass("is-active");
+      return;
+    }
+
     req1 = $.get(api_url + "user.status", { "handle": handle }, function(data, status) {
       console.log(data);
 
       $(".sharethis").removeClass("hidden");
 
-      if(data.result.length < 1) return;
+      if(data.result.length < 1) {
+        err_message("handleDiv","No submissions");
+        return;
+      }
 
       for (var i = data.result.length - 1; i >= 0; i--) {
         var sub = data.result[i];
@@ -72,8 +81,8 @@ $(document).ready(function() {
         drawCharts();
       }
     }).fail(function(xhr,status) {
-      console.log(status);
-      if(status != 'abort') $("#handleDiv").addClass("is-invalid");
+      console.log(xhr.status);
+      if(status != 'abort') err_message("handleDiv","Couldn't find user")
     })
     .always(function() {
       $("#mainSpinner").removeClass("is-active");
@@ -82,7 +91,10 @@ $(document).ready(function() {
 
     req2 = $.get(api_url + "user.rating", { 'handle': handle }, function(data, status) {
       console.log(data);
-      if(data.result.length < 1) return;
+      if(data.result.length < 1) {
+        err_message("handleDiv","No contests");
+        return;
+      }
       var best = 1e10;
       var worst = -1e10;
       var maxUp = 0;

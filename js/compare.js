@@ -25,14 +25,28 @@ $(document).ready(function() {
     handle1 = $("#handle1").val().trim();
     handle2 = $("#handle2").val().trim();
 
+    if(!handle1) {
+      err_message("handle2Div","Enter a name");
+      $("#mainSpinner").removeClass("is-active");
+      return;
+    }
+    if(!handle2) {
+      err_message("handle2Div","Enter a name");
+      $("#mainSpinner").removeClass("is-active");
+      return;
+    }
+
     //Getting handle1 contest data
     req1 = $.get(api_url + "user.rating", { 'handle': handle1 }, function(data, status) {
       console.log(data);
       if(data.result.length > 0) conData1 = getContestStat(data);
-      else conData1 = null;
+      else {
+        err_message("handle1Div","No contests");
+        conData1 = null;
+      }
     }).fail(function(xhr, status) {
       if (status != 'abort') {
-        $("#handle1Div").addClass("is-invalid");
+        err_message("handle1Div","Couldn't find user");
         $('#mainSpinner').removeClass('is-active');
       }
     });
@@ -41,10 +55,13 @@ $(document).ready(function() {
     req2 = $.get(api_url + "user.rating", { 'handle': handle2 }, function(data, status) {
       console.log(data);
       if(data.result.length > 0) conData2 = getContestStat(data);
-      else conData2 = null;
+      else {
+        err_message("handle2Div","No contests");
+        conData2 = null;
+      }
     }).fail(function(xhr, status) {
       if (status != 'abort') {
-        $("#handle2Div").addClass("is-invalid");
+        err_message("handle2Div","Couldn't find user");
         $('#mainSpinner').removeClass('is-active');
       }
     });
@@ -60,12 +77,18 @@ $(document).ready(function() {
       req3 = $.get(api_url + "user.status", { 'handle': handle1 }, function(data, status) {
         console.log(data);
         if(data.result.length > 0) subData1 = getSubData(data);
-        else subData1 = null;
+        else {
+          err_message("handle1Div","No submissions");
+          subData1 = null;
+        }
       });
       req4 = $.get(api_url + "user.status", { 'handle': handle2 }, function(data, status) {
         console.log(data);
         if(data.result.length > 0) subData2 = getSubData(data);
-        else subData2 = null;
+        else {
+          err_message("handle2Div","No submissions");
+          subData2 = null;
+        }
       });
 
       $.when(req3, req4).then(function() {

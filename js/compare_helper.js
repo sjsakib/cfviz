@@ -59,7 +59,6 @@ function getSubData(data) {
     if (problems[p].solved == problems[p].subs) ret.solvedWithOneSub++;
   }
   ret.averageSub = (ret.totalSub/ret.solved);
-  console.log(ret);
 
   return ret;
 }

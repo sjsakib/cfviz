@@ -1,4 +1,3 @@
-
 var legend = {
   position: 'top',
   alignment: 'end'
@@ -41,3 +40,8 @@ var annotation = {
     fontSize: 10
   },
 };
+
+function err_message(div,msg) {
+  $("#"+div+"Err").html(msg);
+  $("#"+div).addClass("is-invalid");
+}
