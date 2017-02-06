@@ -42,6 +42,7 @@ header {
     margin: 10px auto;
     overflow-y: hidden;
     overflow-x: auto;
+    background: #fff;
 }
 
 .card, .handle-card, .share-div, .fb-share-button {
