@@ -10,8 +10,8 @@ header {
 
 
 #logo {
-    font-size: 80px;
-    margin: 30px auto;
+    font-size: 60px;
+    margin: 40px auto 20px;
 }
 
 #mainSpinner {
@@ -97,7 +97,7 @@ a {
     /*background-color: #37474f;*/
     min-height: 200px;
     margin-top: 20px;
-    padding: 30px 0px;
+    /*padding: 30px 0px;*/
 }
 
 .vertical-space {
@@ -245,7 +245,7 @@ body {
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
-    color: rgba(255, 255, 255, 0.56);
+    color: #424242;
     font-weight: 500;
 }
 
