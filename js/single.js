@@ -198,9 +198,9 @@ function drawCharts() {
 
 
   //Plotting the languages chart
-  var colors = ['#f44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3','#009688',
+  var colors = ['#f44336', '#E91E63', '#9C27B0', '#673AB7', '#2196F3','#009688',
     '#8BC34A', '#CDDC39', '#FFC107', '#FF9800','#FF5722','#795548','#607D8B', '#E65100',
-    '#827717','#004D40','#1A237E','#6200EA','#F50057','#304FFE','#b71c1c'];
+    '#827717','#004D40','#1A237E','#6200EA','#3F51B5','#F50057','#304FFE','#b71c1c'];
 
   $('#langs').removeClass('hidden');
   var langTable = [
