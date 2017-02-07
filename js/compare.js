@@ -175,7 +175,7 @@ function drawConCharts() {
   var timelineOptions = $.extend({}, commonOptions, scrollableOptions, {
     title: 'Timeline',
     legend: legend,
-    width: Math.max(timeline.getNumberOfRows() * 10, $("#timelineCon").width()),
+    width: Math.max(timeline.getNumberOfRows() * 7, $("#timelineCon").width()),
     height: 400,
     hAxis: {
       format: 'MMM yyyy',
@@ -240,12 +240,12 @@ function drawSubCharts() {
   ]);
   
   var levelsOptions = $.extend({},scrollableOptions, commonOptions, {
-    width: Math.max($('#levels').width(),levels.getNumberOfRows()*100),
+    width: Math.max($('#levels').width(),levels.getNumberOfRows()*65),
     height: 400,
     title: 'Levels',
     legend: legend,
     colors: colors,
-    bar: {groupWidth: '60%'},
+    bar: {groupWidth: '65%'},
     annotations: annotation
   });
   var levelsChart = new google.visualization.ColumnChart(document.getElementById('levels'));
