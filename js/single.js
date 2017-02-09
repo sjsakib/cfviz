@@ -98,7 +98,7 @@ $(document).ready(function() {
       var best = 1e10;
       var worst = -1e10;
       var maxUp = 0;
-      var maxDown = 1e10;
+      var maxDown = 0;
       var bestCon = "";
       var worstCon = "";
       var maxUpCon = "";
@@ -132,7 +132,7 @@ $(document).ready(function() {
       $("#best").html(best + "<a href=\"" + con_url + bestCon + "\" target=\"_blank\"> (" + bestCon + ") </a>");
       $("#worst").html(worst + "<a href=\"" + con_url + worstCon + "\" target=\"_blank\"> (" + worstCon + ") </a>");
       $("#maxUp").html(maxUp + "<a href=\"" + con_url + maxUpCon + "\" target=\"_blank\"> (" + maxUpCon + ") </a>");
-      $("#maxDown").html(maxDown + "<a href=\"" + con_url + maxDownCon + "\" target=\"_blank\"> (" + maxDownCon + ") </a>");
+      $("#maxDown").html(maxDown?maxDown + "<a href=\"" + con_url + maxDownCon + "\" target=\"_blank\"> (" + maxDownCon + ") </a>":'---');
     });
 
   });
