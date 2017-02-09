@@ -145,7 +145,7 @@ function getContestStat(data) {
   ret.best = 1e10;
   ret.worst = -1e10;
   ret.maxUp = 0;
-  ret.maxDown = 1e10;
+  ret.maxDown = 0;
   ret.bestCon = "";
   ret.worstCon = "";
   ret.maxUpCon = "";
