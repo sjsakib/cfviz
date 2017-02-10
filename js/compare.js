@@ -219,12 +219,11 @@ function drawSubCharts() {
 
   //levels
   $('#levels').removeClass('hidden');
-  var levels = new google.visualization.arrayToDataTable([].concat(
-    [
-      ['Index', handle1, handle2]
-    ],
-    alignLevels(subData1.levels, subData2.levels)
-  ));
+  var levels = new google.visualization.DataTable();
+  levels.addColumn('string','Index');
+  levels.addColumn('number',handle1);
+  levels.addColumn('number',handle2);
+  levels.addRows(alignLevels(subData1.levels, subData2.levels));
   var levelsView = new google.visualization.DataView(levels);
   levelsView.setColumns([0, 1, {
       calc: "stringify",
@@ -252,13 +251,13 @@ function drawSubCharts() {
   var levelsChart = new google.visualization.ColumnChart(document.getElementById('levels'));
   levelsChart.draw(levelsView, levelsOptions);
 
+  //Tags chart
   $('#tags').removeClass('hidden');
-  var tags = new google.visualization.arrayToDataTable([].concat(
-    [
-      ['Index', handle1, handle2]
-    ],
-    alignTags(subData1.tags, subData2.tags)
-  ));
+  var tags = new google.visualization.DataTable();
+  tags.addColumn('string','Index');
+  tags.addColumn('number',handle1);
+  tags.addColumn('number',handle2);
+  tags.addRows(alignTags(subData1.tags, subData2.tags));
   var tagsView = new google.visualization.DataView(tags);
   tagsView.setColumns([0, 1, {
       calc: "stringify",

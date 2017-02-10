@@ -226,17 +226,17 @@ function drawCharts() {
 
   //the tags chart
   $('#tags').removeClass('hidden');
-  var tagTable = [
-    ['Tag', 'Count']
-  ];
+  var tagTable = [];
   for (var tag in tags) {
     tagTable.push([tag + ": " + tags[tag], tags[tag]]);
   }
   tagTable.sort(function(a,b) {
-    if(a[1] == 'Cound') return -1;
     return b[1] - a[1];
   });
-  tags = new google.visualization.arrayToDataTable(tagTable);
+  tags = new google.visualization.DataTable();
+  tags.addColumn('string','Tag');
+  tags.addColumn('number','solved');
+  tags.addRows(tagTable);
   var tagOptions = {
     width: Math.max(600,$('#tags').width()),
     height: Math.max(600,$('#tags').width())*0.75,
@@ -253,29 +253,29 @@ function drawCharts() {
     },
     pieHole: 0.5,
     tooltip: {
-      text: 'value'
+      text: 'percentage'
     },
     fontName: 'Roboto',
     titleTextStyle: titleTextStyle,
-    colors: colors.slice(0,Math.min(colors.length,tags.getNumberOfRows()))
+    colors: colors.slice(0,Math.min(colors.length,tags.getNumberOfRows())),
   };
   var tagChart = new google.visualization.PieChart(document.getElementById('tags'));
   tagChart.draw(tags, tagOptions);
 
   //Plotting levels
   $('#levels').removeClass('hidden');
-  var levelTable = [
-    ['Level', 'Solved']
-  ];
+  var levelTable = [];
   for (var level in levels) {
     levelTable.push([level, levels[level]]);
   }
   levelTable.sort(function(a, b) {
-    if (a[0] == 'Level') return -1;
     if (a[0] > b[0]) return -1;
     else return 1;
   });
-  levels = new google.visualization.arrayToDataTable(levelTable);
+  levels = new google.visualization.DataTable();
+  levels.addColumn('string','Level');
+  levels.addColumn('number','solved');
+  levels.addRows(levelTable);
   var levelOptions = {
     width: Math.max($('#levels').width(),levels.getNumberOfRows()*50),
     height: 300,
