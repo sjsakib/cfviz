@@ -181,9 +181,10 @@ function drawConCharts() {
       format: 'MMM yyyy',
     },
     vAxis: {
-      minValue: 0,
+      viewWindowMode: 'pretty'
     },
     colors: colors,
+    curveType: 'function'
   });
   var timelineChart = new google.visualization.LineChart(document.getElementById('timeline'));
   timelineChart.draw(timeline, timelineOptions);

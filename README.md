@@ -34,3 +34,4 @@ This is code repository for a simple analytics visualization site for [Codeforce
 #### Issues
 * When somebody searches for a handle that doesn't exists, we get  Cross-Origin Request blocked and the status code becomes 0 in jQuery. So we can't determine if the user doesn't really exists or some other network problem occurs.
 * Firefox hangs for a while when drawing the tags comparison chart. Probably because it's big. I have plan to divide that chart in two parts.
+* When counting umber of solved problems, some problems that appear both on div 1 and div 2  get counted twice.
