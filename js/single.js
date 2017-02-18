@@ -7,6 +7,8 @@ var tags = {};
 var levels = {};
 var problems = {};
 var totalSub = 0;
+var heatmap = {};
+var years = 0;
 
 var req1,req2;
 
@@ -16,7 +18,7 @@ var titleTextStyle = {
   bold: false
 };
 
-google.charts.load('current', { 'packages': ['corechart'] });
+google.charts.load('current', { 'packages': ['corechart','calendar'] });
 
 $(document).ready(function() {
   $("#handleform").submit(function(e) {
@@ -71,8 +73,14 @@ $(document).ready(function() {
 
           problems[problemId].solved++;
 
+          var date = new Date(sub.creationTimeSeconds*1000);
+          date.setHours(0,0,0,0);
+          if(heatmap[date.valueOf()] === undefined) heatmap[date.valueOf()] = 1;
+          else heatmap[date.valueOf()]++;
         }
         totalSub = data.result.length;
+        years = new Date(data.result[0].creationTimeSeconds*1000).getYear() - new Date(data.result[data.result.length-1].creationTimeSeconds*1000).getYear();
+        years = Math.abs(years)+1;
       }
 
       if (typeof google.visualization === 'undefined') {
@@ -289,6 +297,29 @@ function drawCharts() {
   var levelChart = new google.visualization.ColumnChart(document.getElementById('levels'));
   if(levelTable.length>1) levelChart.draw(levels, levelOptions);
 
+  $('#heatmapCon').removeClass('hidden');
+  var heatmapTable = [];
+  for(var d in heatmap) {
+    heatmapTable.push([new Date(parseInt(d)), heatmap[d]]);
+  }
+  console.log(heatmapTable);
+  var heatmapData = new google.visualization.DataTable();
+  heatmapData.addColumn({type: 'date', id: 'Date'});
+  heatmapData.addColumn({type: 'number', id: 'Submissions'});
+  heatmapData.addRows(heatmapTable);
+
+  heatmap = new google.visualization.Calendar(document.getElementById('heatmapDiv'));
+  var heatmapOptions = {
+    height: years*140+30,
+    width: Math.max($('#heatmapCon').width(),900),
+    fontName: 'Roboto',
+    titleTextStyle: titleTextStyle,
+    calendar: {
+      cellSize: 15
+    }
+  };
+  heatmap.draw(heatmapData,heatmapOptions);
+
   //The numbers
   var tried = 0;
   var solved = 0;
@@ -340,6 +371,7 @@ function resetData() {
   levels = {};
   problems = {};
   totalSub = 0;
+  heatmap = {};
   $("#mainSpinner").addClass("is-active");
   $(".to-clear").empty();
   $(".to-hide").addClass("hidden");

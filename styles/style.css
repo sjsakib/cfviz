@@ -1,13 +1,13 @@
 /* Overriding default sidebar spacing */
+
 main {
-  margin-left: 0px !important;
+    margin-left: 0px !important;
 }
 
 header {
-  margin-left: 0px !important;
-  width: 100% !important;
+    margin-left: 0px !important;
+    width: 100% !important;
 }
-
 
 #logo {
     font-size: 60px;
@@ -22,6 +22,7 @@ header {
     margin: auto;
     z-index: 10;
 }
+
 
 /*
 @media only screen and (min-width: 1025px) {
@@ -38,7 +39,6 @@ header {
     text-align: center;
 }
 
-
 .card {
     margin: 10px auto;
     overflow-y: hidden;
@@ -46,7 +46,10 @@ header {
     background: #fff;
 }
 
-.card, .handle-card, .share-div, .fb-share-button {
+.card,
+.handle-card,
+.share-div,
+.fb-share-button {
     border-radius: 5px;
 }
 
@@ -61,13 +64,12 @@ table {
 }
 
 a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 
-
-
 /* for footer */
+
 .sharethis {
     text-transform: uppercase;
     font-weight: 600;
@@ -76,6 +78,7 @@ a {
     border-radius: 5px;
     background-color: #4267b2;
 }
+
 .sharethis:hover {
     background-color: #365899;
 }
@@ -87,7 +90,10 @@ a {
 .fb-recommend {
     padding: 10px;
 }
-.sharethis, .fb-save, .fb-recommend {
+
+.sharethis,
+.fb-save,
+.fb-recommend {
     /*box-shadow: 1px 1px 2px black;*/
     border-radius: 5px;
 }
@@ -107,6 +113,7 @@ a {
 
 
 /*only for the about page*/
+
 .fb-comments {
     width: 100%;
 }
@@ -129,33 +136,43 @@ a {
 
 
 /* only for index */
-#unsolvedCon {
-  padding: 30px 20px 50px 50px;
-  background-color: white;
 
+#unsolvedCon {
+    padding: 30px 20px 50px 50px;
+    background-color: white;
 }
 
 #unsolvedTitle {
-  color: #393939;
-  font-weight: 500;
-  font-size: 20px;
-  margin: -20px;
+    color: #393939;
+    font-weight: 500;
+    font-size: 20px;
+    margin: -20px;
+}
+
+#heatmapCon {
+    padding: 30px;
+}
+
+#heatmapTitle {
+    font-size: 20px;
+    color: #393939;
 }
 
 .lnk {
-  margin: 2px 5px;
-  float: left;
+    margin: 2px 5px;
+    float: left;
 }
 
 
-
 /* only for compare */
+
 #submitButton {
     margin: auto;
 }
 
 
 /* scrollbar (only for chrome and safari) */
+
 ::-webkit-scrollbar {
     height: 5px;
     width: 5px;
@@ -169,7 +186,6 @@ a {
     border-radius: 5px;
     background-color: #607D8B;
 }
-
 
 
 /*things I don't know much about*/
