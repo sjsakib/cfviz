@@ -298,11 +298,11 @@ function drawCharts() {
   if(levelTable.length>1) levelChart.draw(levels, levelOptions);
 
   $('#heatmapCon').removeClass('hidden');
+  $('#heatMapHandle').html(handle);
   var heatmapTable = [];
   for(var d in heatmap) {
     heatmapTable.push([new Date(parseInt(d)), heatmap[d]]);
   }
-  console.log(heatmapTable);
   var heatmapData = new google.visualization.DataTable();
   heatmapData.addColumn({type: 'date', id: 'Date'});
   heatmapData.addColumn({type: 'number', id: 'Submissions'});
