@@ -191,16 +191,23 @@ function drawConCharts() {
 
   //Common Contests
   $('#commonContestsCon').removeClass('hidden');
-  $('.handle1Color').html(handle1);
-  $('.handle2Color').html(handle2);
+  $('#user1Con').html(handle1);
+  $('#user2Con').html(handle2);
   var con_url = "http://codeforces.com/contest/";
   var commonContests = getCommonContests(conData1.all,conData2.all);
   commonContests.sort(function(a,b) {
     return a.contestId - b.contestId;
   });
   commonContests.forEach(function(con) {
-    $('#commonContestList').append("<a class=\"lnk\" href=\""+con_url+con.contestId+"\" target=\"_blank\"><span class=\"handle1Color\">"+con.handle1+"</span> - <span class=\"handle2Color\">"+con.handle2+"</span></a>");
+    var handle1El = "<td><span class=\"handle1Color\">"+con.handle1+"</span></td>";
+    var handle2El = "<td><span class=\"handle2Color\">"+con.handle2+"</span></td>";
+    var dis = (con.handle2-con.handle1);
+    dis = dis>0?"<td><span class=\"handle1Color\">"+Math.abs(dis)+"</span></td>":"<td><span class=\"handle2Color\">"+Math.abs(dis)+"</span></td>";
+    $('#commonContestList').append("<tr><td><a class=\"lnk\" href=\""+con_url+con.contestId+"\" target=\"_blank\">"+con.contestName+"</a></td>"+handle1El+handle2El+dis+"</tr>");
   });
+  if(commonContests.length === 0) {
+    $('#commonContestList').append("<tr><td>No common contests</td><tr>");
+  }
 }
 
 

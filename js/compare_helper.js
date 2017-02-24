@@ -146,8 +146,9 @@ function getCommonContests(lst1,lst2) {
     if(lst2[con] !== undefined) {
       ret.push({
         contestId: con,
-        handle1: lst1[con],
-        handle2: lst2[con]
+        contestName: lst1[con][0].replace(new RegExp("<br>", 'g')," - "),
+        handle1: lst1[con][1],
+        handle2: lst2[con][1]
       });
     }
   }
@@ -173,7 +174,7 @@ function getContestStat(data) {
 
   for (var i = 0; i < data.result.length; i++) {
     var con = data.result[i];
-    ret.all[con.contestId] = con.rank;
+    ret.all[con.contestId] = [con.contestName,con.rank];
     if (con.rank < ret.best) {
       ret.best = con.rank;
       ret.bestCon = con.contestId;

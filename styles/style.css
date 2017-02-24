@@ -137,7 +137,7 @@ a {
 
 /* only for index */
 
-#unsolvedCon, #commonContestsCon {
+#unsolvedCon {
     padding: 30px 20px 50px 50px;
     background-color: white;
 }
