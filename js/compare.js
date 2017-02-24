@@ -188,6 +188,19 @@ function drawConCharts() {
   });
   var timelineChart = new google.visualization.LineChart(document.getElementById('timeline'));
   timelineChart.draw(timeline, timelineOptions);
+
+  //Common Contests
+  $('#commonContestsCon').removeClass('hidden');
+  $('.handle1Color').html(handle1);
+  $('.handle2Color').html(handle2);
+  var con_url = "http://codeforces.com/contest/";
+  var commonContests = getCommonContests(conData1.all,conData2.all);
+  commonContests.sort(function(a,b) {
+    return a.contestId - b.contestId;
+  });
+  commonContests.forEach(function(con) {
+    $('#commonContestList').append("<a class=\"lnk\" href=\""+con_url+con.contestId+"\" target=\"_blank\"><span class=\"handle1Color\">"+con.handle1+"</span> - <span class=\"handle2Color\">"+con.handle2+"</span></a>");
+  });
 }
 
 

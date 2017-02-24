@@ -140,6 +140,20 @@ function alignTags(tags1,tags2) {
   return ret;
 }
 
+function getCommonContests(lst1,lst2) {
+  var ret = [];
+  for(var con in lst1) {
+    if(lst2[con] !== undefined) {
+      ret.push({
+        contestId: con,
+        handle1: lst1[con],
+        handle2: lst2[con]
+      });
+    }
+  }
+  return ret;
+}
+
 function getContestStat(data) {
   var ret = {};
   ret.best = 1e10;
@@ -155,9 +169,11 @@ function getContestStat(data) {
   ret.rating = 0;
   ret.tot = data.result.length;
   ret.timeline = [];
+  ret.all = {};
 
   for (var i = 0; i < data.result.length; i++) {
     var con = data.result[i];
+    ret.all[con.contestId] = con.rank;
     if (con.rank < ret.best) {
       ret.best = con.rank;
       ret.bestCon = con.contestId;

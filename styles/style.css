@@ -137,12 +137,12 @@ a {
 
 /* only for index */
 
-#unsolvedCon {
+#unsolvedCon, #commonContestsCon {
     padding: 30px 20px 50px 50px;
     background-color: white;
 }
 
-#unsolvedTitle {
+#unsolvedTitle, #commonContestTitle {
     color: #393939;
     font-weight: 500;
     font-size: 20px;
@@ -168,6 +168,13 @@ a {
 
 #submitButton {
     margin: auto;
+}
+
+.handle1Color {
+    color: #009688;
+}
+.handle2Color {
+    color: #3F51B5;
 }
 
 
