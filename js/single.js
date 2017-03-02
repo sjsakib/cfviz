@@ -72,12 +72,11 @@ $(document).ready(function() {
           else levels[sub.problem.index[0]]++;
 
           problems[problemId].solved++;
-
-          var date = new Date(sub.creationTimeSeconds*1000);
-          date.setHours(0,0,0,0);
-          if(heatmap[date.valueOf()] === undefined) heatmap[date.valueOf()] = 1;
-          else heatmap[date.valueOf()]++;
         }
+        var date = new Date(sub.creationTimeSeconds*1000);
+        date.setHours(0,0,0,0);
+        if(heatmap[date.valueOf()] === undefined) heatmap[date.valueOf()] = 1;
+        else heatmap[date.valueOf()]++;
         totalSub = data.result.length;
         years = new Date(data.result[0].creationTimeSeconds*1000).getYear() - new Date(data.result[data.result.length-1].creationTimeSeconds*1000).getYear();
         years = Math.abs(years)+1;
