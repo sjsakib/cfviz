@@ -313,8 +313,16 @@ function drawCharts() {
     width: Math.max($('#heatmapCon').width(),900),
     fontName: 'Roboto',
     titleTextStyle: titleTextStyle,
+    noDataPattern: {
+      backgroundColor: '#afd9ee',
+      color: '#afd9ee'
+    },
+    colorAxis: {
+      minValue: 0,
+      colors: ['#ffffff', '#0820a4']
+    },
     calendar: {
-      cellSize: 15
+      cellSize: 15,
     }
   };
   heatmap.draw(heatmapData,heatmapOptions);
