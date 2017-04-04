@@ -319,7 +319,7 @@ function drawCharts() {
     },
     colorAxis: {
       minValue: 0,
-      colors: ['#ffffff', '#0820a4']
+      colors: ['#ffffff', '#0026ff', '#000e63']
     },
     calendar: {
       cellSize: 15,
