@@ -177,6 +177,10 @@ a {
     color: #3F51B5;
 }
 
+#commonSolvedTable {
+    width: 250px;
+}
+
 
 /* scrollbar (only for chrome and safari) */
 

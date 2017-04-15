@@ -98,6 +98,7 @@ function getSubData(data) {
     if (problems[p].solved == problems[p].subs) ret.solvedWithOneSub++;
   }
   ret.averageSub = (ret.totalSub/ret.solved);
+  ret.problems = Object.keys(problems);
 
   return ret;
 }

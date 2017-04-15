@@ -237,6 +237,11 @@ function drawSubCharts() {
   plotTwo('maxAc', subData1.maxAc, subData2.maxAc, 'Max AC');
   plotTwo('oneSub', subData1.solved?subData1.solvedWithOneSub/subData1.solved*100:0, subData2.solved?subData2.solvedWithOneSub/subData2.solved*100:0, 'Solved with one submission (%)');
 
+  //Common Solved
+  $('#commonSolvedTable').removeClass('hidden');
+  var commonSolved = $(subData1.problems).filter(subData2.problems).length;
+  $('#commonSolved').html(commonSolved);
+  
   //levels
   $('#levels').removeClass('hidden');
   var levels = new google.visualization.DataTable();
