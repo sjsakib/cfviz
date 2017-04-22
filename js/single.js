@@ -8,6 +8,7 @@ var levels = {};
 var problems = {};
 var totalSub = 0;
 var heatmap = {};
+var heatmapData = {};
 var years = 0;
 
 var req1,req2;
@@ -150,6 +151,28 @@ $(document).ready(function() {
     $("#handleform").submit();
   }
   $("#handleDiv").removeClass("hidden");
+
+  $("#heatmapCon input").keypress(function(e) {
+    var value = $(this).val();
+    //Enter pressed
+    if (e.which == 13 && value >= 0 && value <= 999) {
+      var heatmapOptions = {
+        height: years * 140 + 30,
+        width: Math.max($('#heatmapCon').width(), 900),
+        fontName: 'Roboto',
+        titleTextStyle: titleTextStyle,
+        colorAxis: {
+          minValue: 0,
+          maxValue: value,
+          colors: ['#ffffff', '#0027ff',  '#00127d']
+        },
+        calendar: {
+          cellSize: 15,
+        }
+      };
+      heatmap.draw(heatmapData, heatmapOptions);
+    }
+  });
 });
 
 function drawCharts() {
@@ -302,7 +325,7 @@ function drawCharts() {
   for(var d in heatmap) {
     heatmapTable.push([new Date(parseInt(d)), heatmap[d]]);
   }
-  var heatmapData = new google.visualization.DataTable();
+  heatmapData = new google.visualization.DataTable();
   heatmapData.addColumn({type: 'date', id: 'Date'});
   heatmapData.addColumn({type: 'number', id: 'Submissions'});
   heatmapData.addRows(heatmapTable);

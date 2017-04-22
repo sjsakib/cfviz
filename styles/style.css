@@ -158,6 +158,16 @@ a {
     color: #393939;
 }
 
+#heatmapMaxValue {
+	text-align: center;
+}
+
+.heatmap-text {
+	font-size: 12px;
+	text-align: center;
+	width: 155px;
+}
+
 .lnk {
     margin: 2px 5px;
     float: left;
