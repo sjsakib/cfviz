@@ -65,8 +65,8 @@ $(document).ready(function() {
 
         if (sub.verdict == 'OK') {
           sub.problem.tags.forEach(function(t) {
-            if (tags[t] === undefined) tags[t] = 1;
-            else tags[t]++;
+            if (tags[t.name] === undefined) tags[t.name] = 1;
+            else tags[t.name]++;
           });
 
           if (levels[sub.problem.index[0]] === undefined) levels[sub.problem.index[0]] = 1;
