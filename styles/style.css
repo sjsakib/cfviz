@@ -192,6 +192,19 @@ a {
 }
 
 
+/* only for virtual */
+#info {
+    padding: 40px;
+}
+
+.input-card {
+    padding: 20px 50px;
+    margin: auto;
+    clear: both;
+    text-align: center;
+}
+
+
 /* scrollbar (only for chrome and safari) */
 
 ::-webkit-scrollbar {
