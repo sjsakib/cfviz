@@ -101,8 +101,7 @@ function showResult(resluts) {
   $('#mainSpinner').removeClass('is-active');
   for (var i = 0; i < results.length; i++) {
     if (results[i].party == 'virtual user') {
-      console.log('found...');
-      $('#change').html(results[i].delta);
+      $('#change').html(results[i].delta>0?'+'+results[i].delta:results[i].delta);
       $('#rank').html(rank);
       $('#position').html(parseInt(results[i].seed));
     }
