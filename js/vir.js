@@ -12,6 +12,7 @@ var rank = -1;
 
 $(document).ready(function() {
   $('#inputform').submit(function(e) {
+    $("#mainSpinner").addClass("is-active");
     resetData();
     e.preventDefault();
     $('#rating').blur();
@@ -27,14 +28,12 @@ $(document).ready(function() {
       return;
     }
 
-    $("#mainSpinner").addClass("is-active");
-
     var newContestId = $('#contestId').val().trim();
     rating = $('#rating').val().trim();
     points = $('#points').val().trim();
 
-    if (newContestId != contestId) {
-      showMessage("Downloading data can take a few minutes. Thanks for your patience");
+    if (newContestId != contestId || rows.length == 0 || Object.keys(ratingsDict).length == 0) {
+      showMessage("Downloading data can take a few minutes. Thanks for your patience.");
       contestId = newContestId;
 
       req1 = $.get(api_url + 'contest.standings', { contestId: contestId }, function(data, status) {
@@ -50,7 +49,7 @@ $(document).ready(function() {
           handles.push(data.result.rows[i].party.members[0].handle);
         }
       }).fail(function() {
-        err_message('contestIdDiv', 'Contest not found, or not rated, or not finished yet');
+        err_message('contestIdDiv', 'Contest not found, or not rated, or not finished yet, or bad network');
       });
 
       req2 = $.get(api_url + 'contest.ratingChanges', { contestId: contestId }, function(data, status) {
@@ -59,7 +58,7 @@ $(document).ready(function() {
           ratingsDict[change.handle] = change.oldRating;
         }
       }).fail(function() {
-        err_message('contestIdDiv', 'Contest not found, or not rated, or not finished yet');
+        err_message('contestIdDiv', 'Contest not found, or not rated, or not finished yet or bad network');
       });
 
       $.when(req1, req2).then(function() {
@@ -83,14 +82,21 @@ $(document).ready(function() {
       for (var i = 0; i < handles.length; i++) {
         ratings[i] = handles[i] in ratingsDict ? ratingsDict[handles[i]] : rating;
       }
-      results = CalculateRatingChanges(ratings, places, handles);
-      showResult(results);
+      setTimeout(refresh, 2);
     }
   });
 });
 
+
+function refresh() {
+  results = CalculateRatingChanges(ratings, places, handles);
+  showResult(results);
+}
+
+
 function resetData() {
   $('#mainSpinner').addClass('is-active');
+  $('#result').addClass('hidden');
   ratings = [];
   places = [];
   handles = [];
@@ -99,6 +105,7 @@ function resetData() {
 
 function showResult(resluts) {
   $('#mainSpinner').removeClass('is-active');
+  $('#result').removeClass('hidden');
   for (var i = 0; i < results.length; i++) {
     if (results[i].party == 'virtual user') {
       $('#change').html(results[i].delta>0?'+'+results[i].delta:results[i].delta);
@@ -116,7 +123,6 @@ function err_message(div,msg) {
 
 //
 function showMessage(text) {
-  console.log("hi");
   var data = {message: text, timeout: 10000};
   $('#loading-text')[0].MaterialSnackbar.showSnackbar(data);
 }
