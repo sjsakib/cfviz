@@ -69,8 +69,8 @@ function getSubData(data) {
 
     if (sub.verdict == 'OK') {
       sub.problem.tags.forEach(function(t) {
-        if (ret.tags[t.name] === undefined) ret.tags[t.name] = 1;
-        else ret.tags[t.name]++;
+        if (ret.tags[t] === undefined) ret.tags[t] = 1;
+        else ret.tags[t]++;
       });
 
       if (ret.levels[sub.problem.index[0]] === undefined) ret.levels[sub.problem.index[0]] = 1;
