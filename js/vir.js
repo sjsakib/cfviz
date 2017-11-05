@@ -1,3 +1,5 @@
+// Virtual rating change
+
 var api_url = "http://codeforces.com/api/";
 var ratings = [];
 var places = [];
@@ -19,6 +21,9 @@ $(document).ready(function() {
     $('#points').blur();
     $('#contestId').blur();
 
+    // the user may want to know rating change for the same contest for different points, rank, oldrating
+    // we don't want to download the contest data again, as it takes really long
+    // so we'll take a newContestId var, and check later if this is the same as the previously entered contestId
     var newContestId = $('#contestId').val().trim();
     rating = $('#rating').val().trim();
     points = $('#points').val().trim();
@@ -28,6 +33,7 @@ $(document).ready(function() {
       return;
     }
 
+    // TODO: why am I doing this twice?
     var newContestId = $('#contestId').val().trim();
     rating = $('#rating').val().trim();
     points = $('#points').val().trim();
@@ -40,9 +46,11 @@ $(document).ready(function() {
         var currentRank = 1;
         for (var i = 0; i < data.result.rows.length; i++) {
           rows = data.result.rows;
+
+          // trying to guess what what would have been his rank if he participated in the real contest
           if (points >= data.result.rows[i].points && rank == -1) {
             handles.push('virtual user');
-            places.push(data.result.rows[i].rank); // Not the best solution, but will work
+            places.push(data.result.rows[i].rank);
             rank = data.result.rows[i].rank;
           }
           places.push(data.result.rows[i].rank)
@@ -52,6 +60,7 @@ $(document).ready(function() {
         err_message('contestIdDiv', 'Contest not found, or not rated, or not finished yet, or bad network');
       });
 
+      // we need all the participants' ratings before the contest
       req2 = $.get(api_url + 'contest.ratingChanges', { contestId: contestId }, function(data, status) {
         for (var i = 0; i < data.result.length; i++) {
           change = data.result[i];
@@ -73,7 +82,7 @@ $(document).ready(function() {
       for (var i = 0; i < rows.length; i++) {
         if (points >= rows[i].points && rank == -1) {
           handles.push('virtual user');
-          places.push(rows[i].rank); // Not the best solution, but will work
+          places.push(rows[i].rank);
           rank = rows[i].rank;
         }
         places.push(rows[i].rank)
