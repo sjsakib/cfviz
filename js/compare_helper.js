@@ -49,6 +49,8 @@ var annotation = {
 
 
 // helper functions, partially copied from single.js
+
+
 function getSubData(data) {
   var ret = {};  // the object to return
   ret.levels = {};
@@ -105,7 +107,7 @@ function getSubData(data) {
   return ret;
 }
 
-// align levels solved problems for two users
+// align levels of solved problems for two users
 // if one user have solved no problems of a level and other user have,
 // we need to put 0 for the first user and the level
 function alignLevels(lev1,lev2) {

@@ -2,11 +2,11 @@ var api_url = "http://codeforces.com/api/";
 var handle1 = "";
 var handle2 = "";
 
-var conData1 = {};
-var conData2 = {};
+var conData1 = {};  // contest data for user 1
+var conData2 = {};  // contest data for suer 1
 
-var subData1 = {};
-var subData2 = {};
+var subData1 = {};  // submission data for user 1
+var subData2 = {};  // submission data for user 2
 
 var colors = ['#009688', '#3F51B5'];
 
@@ -73,7 +73,9 @@ $(document).ready(function() {
         if(conData1 && conData2 ) drawConCharts();
       }
 
-      //getting handle1 submission data
+      // getting handle1 submission data
+      // firefox doesn't allow more then 3 active connections at a time
+      // that's why we have to send req3 and req4 when req1 and req2 is done
       req3 = $.get(api_url + "user.status", { 'handle': handle1 }, function(data, status) {
         console.log(data);
         if(data.result.length > 0) subData1 = getSubData(data);
@@ -117,7 +119,7 @@ $(document).ready(function() {
 
 
 
-
+// draw contest related charts, those can be done when req1 and req2 is complete
 function drawConCharts() {
   //Rating
   var rating = new google.visualization.arrayToDataTable([
@@ -137,10 +139,10 @@ function drawConCharts() {
   $("#ratings").removeClass('hidden');
   ratingChart.draw(rating, ratingOptions);
 
-  //Contests Count
+  // Contests Count
   plotTwo('contestsCount', conData1.tot, conData2.tot, 'Contests');
 
-  //Max up and downs
+  // Max up and downs
   var upDowns = new google.visualization.arrayToDataTable([
     ['Handle', handle1, handle2],
     ['Max Up', conData1.maxUp, conData2.maxUp],
@@ -163,7 +165,7 @@ function drawConCharts() {
   $("#user1Worst").html(conData1.worst);
   $("#user2Worst").html(conData2.worst);
 
-  //Rating Timeline
+  // Rating Timeline
   var timeline = new google.visualization.DataTable();
   timeline.addColumn('date', 'Date');
   timeline.addColumn('number', handle1);
@@ -189,7 +191,7 @@ function drawConCharts() {
   var timelineChart = new google.visualization.LineChart(document.getElementById('timeline'));
   timelineChart.draw(timeline, timelineOptions);
 
-  //Common Contests
+  // Common Contests
   $('#commonContestsCon').removeClass('hidden');
   $('#user1Con').html(handle1);
   $('#user2Con').html(handle2);
@@ -211,9 +213,10 @@ function drawConCharts() {
 }
 
 
+// draw the charts that need all the submission data of two users
 function drawSubCharts() {
 
-  //Tried and solved
+  // Tried and solved
   var solvedTried = new google.visualization.arrayToDataTable([
     ['Handle', handle1, handle2],
     ['Tried', subData1.tried, subData2.tried],
@@ -237,12 +240,12 @@ function drawSubCharts() {
   plotTwo('maxAc', subData1.maxAc, subData2.maxAc, 'Max AC');
   plotTwo('oneSub', subData1.solved?subData1.solvedWithOneSub/subData1.solved*100:0, subData2.solved?subData2.solvedWithOneSub/subData2.solved*100:0, 'Solved with one submission (%)');
 
-  //Common Solved
+  // Common Solved
   $('#commonSolvedTable').removeClass('hidden');
   var commonSolved = $(subData1.problems).filter(subData2.problems).length;
   $('#commonSolved').html(commonSolved);
   
-  //levels
+  // levels
   $('#levels').removeClass('hidden');
   var levels = new google.visualization.DataTable();
   levels.addColumn('string','Index');
@@ -311,6 +314,8 @@ function drawSubCharts() {
   tagsChart.draw(tagsView, tagsOptions);
 }
 
+// when we need to compare two numbers, we can use this function
+// it takes the two numbers, a title and a div. then draws a column chart in that div comparing the numbers
 function plotTwo(div, n1, n2, title) {
   if(!(n1 || n2)) return;
   var table = new google.visualization.arrayToDataTable([
