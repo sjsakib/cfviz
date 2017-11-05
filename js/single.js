@@ -22,19 +22,23 @@ var titleTextStyle = {
 google.charts.load('current', { 'packages': ['corechart','calendar'] });
 
 $(document).ready(function() {
+
+  // When the handle form is submitted, this function is called...
   $("#handleform").submit(function(e) {
 
     e.preventDefault();
     $("#handle").blur();
-    resetData();
+    resetData();  // When a new submission is made, clear all the previous data and graphs
+    
     handle = $("#handle").val().trim();
-
     if(!handle) {
       err_message("handleDiv","Enter a name");
       $("#mainSpinner").removeClass("is-active");
-      return;
+      return; // No handle is provided, we can't do anything.
     }
 
+
+    // getting all the submissions of a user
     req1 = $.get(api_url + "user.status", { "handle": handle }, function(data, status) {
       console.log(data);
 
@@ -45,15 +49,17 @@ $(document).ready(function() {
         return;
       }
 
+      // parsing all the submission and saving useful data. Don't remember why from the back
       for (var i = data.result.length - 1; i >= 0; i--) {
         var sub = data.result[i];
         var problemId = sub.problem.contestId + '-' + sub.problem.index;
-        if (problems[problemId] === undefined) {
+        if (problems[problemId] === undefined) {  // first submission of a problem
           problems[problemId] = {
             attempts: 1,
-            solved: 0,
+            solved: 0,  // We also want to save how many submission got AC, a better name would have been number_of_ac
           };
         } else {
+          //we want to show how many time a problem was attempted by a user before getting first AC
           if (problems[problemId].solved === 0) problems[problemId].attempts++;
         }
 
@@ -64,6 +70,7 @@ $(document).ready(function() {
         else langs[sub.programmingLanguage]++;
 
         if (sub.verdict == 'OK') {
+          // This is probably no entirely correct. because for multiple ac tag count will increase every time
           sub.problem.tags.forEach(function(t) {
             if (tags[t] === undefined) tags[t] = 1;
             else tags[t]++;
@@ -74,15 +81,22 @@ $(document).ready(function() {
 
           problems[problemId].solved++;
         }
-        var date = new Date(sub.creationTimeSeconds*1000);
+
+        //updating the heatmap
+        var date = new Date(sub.creationTimeSeconds*1000);  // submission date
         date.setHours(0,0,0,0);
         if(heatmap[date.valueOf()] === undefined) heatmap[date.valueOf()] = 1;
         else heatmap[date.valueOf()]++;
         totalSub = data.result.length;
+
+        // how many years are there between first and last submission
         years = new Date(data.result[0].creationTimeSeconds*1000).getYear() - new Date(data.result[data.result.length-1].creationTimeSeconds*1000).getYear();
         years = Math.abs(years)+1;
       }
 
+      
+      // finally draw the charts if google charts is already loaded,
+      // if not set load callback to draw the charts
       if (typeof google.visualization === 'undefined') {
         google.charts.setOnLoadCallback(drawCharts);
       } else {
@@ -97,6 +111,8 @@ $(document).ready(function() {
       $(".share-div").removeClass("hidden");
     });
 
+    
+    // With this request we get all the rating changes of the user
     req2 = $.get(api_url + "user.rating", { 'handle': handle }, function(data, status) {
       console.log(data);
       if(data.result.length < 1) {
@@ -113,7 +129,7 @@ $(document).ready(function() {
       var maxDownCon = "";
       var tot = data.result.length;
 
-      data.result.forEach(function(con) {
+      data.result.forEach(function(con) {  // con is a contest
         if (con.rank < best) {
           best = con.rank;
           bestCon = con.contestId;
@@ -133,6 +149,7 @@ $(document).ready(function() {
         }
       });
 
+      // Showing the rating change data in proper places
       var con_url = "http://codeforces.com/contest/";
       $("#contests").removeClass("hidden");
       $('.handle-text').html(handle);
@@ -145,6 +162,8 @@ $(document).ready(function() {
 
   });
 
+  // If there is a handle parameter in the url, we'll put it in the form
+  // and automatically submit it to trigger the submit function, useful for sharing results
   handle = getParameterByName("handle");
   if (handle !== null) {
     $("#handle").val(handle);
@@ -152,6 +171,7 @@ $(document).ready(function() {
   }
   $("#handleDiv").removeClass("hidden");
 
+  // this is to update the heatmap when the form is submitted, contributed
   $("#heatmapCon input").keypress(function(e) {
     var value = $(this).val();
     //Enter pressed
@@ -182,6 +202,7 @@ function drawCharts() {
     ["Verdict", "Count"]
   ];
   var verSliceColors = [];
+  // beautiful names for the verdicts + colors
   for (var ver in verdicts) {
     if (ver == "OK") {
       verTable.push(["AC", verdicts[ver]]);
@@ -346,7 +367,7 @@ function drawCharts() {
   };
   heatmap.draw(heatmapData,heatmapOptions);
 
-  //The numbers
+  //parse all the solved problems and extract some numbers about the solved problems
   var tried = 0;
   var solved = 0;
   var maxAttempt = 0;
@@ -388,7 +409,9 @@ function drawCharts() {
   });
 }
 
+// reset all data
 function resetData() {
+  // if the requests were already made, abort them
   if(req1) req1.abort();
   if(req2) req2.abort();
   verdicts = {};
@@ -405,6 +428,8 @@ function resetData() {
 }
 
 
+// receives the problem id like 650-A
+// splits the contest id and problem index and returns the problem url
 function get_url(p) {
   var con = p.split('-')[0];
   var index = p.split('-')[1];
@@ -416,7 +441,7 @@ function get_url(p) {
   return url;
 }
 
-//Copied from stackoverflow :D
+//Copied from stackoverflow :D gets url paramenter by name
 function getParameterByName(name, url) {
   if (!url) {
     url = window.location.href;
@@ -429,14 +454,18 @@ function getParameterByName(name, url) {
   return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+
+// Opens a share window when the share button is clicked
 function fbShareResult() {
-  var url = window.location.href + "?handle=" + handle;
+  var url = window.location.href + "?handle=" + handle;  // generation share url
   var top = screen.height / 2 - 150;
   var left = screen.width / 2 - 300;
   window.open("https://facebook.com/sharer/sharer.php?u=" + escape(url), 'Share',
     'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600,top=' + top + ',left=' + left);
 }
 
+// shows am error message in the input form
+// Needs the div name of the input widget
 function err_message(div,msg) {
   $("#"+div+"Err").html(msg);
   $("#"+div).addClass("is-invalid");

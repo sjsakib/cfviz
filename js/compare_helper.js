@@ -1,7 +1,7 @@
-var MAX_TIME_DIFF = 7200;
+var MAX_TIME_DIFF = 7200;  // max time between contests
 
 
-//common Options
+//common Options for charts
 var legend = {
   position: 'top',
   alignment: 'end'
@@ -47,14 +47,16 @@ var annotation = {
   },
 };
 
-//helper functions
+
+// helper functions, partially copied from single.js
 function getSubData(data) {
-  var ret = {};
+  var ret = {};  // the object to return
   ret.levels = {};
   ret.tags = {};
   var problems = {};
 
 
+  // parsing all the submissions and saving useful data
   for (var i = data.result.length - 1; i >= 0; i--) {
     var sub = data.result[i];
     var problemId = sub.problem.contestId + '-' + sub.problem.index;
@@ -103,6 +105,9 @@ function getSubData(data) {
   return ret;
 }
 
+// align levels solved problems for two users
+// if one user have solved no problems of a level and other user have,
+// we need to put 0 for the first user and the level
 function alignLevels(lev1,lev2) {
   var ret = [];
   for(var l in lev1) {
@@ -122,6 +127,8 @@ function alignLevels(lev1,lev2) {
   return ret;
 }
 
+
+// aligns tags
 function alignTags(tags1,tags2) {
   var ret = [];
   for(var t in tags1) {
@@ -141,12 +148,14 @@ function alignTags(tags1,tags2) {
   return ret;
 }
 
+// returns common contests of two users
 function getCommonContests(lst1,lst2) {
   var ret = [];
   for(var con in lst1) {
     if(lst2[con] !== undefined) {
       ret.push({
         contestId: con,
+        // there might be <br> tag in problem names, we need re replace them
         contestName: lst1[con][0].replace(new RegExp("<br>", 'g')," - "),
         handle1: lst1[con][1],
         handle2: lst2[con][1]
@@ -156,6 +165,8 @@ function getCommonContests(lst1,lst2) {
   return ret;
 }
 
+
+// parse all the contests and save useful data
 function getContestStat(data) {
   var ret = {};
   ret.best = 1e10;
@@ -206,6 +217,9 @@ function getContestStat(data) {
 }
 
 
+// align timeline,
+// one user might have done a contest and other might haven't
+// we need to add a point for the one who hasn't, what his rating was in that time
 function alignTimeline(r1, r2) {
   ret = [];
   var i = 0;
