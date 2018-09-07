@@ -1,4 +1,4 @@
-var api_url = "http://codeforces.com/api/";
+var api_url = "https://codeforces.com/api/";
 var handle1 = "";
 var handle2 = "";
 
@@ -195,7 +195,7 @@ function drawConCharts() {
   $('#commonContestsCon').removeClass('hidden');
   $('#user1Con').html(handle1);
   $('#user2Con').html(handle2);
-  var con_url = "http://codeforces.com/contest/";
+  var con_url = "https://codeforces.com/contest/";
   var commonContests = getCommonContests(conData1.all,conData2.all);
   commonContests.sort(function(a,b) {
     return a.contestId - b.contestId;
@@ -352,8 +352,8 @@ function get_url(p) {
   var index = p.split('-')[1];
 
   var url = "";
-  if (con.length < 4) url = "http://codeforces.com/contest/" + con + "/problem/" + index;
-  else url = "http://codeforces.com/problemset/gymProblem/" + con + "/" + index;
+  if (con.length < 4) url = "https://codeforces.com/contest/" + con + "/problem/" + index;
+  else url = "https://codeforces.com/problemset/gymProblem/" + con + "/" + index;
 
   return url;
 }

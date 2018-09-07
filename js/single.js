@@ -1,4 +1,4 @@
-var api_url = "http://codeforces.com/api/";
+var api_url = "https://codeforces.com/api/";
 var handle = "";
 
 var verdicts = {};
@@ -150,7 +150,7 @@ $(document).ready(function() {
       });
 
       // Showing the rating change data in proper places
-      var con_url = "http://codeforces.com/contest/";
+      var con_url = "https://codeforces.com/contest/";
       $("#contests").removeClass("hidden");
       $('.handle-text').html(handle);
       $("#contestCount").html(tot);
@@ -435,8 +435,8 @@ function get_url(p) {
   var index = p.split('-')[1];
 
   var url = "";
-  if (con.length < 4) url = "http://codeforces.com/contest/" + con + "/problem/" + index;
-  else url = "http://codeforces.com/problemset/gymProblem/" + con + "/" + index;
+  if (con.length < 4) url = "https://codeforces.com/contest/" + con + "/problem/" + index;
+  else url = "https://codeforces.com/problemset/gymProblem/" + con + "/" + index;
 
   return url;
 }

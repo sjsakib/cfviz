@@ -1,6 +1,6 @@
 # Codeforces Visualizer
 
-This is code repository for a simple analytics visualization site for [Codeforces online judge](http://codeforces.com/) users using [Codeforeces API](http://codeforces.com/api/help). The site is currently hosted at [here](http://cfviz.netlify.com/).
+This is code repository for a simple analytics visualization site for [Codeforces online judge](http://codeforces.com/) users using [Codeforeces API](http://codeforces.com/api/help). The site is currently hosted at [here](https://cfviz.netlify.com/).
 
 ### Current features
 

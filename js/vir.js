@@ -1,6 +1,6 @@
 // Virtual rating change
 
-var api_url = "http://codeforces.com/api/";
+var api_url = "https://codeforces.com/api/";
 var ratings = [];
 var places = [];
 var rows = [];
