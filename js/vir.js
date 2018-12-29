@@ -47,6 +47,11 @@ $(document).ready(function() {
 
       // we need all the participants' ratings before the contest
       req2 = $.get(api_url + 'contest.ratingChanges', { contestId: contestId }, function(data, status) {
+        if (data.result.length == 0) {
+          getDataFailed();
+          req1.abort();
+          return;
+        }
         for (var i = 0; i < data.result.length; i++) {
           change = data.result[i];
           ratingsDict[change.handle] = change.oldRating;
@@ -54,7 +59,9 @@ $(document).ready(function() {
       }).fail(getDataFailed);
 
       $.when(req1, req2).then(function() {
-        refresh();
+        if (Object.keys(ratingsDict).length != 0) {
+          refresh();
+        }
       });
 
     } else {
