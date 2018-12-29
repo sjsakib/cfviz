@@ -33,7 +33,6 @@ $(document).ready(function() {
       return;
     }
 
-    // TODO: why am I doing this twice?
     var newContestId = $('#contestId').val().trim();
     rating = $('#rating').val().trim();
     points = $('#points').val().trim();
@@ -43,22 +42,8 @@ $(document).ready(function() {
       contestId = newContestId;
 
       req1 = $.get(api_url + 'contest.standings', { contestId: contestId }, function(data, status) {
-        var currentRank = 1;
-        for (var i = 0; i < data.result.rows.length; i++) {
-          rows = data.result.rows;
-
-          // trying to guess what what would have been his rank if he participated in the real contest
-          if (points >= data.result.rows[i].points && rank == -1) {
-            handles.push('virtual user');
-            places.push(data.result.rows[i].rank);
-            rank = data.result.rows[i].rank;
-          }
-          places.push(data.result.rows[i].rank)
-          handles.push(data.result.rows[i].party.members[0].handle);
-        }
-      }).fail(function() {
-        err_message('contestIdDiv', 'Contest not found, or not rated, or not finished yet, or bad network');
-      });
+        rows = data.result.rows;
+      }).fail(getDataFailed);
 
       // we need all the participants' ratings before the contest
       req2 = $.get(api_url + 'contest.ratingChanges', { contestId: contestId }, function(data, status) {
@@ -66,38 +51,39 @@ $(document).ready(function() {
           change = data.result[i];
           ratingsDict[change.handle] = change.oldRating;
         }
-      }).fail(function() {
-        err_message('contestIdDiv', 'Contest not found, or not rated, or not finished yet or bad network');
-      });
+      }).fail(getDataFailed);
 
       $.when(req1, req2).then(function() {
-        for (var i = 0; i < handles.length; i++) {
-          ratings[i] = handles[i] in ratingsDict ? ratingsDict[handles[i]] : rating;
-        }
-        results = CalculateRatingChanges(ratings, places, handles);
-        showResult(results);
+        refresh();
       });
 
     } else {
-      for (var i = 0; i < rows.length; i++) {
-        if (points >= rows[i].points && rank == -1) {
-          handles.push('virtual user');
-          places.push(rows[i].rank);
-          rank = rows[i].rank;
-        }
-        places.push(rows[i].rank)
-        handles.push(rows[i].party.members[0].handle);
-      }
-      for (var i = 0; i < handles.length; i++) {
-        ratings[i] = handles[i] in ratingsDict ? ratingsDict[handles[i]] : rating;
-      }
       setTimeout(refresh, 2);
     }
   });
 });
 
 
+function getDataFailed() {
+  err_message('contestIdDiv', 'Contest not found, or not rated, or not finished yet, or bad network');
+}
+
 function refresh() {
+  for (var i = 0; i < rows.length; i++) {
+    // trying to guess what what would have been his rank if he participated in the real contest
+    if (points >= rows[i].points && rank == -1) {
+      handles.push('virtual user');
+      places.push(rows[i].rank);
+      rank = rows[i].rank;
+    }
+    places.push(rows[i].rank)
+    handles.push(rows[i].party.members[0].handle);
+  }
+
+  for (var i = 0; i < handles.length; i++) {
+    ratings[i] = handles[i] in ratingsDict ? ratingsDict[handles[i]] : rating;
+  }
+
   results = CalculateRatingChanges(ratings, places, handles);
   showResult(results);
 }
