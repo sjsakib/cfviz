@@ -27,6 +27,7 @@ $(document).ready(function() {
     var newContestId = $('#contestId').val().trim();
     rating = $('#rating').val().trim();
     points = $('#points').val().trim();
+    penalty = $('#penalty').val().trim();
 
     if(!(newContestId && rating && points)) {
       err_message('contestIdDiv', 'All fields required');
@@ -78,7 +79,8 @@ function getDataFailed() {
 function refresh() {
   for (var i = 0; i < rows.length; i++) {
     // trying to guess what what would have been his rank if he participated in the real contest
-    if (points >= rows[i].points && rank == -1) {
+    if ((points > rows[i].points || (points == rows[i].points && penalty <= rows[i].penalty))
+        && rank == -1) {
       handles.push('virtual user');
       places.push(rows[i].rank);
       rank = rows[i].rank;
