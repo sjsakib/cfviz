@@ -420,7 +420,7 @@ function drawCharts() {
     ratingTable.push([rating, ratings[rating]]);
   }
   ratingTable.sort(function(a, b) {
-    if (a[0] > b[0]) return -1;
+    if (parseInt(a[0]) > parseInt(b[0])) return -1;
     else return 1;
   });
   ratings = new google.visualization.DataTable();
@@ -440,7 +440,7 @@ function drawCharts() {
   var ratingChart = new google.visualization.ColumnChart(
     document.getElementById('ratings')
   );
-  if (levelTable.length > 1) levelChart.draw(ratings, ratingOptions);
+  if (ratingTable.length > 1) ratingChart.draw(ratings, ratingOptions);
 
   /* heatmap */
   $('#heatmapCon').removeClass('hidden');
