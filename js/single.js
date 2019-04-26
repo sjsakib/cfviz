@@ -1,5 +1,5 @@
-var api_url = "https://codeforces.com/api/";
-var handle = "";
+var api_url = 'https://codeforces.com/api/';
+var handle = '';
 
 var verdicts = {};
 var langs = {};
@@ -11,7 +11,7 @@ var heatmap = {};
 var heatmapData = {};
 var years = 0;
 
-var req1,req2;
+var req1, req2;
 
 var titleTextStyle = {
   fontSize: 18,
@@ -19,33 +19,35 @@ var titleTextStyle = {
   bold: false
 };
 
-google.charts.load('current', { 'packages': ['corechart','calendar'] });
+google.charts.load('current', { packages: ['corechart', 'calendar'] });
 
 $(document).ready(function() {
-
   // When the handle form is submitted, this function is called...
-  $("#handleform").submit(function(e) {
-
+  $('#handleform').submit(function(e) {
     e.preventDefault();
-    $("#handle").blur();
-    resetData();  // When a new submission is made, clear all the previous data and graphs
-    
-    handle = $("#handle").val().trim();
-    if(!handle) {
-      err_message("handleDiv","Enter a name");
-      $("#mainSpinner").removeClass("is-active");
+    $('#handle').blur();
+    resetData(); // When a new submission is made, clear all the previous data and graphs
+
+    handle = $('#handle')
+      .val()
+      .trim();
+    if (!handle) {
+      err_message('handleDiv', 'Enter a name');
+      $('#mainSpinner').removeClass('is-active');
       return; // No handle is provided, we can't do anything.
     }
 
-
     // getting all the submissions of a user
-    req1 = $.get(api_url + "user.status", { "handle": handle }, function(data, status) {
+    req1 = $.get(api_url + 'user.status', { handle: handle }, function(
+      data,
+      status
+    ) {
       console.log(data);
 
-      $(".sharethis").removeClass("hidden");
+      $('.sharethis').removeClass('hidden');
 
-      if(data.result.length < 1) {
-        err_message("handleDiv","No submissions");
+      if (data.result.length < 1) {
+        err_message('handleDiv', 'No submissions');
         return;
       }
 
@@ -53,10 +55,11 @@ $(document).ready(function() {
       for (var i = data.result.length - 1; i >= 0; i--) {
         var sub = data.result[i];
         var problemId = sub.problem.contestId + '-' + sub.problem.index;
-        if (problems[problemId] === undefined) {  // first submission of a problem
+        if (problems[problemId] === undefined) {
+          // first submission of a problem
           problems[problemId] = {
             attempts: 1,
-            solved: 0,  // We also want to save how many submission got AC, a better name would have been number_of_ac
+            solved: 0 // We also want to save how many submission got AC, a better name would have been number_of_ac
           };
         } else {
           //we want to show how many time a problem was attempted by a user before getting first AC
@@ -66,7 +69,8 @@ $(document).ready(function() {
         if (verdicts[sub.verdict] === undefined) verdicts[sub.verdict] = 1;
         else verdicts[sub.verdict]++;
 
-        if (langs[sub.programmingLanguage] === undefined) langs[sub.programmingLanguage] = 1;
+        if (langs[sub.programmingLanguage] === undefined)
+          langs[sub.programmingLanguage] = 1;
         else langs[sub.programmingLanguage]++;
 
         if (sub.verdict == 'OK') {
@@ -76,25 +80,29 @@ $(document).ready(function() {
             else tags[t]++;
           });
 
-          if (levels[sub.problem.index[0]] === undefined) levels[sub.problem.index[0]] = 1;
+          if (levels[sub.problem.index[0]] === undefined)
+            levels[sub.problem.index[0]] = 1;
           else levels[sub.problem.index[0]]++;
 
           problems[problemId].solved++;
         }
 
         //updating the heatmap
-        var date = new Date(sub.creationTimeSeconds*1000);  // submission date
-        date.setHours(0,0,0,0);
-        if(heatmap[date.valueOf()] === undefined) heatmap[date.valueOf()] = 1;
+        var date = new Date(sub.creationTimeSeconds * 1000); // submission date
+        date.setHours(0, 0, 0, 0);
+        if (heatmap[date.valueOf()] === undefined) heatmap[date.valueOf()] = 1;
         else heatmap[date.valueOf()]++;
         totalSub = data.result.length;
 
         // how many years are there between first and last submission
-        years = new Date(data.result[0].creationTimeSeconds*1000).getYear() - new Date(data.result[data.result.length-1].creationTimeSeconds*1000).getYear();
-        years = Math.abs(years)+1;
+        years =
+          new Date(data.result[0].creationTimeSeconds * 1000).getYear() -
+          new Date(
+            data.result[data.result.length - 1].creationTimeSeconds * 1000
+          ).getYear();
+        years = Math.abs(years) + 1;
       }
 
-      
       // finally draw the charts if google charts is already loaded,
       // if not set load callback to draw the charts
       if (typeof google.visualization === 'undefined') {
@@ -102,34 +110,38 @@ $(document).ready(function() {
       } else {
         drawCharts();
       }
-    }).fail(function(xhr,status) {
-      //console.log(xhr.status);
-      if(status != 'abort') err_message("handleDiv","Couldn't find user");
     })
-    .always(function() {
-      $("#mainSpinner").removeClass("is-active");
-      $(".share-div").removeClass("hidden");
-    });
+      .fail(function(xhr, status) {
+        //console.log(xhr.status);
+        if (status != 'abort') err_message('handleDiv', "Couldn't find user");
+      })
+      .always(function() {
+        $('#mainSpinner').removeClass('is-active');
+        $('.share-div').removeClass('hidden');
+      });
 
-    
     // With this request we get all the rating changes of the user
-    req2 = $.get(api_url + "user.rating", { 'handle': handle }, function(data, status) {
+    req2 = $.get(api_url + 'user.rating', { handle: handle }, function(
+      data,
+      status
+    ) {
       console.log(data);
-      if(data.result.length < 1) {
-        err_message("handleDiv","No contests");
+      if (data.result.length < 1) {
+        err_message('handleDiv', 'No contests');
         return;
       }
       var best = 1e10;
       var worst = -1e10;
       var maxUp = 0;
       var maxDown = 0;
-      var bestCon = "";
-      var worstCon = "";
-      var maxUpCon = "";
-      var maxDownCon = "";
+      var bestCon = '';
+      var worstCon = '';
+      var maxUpCon = '';
+      var maxDownCon = '';
       var tot = data.result.length;
 
-      data.result.forEach(function(con) {  // con is a contest
+      data.result.forEach(function(con) {
+        // con is a contest
         if (con.rank < best) {
           best = con.rank;
           bestCon = con.contestId;
@@ -150,29 +162,62 @@ $(document).ready(function() {
       });
 
       // Showing the rating change data in proper places
-      var con_url = "https://codeforces.com/contest/";
-      $("#contests").removeClass("hidden");
+      var con_url = 'https://codeforces.com/contest/';
+      $('#contests').removeClass('hidden');
       $('.handle-text').html(handle);
-      $("#contestCount").html(tot);
-      $("#best").html(best + "<a href=\"" + con_url + bestCon + "\" target=\"_blank\"> (" + bestCon + ") </a>");
-      $("#worst").html(worst + "<a href=\"" + con_url + worstCon + "\" target=\"_blank\"> (" + worstCon + ") </a>");
-      $("#maxUp").html(maxUp + "<a href=\"" + con_url + maxUpCon + "\" target=\"_blank\"> (" + maxUpCon + ") </a>");
-      $("#maxDown").html(maxDown?maxDown + "<a href=\"" + con_url + maxDownCon + "\" target=\"_blank\"> (" + maxDownCon + ") </a>":'---');
+      $('#contestCount').html(tot);
+      $('#best').html(
+        best +
+          '<a href="' +
+          con_url +
+          bestCon +
+          '" target="_blank"> (' +
+          bestCon +
+          ') </a>'
+      );
+      $('#worst').html(
+        worst +
+          '<a href="' +
+          con_url +
+          worstCon +
+          '" target="_blank"> (' +
+          worstCon +
+          ') </a>'
+      );
+      $('#maxUp').html(
+        maxUp +
+          '<a href="' +
+          con_url +
+          maxUpCon +
+          '" target="_blank"> (' +
+          maxUpCon +
+          ') </a>'
+      );
+      $('#maxDown').html(
+        maxDown
+          ? maxDown +
+              '<a href="' +
+              con_url +
+              maxDownCon +
+              '" target="_blank"> (' +
+              maxDownCon +
+              ') </a>'
+          : '---'
+      );
     });
-
   });
 
   // If there is a handle parameter in the url, we'll put it in the form
   // and automatically submit it to trigger the submit function, useful for sharing results
-  handle = getParameterByName("handle");
+  handle = getParameterByName('handle');
   if (handle !== null) {
-    $("#handle").val(handle);
-    $("#handleform").submit();
+    $('#handle').val(handle);
+    $('#handleform').submit();
   }
-  $("#handleDiv").removeClass("hidden");
+  $('#handleDiv').removeClass('hidden');
 
   // this is to update the heatmap when the form is submitted, contributed
-  $("#heatmapCon input").keypress(function(e) {
+  $('#heatmapCon input').keypress(function(e) {
     var value = $(this).val();
     //Enter pressed
     if (e.which == 13 && value >= 0 && value <= 999) {
@@ -184,10 +229,10 @@ $(document).ready(function() {
         colorAxis: {
           minValue: 0,
           maxValue: value,
-          colors: ['#ffffff', '#0027ff',  '#00127d']
+          colors: ['#ffffff', '#0027ff', '#00127d']
         },
         calendar: {
-          cellSize: 15,
+          cellSize: 15
         }
       };
       heatmap.draw(heatmapData, heatmapOptions);
@@ -198,35 +243,33 @@ $(document).ready(function() {
 function drawCharts() {
   //Plotting the verdicts chart
   $('#verdicts').removeClass('hidden');
-  var verTable = [
-    ["Verdict", "Count"]
-  ];
+  var verTable = [['Verdict', 'Count']];
   var verSliceColors = [];
   // beautiful names for the verdicts + colors
   for (var ver in verdicts) {
-    if (ver == "OK") {
-      verTable.push(["AC", verdicts[ver]]);
+    if (ver == 'OK') {
+      verTable.push(['AC', verdicts[ver]]);
       verSliceColors.push({ color: '#4CAF50' });
-    } else if (ver == "WRONG_ANSWER") {
-      verTable.push(["WA", verdicts[ver]]);
+    } else if (ver == 'WRONG_ANSWER') {
+      verTable.push(['WA', verdicts[ver]]);
       verSliceColors.push({ color: '#f44336' });
-    } else if (ver == "TIME_LIMIT_EXCEEDED") {
-      verTable.push(["TLE", verdicts[ver]]);
+    } else if (ver == 'TIME_LIMIT_EXCEEDED') {
+      verTable.push(['TLE', verdicts[ver]]);
       verSliceColors.push({ color: '#2196F3' });
-    } else if (ver == "MEMORY_LIMIT_EXCEEDED") {
-      verTable.push(["MLE", verdicts[ver]]);
+    } else if (ver == 'MEMORY_LIMIT_EXCEEDED') {
+      verTable.push(['MLE', verdicts[ver]]);
       verSliceColors.push({ color: '#673AB7' });
-    } else if (ver == "RUNTIME_ERROR") {
-      verTable.push(["RTE", verdicts[ver]]);
+    } else if (ver == 'RUNTIME_ERROR') {
+      verTable.push(['RTE', verdicts[ver]]);
       verSliceColors.push({ color: '#FF5722' });
-    } else if (ver == "COMPILATION_ERROR") {
-      verTable.push(["CPE", verdicts[ver]]);
+    } else if (ver == 'COMPILATION_ERROR') {
+      verTable.push(['CPE', verdicts[ver]]);
       verSliceColors.push({ color: '#607D8B' });
-    } else if (ver == "SKIPPED") {
-      verTable.push(["SKIPPED", verdicts[ver]]);
+    } else if (ver == 'SKIPPED') {
+      verTable.push(['SKIPPED', verdicts[ver]]);
       verSliceColors.push({ color: '#EEEEEE' });
-    } else if (ver == "CLALLENGED") {
-      verTable.push(["CLALLENGED", verdicts[ver]]);
+    } else if (ver == 'CLALLENGED') {
+      verTable.push(['CLALLENGED', verdicts[ver]]);
       verSliceColors.push({ color: '#E91E63' });
     } else {
       verTable.push([ver, verdicts[ver]]);
@@ -236,7 +279,7 @@ function drawCharts() {
   verdicts = new google.visualization.arrayToDataTable(verTable);
   var verOptions = {
     height: $('#verdicts').width(),
-    title: 'Verdicts of '+handle,
+    title: 'Verdicts of ' + handle,
     legend: 'none',
     pieSliceText: 'label',
     slices: verSliceColors,
@@ -244,62 +287,83 @@ function drawCharts() {
     titleTextStyle: titleTextStyle,
     is3D: true
   };
-  var verChart = new google.visualization.PieChart(document.getElementById('verdicts'));
+  var verChart = new google.visualization.PieChart(
+    document.getElementById('verdicts')
+  );
   verChart.draw(verdicts, verOptions);
 
-
   //Plotting the languages chart
-  var colors = ['#f44336', '#E91E63', '#9C27B0', '#673AB7', '#2196F3','#009688',
-    '#8BC34A', '#CDDC39', '#FFC107', '#FF9800','#FF5722','#795548','#607D8B', '#E65100',
-    '#827717','#004D40','#1A237E','#6200EA','#3F51B5','#F50057','#304FFE','#b71c1c'];
+  var colors = [
+    '#f44336',
+    '#E91E63',
+    '#9C27B0',
+    '#673AB7',
+    '#2196F3',
+    '#009688',
+    '#8BC34A',
+    '#CDDC39',
+    '#FFC107',
+    '#FF9800',
+    '#FF5722',
+    '#795548',
+    '#607D8B',
+    '#E65100',
+    '#827717',
+    '#004D40',
+    '#1A237E',
+    '#6200EA',
+    '#3F51B5',
+    '#F50057',
+    '#304FFE',
+    '#b71c1c'
+  ];
 
   $('#langs').removeClass('hidden');
-  var langTable = [
-    ['Language', 'Count']
-  ];
+  var langTable = [['Language', 'Count']];
   for (var lang in langs) {
     langTable.push([lang, langs[lang]]);
   }
   langs = new google.visualization.arrayToDataTable(langTable);
   var langOptions = {
     height: $('#langs').width(),
-    title: 'Languages of '+handle,
+    title: 'Languages of ' + handle,
     legend: 'none',
     pieSliceText: 'label',
     fontName: 'Roboto',
     titleTextStyle: titleTextStyle,
     is3D: true,
-    colors: colors.slice(0,Math.min(colors.length,langs.getNumberOfRows()))
+    colors: colors.slice(0, Math.min(colors.length, langs.getNumberOfRows()))
   };
-  var langChart = new google.visualization.PieChart(document.getElementById('langs'));
+  var langChart = new google.visualization.PieChart(
+    document.getElementById('langs')
+  );
   langChart.draw(langs, langOptions);
-
 
   //the tags chart
   $('#tags').removeClass('hidden');
   var tagTable = [];
   for (var tag in tags) {
-    tagTable.push([tag + ": " + tags[tag], tags[tag]]);
+    tagTable.push([tag + ': ' + tags[tag], tags[tag]]);
   }
-  tagTable.sort(function(a,b) {
+  tagTable.sort(function(a, b) {
     return b[1] - a[1];
   });
   tags = new google.visualization.DataTable();
-  tags.addColumn('string','Tag');
-  tags.addColumn('number','solved');
+  tags.addColumn('string', 'Tag');
+  tags.addColumn('number', 'solved');
   tags.addRows(tagTable);
   var tagOptions = {
-    width: Math.max(600,$('#tags').width()),
-    height: Math.max(600,$('#tags').width())*0.75,
-    chartArea: {width: '80%', height: '70%'},
-    title: 'Tags of '+handle,
+    width: Math.max(600, $('#tags').width()),
+    height: Math.max(600, $('#tags').width()) * 0.75,
+    chartArea: { width: '80%', height: '70%' },
+    title: 'Tags of ' + handle,
     pieSliceText: 'none',
     legend: {
       position: 'right',
       alignment: 'center',
       textStyle: {
         fontSize: 12,
-        fontName: 'Roboto',
+        fontName: 'Roboto'
       }
     },
     pieHole: 0.5,
@@ -308,9 +372,11 @@ function drawCharts() {
     },
     fontName: 'Roboto',
     titleTextStyle: titleTextStyle,
-    colors: colors.slice(0,Math.min(colors.length,tags.getNumberOfRows())),
+    colors: colors.slice(0, Math.min(colors.length, tags.getNumberOfRows()))
   };
-  var tagChart = new google.visualization.PieChart(document.getElementById('tags'));
+  var tagChart = new google.visualization.PieChart(
+    document.getElementById('tags')
+  );
   tagChart.draw(tags, tagOptions);
 
   //Plotting levels
@@ -324,56 +390,60 @@ function drawCharts() {
     else return 1;
   });
   levels = new google.visualization.DataTable();
-  levels.addColumn('string','Level');
-  levels.addColumn('number','solved');
+  levels.addColumn('string', 'Level');
+  levels.addColumn('number', 'solved');
   levels.addRows(levelTable);
   var levelOptions = {
-    width: Math.max($('#levels').width(),levels.getNumberOfRows()*50),
+    width: Math.max($('#levels').width(), levels.getNumberOfRows() * 50),
     height: 300,
-    title: 'Levels of '+handle,
+    title: 'Levels of ' + handle,
     legend: 'none',
     fontName: 'Roboto',
     titleTextStyle: titleTextStyle,
     vAxis: { format: '0' },
     colors: ['#3F51B5']
   };
-  var levelChart = new google.visualization.ColumnChart(document.getElementById('levels'));
-  if(levelTable.length>1) levelChart.draw(levels, levelOptions);
+  var levelChart = new google.visualization.ColumnChart(
+    document.getElementById('levels')
+  );
+  if (levelTable.length > 1) levelChart.draw(levels, levelOptions);
 
   $('#heatmapCon').removeClass('hidden');
   $('#heatMapHandle').html(handle);
   var heatmapTable = [];
-  for(var d in heatmap) {
+  for (var d in heatmap) {
     heatmapTable.push([new Date(parseInt(d)), heatmap[d]]);
   }
   heatmapData = new google.visualization.DataTable();
-  heatmapData.addColumn({type: 'date', id: 'Date'});
-  heatmapData.addColumn({type: 'number', id: 'Submissions'});
+  heatmapData.addColumn({ type: 'date', id: 'Date' });
+  heatmapData.addColumn({ type: 'number', id: 'Submissions' });
   heatmapData.addRows(heatmapTable);
 
-  heatmap = new google.visualization.Calendar(document.getElementById('heatmapDiv'));
+  heatmap = new google.visualization.Calendar(
+    document.getElementById('heatmapDiv')
+  );
   var heatmapOptions = {
-    height: years*140+30,
-    width: Math.max($('#heatmapCon').width(),900),
+    height: years * 140 + 30,
+    width: Math.max($('#heatmapCon').width(), 900),
     fontName: 'Roboto',
     titleTextStyle: titleTextStyle,
     colorAxis: {
       minValue: 0,
-      colors: ['#ffffff', '#0027ff',  '#00127d']
+      colors: ['#ffffff', '#0027ff', '#00127d']
     },
     calendar: {
-      cellSize: 15,
+      cellSize: 15
     }
   };
-  heatmap.draw(heatmapData,heatmapOptions);
+  heatmap.draw(heatmapData, heatmapOptions);
 
   //parse all the solved problems and extract some numbers about the solved problems
   var tried = 0;
   var solved = 0;
   var maxAttempt = 0;
-  var maxAttemptProblem = "";
-  var maxAc = "";
-  var maxAcProblem = "";
+  var maxAttemptProblem = '';
+  var maxAc = '';
+  var maxAcProblem = '';
   var unsolved = [];
   var solvedWithOneSub = 0;
   for (var p in problems) {
@@ -390,30 +460,56 @@ function drawCharts() {
       maxAcProblem = p;
     }
 
-    if(problems[p].solved == problems[p].attempts) solvedWithOneSub++;
+    if (problems[p].solved == problems[p].attempts) solvedWithOneSub++;
   }
   $('#numbers').removeClass('hidden');
   $('#unsolvedCon').removeClass('hidden');
   $('.handle-text').html(handle);
-  $("#tried").html(tried);
-  $("#solved").html(solved);
-  $("#maxAttempt").html(maxAttempt + "<a href=\"" + get_url(maxAttemptProblem) + "\" target=\"blank\" > (" + maxAttemptProblem + ") </a>");
-  if (maxAc > 1) $("#maxAc").html(maxAc + "<a href=\"" + get_url(maxAcProblem) + "\" target=\"blank\" > (" + maxAcProblem + ") </a>");
-  else $("#maxAc").html(solved?1:0);
-  $("#averageAttempt").html((totalSub / solved).toFixed(2));
-  $("#solvedWithOneSub").html(solvedWithOneSub+" ("+(solved?(solvedWithOneSub/solved*100).toFixed(2):0)+"%)");
+  $('#tried').html(tried);
+  $('#solved').html(solved);
+  $('#maxAttempt').html(
+    maxAttempt +
+      '<a href="' +
+      get_url(maxAttemptProblem) +
+      '" target="blank" > (' +
+      maxAttemptProblem +
+      ') </a>'
+  );
+  if (maxAc > 1)
+    $('#maxAc').html(
+      maxAc +
+        '<a href="' +
+        get_url(maxAcProblem) +
+        '" target="blank" > (' +
+        maxAcProblem +
+        ') </a>'
+    );
+  else $('#maxAc').html(solved ? 1 : 0);
+  $('#averageAttempt').html((totalSub / solved).toFixed(2));
+  $('#solvedWithOneSub').html(
+    solvedWithOneSub +
+      ' (' +
+      (solved ? ((solvedWithOneSub / solved) * 100).toFixed(2) : 0) +
+      '%)'
+  );
 
   unsolved.forEach(function(p) {
     var url = get_url(p);
-    $("#unsolvedList").append("<div><a href=\"" + url + "\" target=\"_blank\" class=\"lnk\">" + p + "</a></div>");
+    $('#unsolvedList').append(
+      '<div><a href="' +
+        url +
+        '" target="_blank" class="lnk">' +
+        p +
+        '</a></div>'
+    );
   });
 }
 
 // reset all data
 function resetData() {
   // if the requests were already made, abort them
-  if(req1) req1.abort();
-  if(req2) req2.abort();
+  if (req1) req1.abort();
+  if (req2) req2.abort();
   verdicts = {};
   langs = {};
   tags = {};
@@ -421,12 +517,10 @@ function resetData() {
   problems = {};
   totalSub = 0;
   heatmap = {};
-  $("#mainSpinner").addClass("is-active");
-  $(".to-clear").empty();
-  $(".to-hide").addClass("hidden");
-
+  $('#mainSpinner').addClass('is-active');
+  $('.to-clear').empty();
+  $('.to-hide').addClass('hidden');
 }
-
 
 // receives the problem id like 650-A
 // splits the contest id and problem index and returns the problem url
@@ -434,9 +528,11 @@ function get_url(p) {
   var con = p.split('-')[0];
   var index = p.split('-')[1];
 
-  var url = "";
-  if (con.length < 4) url = "https://codeforces.com/contest/" + con + "/problem/" + index;
-  else url = "https://codeforces.com/problemset/gymProblem/" + con + "/" + index;
+  var url = '';
+  if (con.length < 4)
+    url = 'https://codeforces.com/contest/' + con + '/problem/' + index;
+  else
+    url = 'https://codeforces.com/problemset/gymProblem/' + con + '/' + index;
 
   return url;
 }
@@ -446,27 +542,32 @@ function getParameterByName(name, url) {
   if (!url) {
     url = window.location.href;
   }
-  name = name.replace(/[\[\]]/g, "\\$&");
-  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+  name = name.replace(/[\[\]]/g, '\\$&');
+  var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
     results = regex.exec(url);
   if (!results) return null;
   if (!results[2]) return '';
-  return decodeURIComponent(results[2].replace(/\+/g, " "));
+  return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
-
 
 // Opens a share window when the share button is clicked
 function fbShareResult() {
-  var url = window.location.href + "?handle=" + handle;  // generation share url
+  var url = window.location.href + '?handle=' + handle; // generation share url
   var top = screen.height / 2 - 150;
   var left = screen.width / 2 - 300;
-  window.open("https://facebook.com/sharer/sharer.php?u=" + escape(url), 'Share',
-    'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600,top=' + top + ',left=' + left);
+  window.open(
+    'https://facebook.com/sharer/sharer.php?u=' + escape(url),
+    'Share',
+    'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600,top=' +
+      top +
+      ',left=' +
+      left
+  );
 }
 
 // shows am error message in the input form
 // Needs the div name of the input widget
-function err_message(div,msg) {
-  $("#"+div+"Err").html(msg);
-  $("#"+div).addClass("is-invalid");
+function err_message(div, msg) {
+  $('#' + div + 'Err').html(msg);
+  $('#' + div).addClass('is-invalid');
 }
