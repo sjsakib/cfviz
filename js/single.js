@@ -5,6 +5,7 @@ var verdicts = {};
 var langs = {};
 var tags = {};
 var levels = {};
+var ratings = {};
 var problems = {};
 var totalSub = 0;
 var heatmap = {};
@@ -31,6 +32,7 @@ $(document).ready(function() {
     handle = $('#handle')
       .val()
       .trim();
+
     if (!handle) {
       err_message('handleDiv', 'Enter a name');
       $('#mainSpinner').removeClass('is-active');
@@ -55,6 +57,7 @@ $(document).ready(function() {
       for (var i = data.result.length - 1; i >= 0; i--) {
         var sub = data.result[i];
         var problemId = sub.problem.contestId + '-' + sub.problem.index;
+
         if (problems[problemId] === undefined) {
           // first submission of a problem
           problems[problemId] = {
@@ -83,6 +86,8 @@ $(document).ready(function() {
           if (levels[sub.problem.index[0]] === undefined)
             levels[sub.problem.index[0]] = 1;
           else levels[sub.problem.index[0]]++;
+
+          ratings[sub.problem.rating] = ratings[sub.problem.rating] + 1 || 1;
 
           problems[problemId].solved++;
         }
@@ -408,6 +413,36 @@ function drawCharts() {
   );
   if (levelTable.length > 1) levelChart.draw(levels, levelOptions);
 
+  //Plotting ratings
+  $('#ratings').removeClass('hidden');
+  var ratingTable = [];
+  for (var rating in ratings) {
+    ratingTable.push([rating, ratings[rating]]);
+  }
+  ratingTable.sort(function(a, b) {
+    if (a[0] > b[0]) return -1;
+    else return 1;
+  });
+  ratings = new google.visualization.DataTable();
+  ratings.addColumn('string', 'Rating');
+  ratings.addColumn('number', 'solved');
+  ratings.addRows(ratingTable);
+  var ratingOptions = {
+    width: Math.max($('#ratings').width(), ratings.getNumberOfRows() * 50),
+    height: 300,
+    title: 'Ratings of ' + handle,
+    legend: 'none',
+    fontName: 'Roboto',
+    titleTextStyle: titleTextStyle,
+    vAxis: { format: '0' },
+    colors: ['#3F51B5']
+  };
+  var ratingChart = new google.visualization.ColumnChart(
+    document.getElementById('ratings')
+  );
+  if (levelTable.length > 1) levelChart.draw(ratings, ratingOptions);
+
+  /* heatmap */
   $('#heatmapCon').removeClass('hidden');
   $('#heatMapHandle').html(handle);
   var heatmapTable = [];
