@@ -331,6 +331,47 @@ function drawSubCharts() {
   );
   levelsChart.draw(levelsView, levelsOptions);
 
+
+  /* Problem Ratings */
+  $('#pRatings').removeClass('hidden');
+  var pRatings = new google.visualization.DataTable();
+  pRatings.addColumn('string', 'Rating');
+  pRatings.addColumn('number', handle1);
+  pRatings.addColumn('number', handle2);
+  pRatings.addRows(alignPRatings(subData1.pRatings, subData2.pRatings));
+  var pRatingsView = new google.visualization.DataView(pRatings);
+  pRatingsView.setColumns([
+    0,
+    1,
+    {
+      calc: 'stringify',
+      sourceColumn: 1,
+      type: 'string',
+      role: 'annotation'
+    },
+    2,
+    {
+      calc: 'stringify',
+      sourceColumn: 2,
+      type: 'string',
+      role: 'annotation'
+    }
+  ]);
+
+  var pRatingsOptions = $.extend({}, scrollableOptions, commonOptions, {
+    width: Math.max($('#pRatings').width(), oRatings.getNumberOfRows() * 65),
+    height: 400,
+    title: 'Problem Ratings',
+    legend: legend,
+    colors: colors,
+    bar: { groupWidth: '65%' },
+    annotations: annotation
+  });
+  var pRatnigsChart = new google.visualization.ColumnChart(
+    document.getElementById('pRatings')
+  );
+  pRatingsChart.draw(pRatingsView, pRatingsOptions);
+
   //Tags chart
   $('#tags').removeClass('hidden');
   var tags = new google.visualization.DataTable();
