@@ -529,7 +529,7 @@ function get_url(p) {
   var index = p.split('-')[1];
 
   var url = '';
-  if (con.length < 4)
+  if (con.length <= 4)
     url = 'https://codeforces.com/contest/' + con + '/problem/' + index;
   else
     url = 'https://codeforces.com/problemset/gymProblem/' + con + '/' + index;
