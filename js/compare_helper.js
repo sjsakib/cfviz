@@ -78,7 +78,9 @@ function getSubData(data) {
         ret.levels[sub.problem.index[0]] = 1;
       else ret.levels[sub.problem.index[0]]++;
 
-      ret.pRatings[sub.problem.rating] = ret.pRatings[sub.problem.rating] || 1;
+      if (sub.problem.rating) {
+        ret.pRatings[sub.problem.rating] = ret.pRatings[sub.problem.rating] + 1 || 1;
+      }
 
       problems[problemId].solved++;
     }

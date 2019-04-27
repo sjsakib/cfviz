@@ -87,7 +87,9 @@ $(document).ready(function() {
             levels[sub.problem.index[0]] = 1;
           else levels[sub.problem.index[0]]++;
 
-          ratings[sub.problem.rating] = ratings[sub.problem.rating] + 1 || 1;
+          if (sub.problem.rating) {
+            ratings[sub.problem.rating] = ratings[sub.problem.rating] + 1 || 1;
+          }
 
           problems[problemId].solved++;
         }
