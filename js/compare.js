@@ -359,7 +359,7 @@ function drawSubCharts() {
   ]);
 
   var pRatingsOptions = $.extend({}, scrollableOptions, commonOptions, {
-    width: Math.max($('#pRatings').width(), oRatings.getNumberOfRows() * 65),
+    width: Math.max($('#pRatings').width(), pRatings.getNumberOfRows() * 65),
     height: 400,
     title: 'Problem Ratings',
     legend: legend,
@@ -367,7 +367,7 @@ function drawSubCharts() {
     bar: { groupWidth: '65%' },
     annotations: annotation
   });
-  var pRatnigsChart = new google.visualization.ColumnChart(
+  var pRatingsChart = new google.visualization.ColumnChart(
     document.getElementById('pRatings')
   );
   pRatingsChart.draw(pRatingsView, pRatingsOptions);

@@ -430,7 +430,7 @@ function drawCharts() {
   var ratingOptions = {
     width: Math.max($('#ratings').width(), ratings.getNumberOfRows() * 50),
     height: 300,
-    title: 'Ratings of ' + handle,
+    title: 'Problem ratings of ' + handle,
     legend: 'none',
     fontName: 'Roboto',
     titleTextStyle: titleTextStyle,
