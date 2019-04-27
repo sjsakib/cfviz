@@ -1,5 +1,4 @@
-var MAX_TIME_DIFF = 7200;  // max time between contests
-
+var MAX_TIME_DIFF = 7200; // max time between contests
 
 //common Options for charts
 var legend = {
@@ -26,37 +25,35 @@ var commonOptions = {
     startup: true
   },
   tooltip: {
-    textStyle: { fontSize: 14 },
+    textStyle: { fontSize: 14 }
   }
 };
 
 var scrollableOptions = {
-  chartArea: { top: 100, bottom: 80, left: 100, right: 75},
+  chartArea: { top: 100, bottom: 80, left: 100, right: 75 },
   vAxis: {
     textStyle: { fontSize: 14 }
   },
   hAxis: {
     textStyle: { fontSize: 14 }
-  },
+  }
 };
 
 var annotation = {
   alwaysOutside: true,
   textStyle: {
     fontSize: 10
-  },
+  }
 };
-
 
 // helper functions, partially copied from single.js
 
-
 function getSubData(data) {
-  var ret = {};  // the object to return
+  var ret = {}; // the object to return
   ret.levels = {};
+  ret.pRatings = {};
   ret.tags = {};
   var problems = {};
-
 
   // parsing all the submissions and saving useful data
   for (var i = data.result.length - 1; i >= 0; i--) {
@@ -65,7 +62,7 @@ function getSubData(data) {
     if (problems[problemId] === undefined) {
       problems[problemId] = {
         subs: 1,
-        solved: 0,
+        solved: 0
       };
     } else {
       if (problems[problemId].solved === 0) problems[problemId].subs++;
@@ -77,11 +74,15 @@ function getSubData(data) {
         else ret.tags[t]++;
       });
 
-      if (ret.levels[sub.problem.index[0]] === undefined) ret.levels[sub.problem.index[0]] = 1;
+      if (ret.levels[sub.problem.index[0]] === undefined)
+        ret.levels[sub.problem.index[0]] = 1;
       else ret.levels[sub.problem.index[0]]++;
 
-      problems[problemId].solved++;
+      if (sub.problem.rating) {
+        ret.pRatings[sub.problem.rating] = ret.pRatings[sub.problem.rating] + 1 || 1;
+      }
 
+      problems[problemId].solved++;
     }
   }
   ret.totalSub = data.result.length;
@@ -101,7 +102,7 @@ function getSubData(data) {
 
     if (problems[p].solved == problems[p].subs) ret.solvedWithOneSub++;
   }
-  ret.averageSub = (ret.totalSub/ret.solved);
+  ret.averageSub = ret.totalSub / ret.solved;
   ret.problems = Object.keys(problems);
 
   return ret;
@@ -110,20 +111,39 @@ function getSubData(data) {
 // align levels of solved problems for two users
 // if one user have solved no problems of a level and other user have,
 // we need to put 0 for the first user and the level
-function alignLevels(lev1,lev2) {
+function alignLevels(lev1, lev2) {
   var ret = [];
-  for(var l in lev1) {
-    if(lev2[l] === undefined) ret.push([l, lev1[l], 0]);
+  for (var l in lev1) {
+    if (lev2[l] === undefined) ret.push([l, lev1[l], 0]);
     else {
       ret.push([l, lev1[l], lev2[l]]);
       delete lev2[l];
     }
   }
-  for(l in lev2) {
+  for (l in lev2) {
     ret.push([l, 0, lev2[l]]);
   }
-  ret.sort(function(a,b) {
-    if(a[0] < b[0]) return -1;
+  ret.sort(function(a, b) {
+    if (a[0] < b[0]) return -1;
+    return 1;
+  });
+  return ret;
+}
+
+function alignPRatings(lev1, lev2) {
+  var ret = [];
+  for (var l in lev1) {
+    if (lev2[l] === undefined) ret.push([l, lev1[l], 0]);
+    else {
+      ret.push([l, lev1[l], lev2[l]]);
+      delete lev2[l];
+    }
+  }
+  for (l in lev2) {
+    ret.push([l, 0, lev2[l]]);
+  }
+  ret.sort(function(a, b) {
+    if (parseInt(a[0]) < parseInt(b[0])) return -1;
     return 1;
   });
   return ret;
@@ -131,34 +151,34 @@ function alignLevels(lev1,lev2) {
 
 
 // aligns tags
-function alignTags(tags1,tags2) {
+function alignTags(tags1, tags2) {
   var ret = [];
-  for(var t in tags1) {
-    if(tags2[t] === undefined) ret.push([t, tags1[t], 0]);
+  for (var t in tags1) {
+    if (tags2[t] === undefined) ret.push([t, tags1[t], 0]);
     else {
       ret.push([t, tags1[t], tags2[t]]);
       delete tags2[t];
     }
   }
-  for(t in tags2) {
+  for (t in tags2) {
     ret.push([t, 0, tags2[t]]);
   }
-  ret.sort(function(a,b) {
-    if(a[1]+a[2] < b[1]+b[2]) return 1;
+  ret.sort(function(a, b) {
+    if (a[1] + a[2] < b[1] + b[2]) return 1;
     return -1;
   });
   return ret;
 }
 
 // returns common contests of two users
-function getCommonContests(lst1,lst2) {
+function getCommonContests(lst1, lst2) {
   var ret = [];
-  for(var con in lst1) {
-    if(lst2[con] !== undefined) {
+  for (var con in lst1) {
+    if (lst2[con] !== undefined) {
       ret.push({
         contestId: con,
         // there might be <br> tag in problem names, we need re replace them
-        contestName: lst1[con][0].replace(new RegExp("<br>", 'g')," - "),
+        contestName: lst1[con][0].replace(new RegExp('<br>', 'g'), ' - '),
         handle1: lst1[con][1],
         handle2: lst2[con][1]
       });
@@ -167,7 +187,6 @@ function getCommonContests(lst1,lst2) {
   return ret;
 }
 
-
 // parse all the contests and save useful data
 function getContestStat(data) {
   var ret = {};
@@ -175,10 +194,10 @@ function getContestStat(data) {
   ret.worst = -1e10;
   ret.maxUp = 0;
   ret.maxDown = 0;
-  ret.bestCon = "";
-  ret.worstCon = "";
-  ret.maxUpCon = "";
-  ret.maxDownCon = "";
+  ret.bestCon = '';
+  ret.worstCon = '';
+  ret.maxUpCon = '';
+  ret.maxDownCon = '';
   ret.maxRating = 0;
   ret.minRating = 1e10;
   ret.rating = 0;
@@ -188,7 +207,7 @@ function getContestStat(data) {
 
   for (var i = 0; i < data.result.length; i++) {
     var con = data.result[i];
-    ret.all[con.contestId] = [con.contestName,con.rank];
+    ret.all[con.contestId] = [con.contestName, con.rank];
     if (con.rank < ret.best) {
       ret.best = con.rank;
       ret.bestCon = con.contestId;
@@ -217,7 +236,6 @@ function getContestStat(data) {
 
   return ret;
 }
-
 
 // align timeline,
 // one user might have done a contest and other might haven't
@@ -266,7 +284,7 @@ function compDate(d1, d2) {
   return d1 - d2;
 }
 
-function err_message(div,msg) {
-  $("#"+div+"Err").html(msg);
-  $("#"+div).addClass("is-invalid");
+function err_message(div, msg) {
+  $('#' + div + 'Err').html(msg);
+  $('#' + div).addClass('is-invalid');
 }
