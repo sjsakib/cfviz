@@ -1,20 +1,22 @@
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js');
+importScripts(
+  'https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js'
+);
 
 workbox.precaching.precacheAndRoute([
-  '/index.html',
-  '/about.html',
-  '/compare.html',
-  '/virtual-rating-change.html',
-  '/js/compare_helper.js',
-  '/js/compare.js',
-  '/js/calculate.js',
-  '/js/vir.js',
+  { url: '/index.html', revision: '1111' },
+  { url: '/about.html', revision: '1111' },
+  { url: '/compare.html', revision: '1111' },
+  { url: '/virtual-rating-change.html', revision: '1111' },
+  { url: '/js/compare_helper.js', revision: '1111' },
+  { url: '/js/compare.js', revision: '1111' },
+  { url: '/js/calculate.js', revision: '1111' },
+  { url: '/compare.html', revision: '1111' },
+  { url: '/js/vir.js', revision: '1111' }
 ]);
 
 workbox.routing.registerRoute(
   /^((?!codeforces)(?!facebook)(?!analytics).)*$/,
   new workbox.strategies.StaleWhileRevalidate({
-    cacheName: 'local',
-  }),
+    cacheName: 'local'
+  })
 );
-
