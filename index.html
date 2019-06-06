@@ -211,6 +211,11 @@
   ga('send', 'pageview');
   ga('send', 'event', 'Form', 'submit');
   </script>
+  <script>
+  if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+  }
+  </script>
 </body>
 
 </html>
