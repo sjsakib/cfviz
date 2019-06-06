@@ -1,12 +1,5 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js');
 
-workbox.routing.registerRoute(
-  /^((?!codeforces).)*$/,
-  new workbox.strategies.StaleWhileRevalidate({
-    cacheName: 'local',
-  }),
-);
-
 workbox.precaching.precacheAndRoute([
   '/index.html',
   '/about.html',
@@ -17,4 +10,11 @@ workbox.precaching.precacheAndRoute([
   '/js/calculate.js',
   '/js/vir.js',
 ]);
+
+workbox.routing.registerRoute(
+  /^((?!codeforces)(?!facebook)(?!analytics).)*$/,
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: 'local',
+  }),
+);
 
