@@ -6,3 +6,10 @@ workbox.routing.registerRoute(
     cacheName: 'local',
   }),
 );
+
+workbox.precaching.precacheAndRoute([
+  '/about.html',
+  '/compare.html',
+  '/virtual-rating-change.html',
+]);
+
