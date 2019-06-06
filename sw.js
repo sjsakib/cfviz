@@ -8,8 +8,13 @@ workbox.routing.registerRoute(
 );
 
 workbox.precaching.precacheAndRoute([
+  '/index.html',
   '/about.html',
   '/compare.html',
   '/virtual-rating-change.html',
+  '/js/compare_helper.js',
+  '/js/compare.js',
+  '/js/calculate.js',
+  '/js/vir.js',
 ]);
 
