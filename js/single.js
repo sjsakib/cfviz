@@ -80,7 +80,7 @@ $(document).ready(function() {
           problems[problemId].solved++;
         }
 
-        if (problems[problemId].solved === 1) {
+        if (problems[problemId].solved === 1 && sub.verdict == 'OK') {
           sub.problem.tags.forEach(function(t) {
             if (tags[t] === undefined) tags[t] = 1;
             else tags[t]++;

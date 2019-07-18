@@ -72,7 +72,7 @@ function getSubData(data) {
       problems[problemId].solved++;
     }
 
-    if (problems[problemId].solved === 1) {
+    if (problems[problemId].solved === 1 && sub.verdict == 'OK') {
       sub.problem.tags.forEach(function(t) {
         if (ret.tags[t] === undefined) ret.tags[t] = 1;
         else ret.tags[t]++;
