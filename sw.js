@@ -7,10 +7,10 @@ workbox.precaching.precacheAndRoute([
   { url: '/about.html', revision: '1111' },
   { url: '/compare.html', revision: '1111' },
   { url: '/virtual-rating-change.html', revision: '1111' },
-  { url: '/js/compare_helper.js', revision: '1111' },
+  { url: '/js/compare_helper.js', revision: '1112' },
   { url: '/js/compare.js', revision: '1111' },
   { url: '/js/calculate.js', revision: '1111' },
-  { url: '/compare.html', revision: '1111' },
+  { url: '/js/single.js', revision: '1111' },
   { url: '/js/vir.js', revision: '1111' }
 ]);
 

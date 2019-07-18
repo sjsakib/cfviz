@@ -69,6 +69,10 @@ function getSubData(data) {
     }
 
     if (sub.verdict == 'OK') {
+      problems[problemId].solved++;
+    }
+
+    if (problems[problemId].solved === 1) {
       sub.problem.tags.forEach(function(t) {
         if (ret.tags[t] === undefined) ret.tags[t] = 1;
         else ret.tags[t]++;
@@ -81,8 +85,6 @@ function getSubData(data) {
       if (sub.problem.rating) {
         ret.pRatings[sub.problem.rating] = ret.pRatings[sub.problem.rating] + 1 || 1;
       }
-
-      problems[problemId].solved++;
     }
   }
   ret.totalSub = data.result.length;

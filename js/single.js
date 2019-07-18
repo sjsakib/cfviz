@@ -77,7 +77,10 @@ $(document).ready(function() {
         else langs[sub.programmingLanguage]++;
 
         if (sub.verdict == 'OK') {
-          // This is probably no entirely correct. because for multiple ac tag count will increase every time
+          problems[problemId].solved++;
+        }
+
+        if (problems[problemId].solved === 1) {
           sub.problem.tags.forEach(function(t) {
             if (tags[t] === undefined) tags[t] = 1;
             else tags[t]++;
@@ -90,8 +93,6 @@ $(document).ready(function() {
           if (sub.problem.rating) {
             ratings[sub.problem.rating] = ratings[sub.problem.rating] + 1 || 1;
           }
-
-          problems[problemId].solved++;
         }
 
         //updating the heatmap
