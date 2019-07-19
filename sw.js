@@ -15,7 +15,7 @@ workbox.precaching.precacheAndRoute([
 ]);
 
 workbox.routing.registerRoute(
-  /^((?!codeforces)(?!facebook)(?!analytics).)*$/,
+  /^((?!codeforces)(?!facebook)(?!analytics)(?!ads)(?!google).)*$/,
   new workbox.strategies.StaleWhileRevalidate({
     cacheName: 'local'
   })
