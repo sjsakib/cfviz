@@ -3,7 +3,7 @@ importScripts(
 );
 
 workbox.precaching.precacheAndRoute([
-  { url: '/index.html', revision: '1114' },
+  { url: '/index.html', revision: '1115' },
   { url: '/about.html', revision: '1111' },
   { url: '/compare.html', revision: '1111' },
   { url: '/virtual-rating-change.html', revision: '1111' },
