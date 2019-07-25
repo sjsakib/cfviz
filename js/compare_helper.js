@@ -110,6 +110,53 @@ function getSubData(data) {
   return ret;
 }
 
+//find out solved problem compare data for both user handle and return that
+function getProblemsCompare(userData1,userData2)
+{
+  var ret={};
+  for(var i=userData1.result.length-1;i>=0;i--) {
+    var sub=userData1.result[i];
+    var problemId = sub.problem.contestId + '-' + sub.problem.index;
+    if(ret[problemId]===undefined) {
+      ret[problemId] = {
+        user1solved: false,
+        user2solved: false,
+        contestId: sub.problem.contestId,
+        index: sub.problem.index,
+        name: sub.problem.name,
+        rating: sub.problem.rating,
+        tag: sub.problem.tag
+      };
+    }
+
+    if(sub.verdict == 'OK') {
+      ret[problemId].user1solved=true;
+    }
+
+  }
+
+  for(var i=userData2.result.length-1;i>=0;i--) {
+    var sub=userData2.result[i];
+    var problemId = sub.problem.contestId + '-' + sub.problem.index;
+    if(ret[problemId]===undefined) {
+      ret[problemId] = {
+        user1solved: false,
+        user2solved: false,
+        contestId: sub.problem.contestId,
+        index: sub.problem.index,
+        name: sub.problem.name,
+        rating: sub.problem.rating,
+        tag: sub.problem.tag
+      };
+    }
+
+    if(sub.verdict == 'OK') {
+      ret[problemId].user2solved=true;
+    }
+  }
+  return ret;
+}
+
 // align levels of solved problems for two users
 // if one user have solved no problems of a level and other user have,
 // we need to put 0 for the first user and the level

@@ -8,6 +8,9 @@ var conData2 = {}; // contest data for suer 1
 var subData1 = {}; // submission data for user 1
 var subData2 = {}; // submission data for user 2
 
+var allSubData1 = {}; //actual all submission data for user 1 from cf api
+var allSubData2 = {}; //actual all submission data for user 2 from cf api
+
 var colors = ['#009688', '#3F51B5'];
 
 var req1, req2, req3, req4;
@@ -92,10 +95,14 @@ $(document).ready(function() {
         status
       ) {
         console.log(data);
-        if (data.result.length > 0) subData1 = getSubData(data);
+        if (data.result.length > 0) {
+          allSubData1 = data;
+          subData1 = getSubData(data);
+        }
         else {
           err_message('handle1Div', 'No submissions');
           subData1 = null;
+          allSubData1 = null;
         }
       });
       req4 = $.get(api_url + 'user.status', { handle: handle2 }, function(
@@ -103,10 +110,14 @@ $(document).ready(function() {
         status
       ) {
         console.log(data);
-        if (data.result.length > 0) subData2 = getSubData(data);
+        if (data.result.length > 0) {
+          allSubData2 = data;
+          subData2 = getSubData(data);
+        }
         else {
           err_message('handle2Div', 'No submissions');
           subData2 = null;
+          allSubData2 = null;
         }
       });
 
