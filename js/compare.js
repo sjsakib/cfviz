@@ -422,6 +422,33 @@ function drawSubCharts() {
     document.getElementById('tags')
   );
   tagsChart.draw(tagsView, tagsOptions);
+
+  // Solved problem compare table
+  $('#problemCompare').removeClass('hidden');
+  $('#user1Prob').html(handle1);
+  $('#user2Prob').html(handle2);
+  var prob_url = 'https://codeforces.com/problemset/problem/';
+  var problemCompare = getProblemsCompare(allSubData1, allSubData2);
+
+  for(v in problemCompare) {
+    var user1Prob=problemCompare[v].user1solved;
+    var user2Prob=problemCompare[v].user2solved;
+    var problem='<td>'+v+'</td>';
+    var probName=problemCompare[v].name;
+    var probRating=problemCompare[v].rating;
+    var problemLink=prob_url+problemCompare[v].contestId+'/'+problemCompare[v].index;
+
+    user1Prob=user1Prob?'<td><span class="handle1Color">Solved</span></td>':'<td><span>Unsolved</span></td>';
+    user2Prob=user2Prob?'<td><span class="handle2Color">Solved</span></td>':'<td><span>Unsolved</span></td>';
+
+    $('#problemCompareList').append(
+      '<tr>'+user1Prob+user2Prob+problem+'<td><a class="lnk" href="'+problemLink+'"target="_blank">'+probName+'</a></td>'+'<td>'+probRating+'</td>'+'</tr>'
+    );
+
+  }
+  if (problemCompare === 'undefined') {
+    $('#problemCompareList').append('<tr><td>No common contests</td><tr>');
+  }
 }
 
 // when we need to compare two numbers, we can use this function
