@@ -113,11 +113,11 @@ function getSubData(data) {
 //find out solved problem compare data for both user handle and return that
 function getProblemsCompare(userData1,userData2)
 {
-  var ret={};
-  for(var i=userData1.result.length-1;i>=0;i--) {
-    var sub=userData1.result[i];
+  var ret = {};
+  for(var i = userData1.result.length - 1; i >= 0; i--) {
+    var sub = userData1.result[i];
     var problemId = sub.problem.contestId + '-' + sub.problem.index;
-    if(ret[problemId]===undefined) {
+    if(ret[problemId] === undefined) {
       ret[problemId] = {
         user1solved: false,
         user2solved: false,
@@ -130,15 +130,15 @@ function getProblemsCompare(userData1,userData2)
     }
 
     if(sub.verdict == 'OK') {
-      ret[problemId].user1solved=true;
+      ret[problemId].user1solved = true;
     }
 
   }
 
-  for(var i=userData2.result.length-1;i>=0;i--) {
-    var sub=userData2.result[i];
+  for(var i = userData2.result.length-1; i >= 0; i--) {
+    var sub = userData2.result[i];
     var problemId = sub.problem.contestId + '-' + sub.problem.index;
-    if(ret[problemId]===undefined) {
+    if(ret[problemId] === undefined) {
       ret[problemId] = {
         user1solved: false,
         user2solved: false,
@@ -151,7 +151,7 @@ function getProblemsCompare(userData1,userData2)
     }
 
     if(sub.verdict == 'OK') {
-      ret[problemId].user2solved=true;
+      ret[problemId].user2solved = true;
     }
   }
   return ret;

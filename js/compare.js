@@ -423,7 +423,7 @@ function drawSubCharts() {
   );
   tagsChart.draw(tagsView, tagsOptions);
 
-  // Solved problem compare table
+  // Solved problem compare table draw
   $('#problemCompare').removeClass('hidden');
   $('#user1Prob').html(handle1);
   $('#user2Prob').html(handle2);
@@ -431,24 +431,44 @@ function drawSubCharts() {
   var problemCompare = getProblemsCompare(allSubData1, allSubData2);
 
   for(v in problemCompare) {
-    var user1Prob=problemCompare[v].user1solved;
-    var user2Prob=problemCompare[v].user2solved;
-    var problem='<td>'+v+'</td>';
-    var probName=problemCompare[v].name;
-    var probRating=problemCompare[v].rating;
-    var problemLink=prob_url+problemCompare[v].contestId+'/'+problemCompare[v].index;
+    var user1Prob = problemCompare[v].user1solved;
+    var user2Prob = problemCompare[v].user2solved;
+    var problem = '<td>' + v + '</td>';
+    var probName = problemCompare[v].name;
+    var probRating = problemCompare[v].rating;
+    var problemLink = prob_url + problemCompare[v].contestId + '/' + problemCompare[v].index;
 
-    user1Prob=user1Prob?'<td><span class="handle1Color">Solved</span></td>':'<td><span>Unsolved</span></td>';
-    user2Prob=user2Prob?'<td><span class="handle2Color">Solved</span></td>':'<td><span>Unsolved</span></td>';
+    user1Prob = user1Prob ? '<td><span class="handle1Color">Solved</span></td>' : '<td><span>Unsolved</span></td>';
+    user2Prob = user2Prob ? '<td><span class="handle2Color">Solved</span></td>' : '<td><span>Unsolved</span></td>';
 
     $('#problemCompareList').append(
-      '<tr>'+user1Prob+user2Prob+problem+'<td><a class="lnk" href="'+problemLink+'"target="_blank">'+probName+'</a></td>'+'<td>'+probRating+'</td>'+'</tr>'
+      '<tr>' + user1Prob + user2Prob + problem + '<td><a class="lnk" href="' + problemLink + '"target="_blank">' + probName + '</a></td>' + '<td>' + probRating + '</td>' + '</tr>'
     );
 
   }
-  if (problemCompare === 'undefined') {
-    $('#problemCompareList').append('<tr><td>No common contests</td><tr>');
+/*
+  //this is using google charts table. it have some functionality that i need but no material design support and slightly slow
+  //make sure the table package is added from google charts otherwise error will happen
+  //and previous for loop commented or time will lose
+  var dataTable = new google.visualization.DataTable();
+  dataTable.addColumn('string', handle1);
+  dataTable.addColumn('string', handle2);
+  dataTable.addColumn('string', 'Problem');
+  dataTable.addColumn('string', 'Name');
+  dataTable.addColumn('number', 'Rating');
+  for(v in problemCompare) {
+    dataTable.addRow([
+      problemCompare[v].user1solved ? 'Solved' : 'Unsolved',
+      problemCompare[v].user2solved ? 'Solved' : 'Unsolved',
+      v,
+      '<a class="lnk" href="' + prob_url + problemCompare[v].contestId + '/' + problemCompare[v].index + '"target="_blank">' + problemCompare[v].name + '</a>',
+      problemCompare[v].rating
+      ]);
   }
+  var table = new google.visualization.Table(document.getElementById('problemCompare'));
+  table.draw(dataTable, {showRowNumber: true, allowHtml: true, width: '100%'});
+*/
+
 }
 
 // when we need to compare two numbers, we can use this function
