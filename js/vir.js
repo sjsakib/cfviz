@@ -12,6 +12,7 @@ var points = -1;
 var rating = -1;
 var rank = -1;
 var penalty = -1;
+var userHandle = null;
 
 $(document).ready(function() {
   $('#inputform').submit(function(e) {
@@ -29,6 +30,7 @@ $(document).ready(function() {
     rating = $('#rating').val().trim();
     points = $('#points').val().trim();
     penalty = $('#penalty').val().trim();
+    userHandle = $('#handle').val().trim();
 
     if(!(newContestId && rating && points)) {
       err_message('contestIdDiv', 'All fields required');
@@ -78,6 +80,7 @@ function getDataFailed() {
 }
 
 function refresh() {
+  var handleFound = false;
   for (var i = 0; i < rows.length; i++) {
     // trying to guess what what would have been his rank if he participated in the real contest
     if ((points > rows[i].points || (points == rows[i].points && penalty <= rows[i].penalty))
@@ -86,8 +89,17 @@ function refresh() {
       places.push(rows[i].rank);
       rank = rows[i].rank;
     }
-    places.push(rows[i].rank)
-    handles.push(rows[i].party.members[0].handle);
+    if (userHandle == rows[i].party.members[0].handle) {
+      handleFound = true;
+    } else {
+      places.push(rows[i].rank)
+      handles.push(rows[i].party.members[0].handle);
+    }
+  }
+
+  if (userHandle != '' && !handleFound) {
+    err_message('handleDiv', 'User did not participate in contest')
+    return
   }
 
   for (var i = 0; i < handles.length; i++) {
