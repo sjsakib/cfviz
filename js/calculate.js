@@ -51,12 +51,7 @@ function process(contestants) {
   }
   reassignRanks(contestants);
   for (var i = 0; i < contestants.content.length; i++) {
-    contestants.content[i].seed = 1.0;
-    for (var j = 0; j < contestants.content.length; j++) {
-      if (i != j) {
-        contestants.content[i].seed += getEloWinProbability(contestants.content[j].rating, contestants.content[i].rating);
-      }
-    }
+    contestants.content[i].seed = getSeed(contestants, contestants.content[i].rating) - 0.5;
   }
   for (var i = 0; i < contestants.content.length; i++) {
     var midRank = Math.sqrt(contestants.content[i].rank * contestants.content[i].seed);
