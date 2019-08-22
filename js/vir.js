@@ -11,6 +11,7 @@ var contestId = -1;
 var points = -1;
 var rating = -1;
 var rank = -1;
+var penalty = -1;
 
 $(document).ready(function() {
   $('#inputform').submit(function(e) {
@@ -42,19 +43,19 @@ $(document).ready(function() {
       showMessage("Downloading data can take a few minutes. Thanks for your patience.");
       contestId = newContestId;
 
-      req1 = $.get(api_url + 'contest.standings', { contestId: contestId }, function(data, status) {
+      var req1 = $.get(api_url + 'contest.standings', { contestId: contestId }, function(data, status) {
         rows = data.result.rows;
       }).fail(getDataFailed);
 
       // we need all the participants' ratings before the contest
-      req2 = $.get(api_url + 'contest.ratingChanges', { contestId: contestId }, function(data, status) {
+      var req2 = $.get(api_url + 'contest.ratingChanges', { contestId: contestId }, function(data, status) {
         if (data.result.length == 0) {
           getDataFailed();
           req1.abort();
           return;
         }
         for (var i = 0; i < data.result.length; i++) {
-          change = data.result[i];
+          var change = data.result[i];
           ratingsDict[change.handle] = change.oldRating;
         }
       }).fail(getDataFailed);
@@ -93,7 +94,7 @@ function refresh() {
     ratings[i] = handles[i] in ratingsDict ? ratingsDict[handles[i]] : rating;
   }
 
-  results = CalculateRatingChanges(ratings, places, handles);
+  var results = CalculateRatingChanges(ratings, places, handles);
   showResult(results);
 }
 
