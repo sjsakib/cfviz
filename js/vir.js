@@ -32,14 +32,22 @@ $(document).ready(function() {
     penalty = $('#penalty').val().trim();
     userHandle = $('#handle').val().trim();
 
-    if(!(newContestId && rating && points)) {
-      err_message('contestIdDiv', 'All fields required');
+    if(!newContestId) {
+      err_message('contestIdDiv', 'Not valid contest ID');
       return;
     }
-
-    var newContestId = $('#contestId').val().trim();
-    rating = $('#rating').val().trim();
-    points = $('#points').val().trim();
+    if(!points) {
+      err_message('pointsDiv', 'Not valid points');
+      return;
+    }
+    if(!penalty) {
+      err_message('penaltyDiv', 'Not valid penalty');
+      return;
+    }
+    if(!(rating || userHandle)) {
+      err_message('ratingDiv', 'Rating must not be empty without user handle');
+      return;
+    }
 
     if (newContestId != contestId || rows.length == 0 || Object.keys(ratingsDict).length == 0) {
       showMessage("Downloading data can take a few minutes. Thanks for your patience.");
@@ -101,6 +109,9 @@ function refresh() {
     err_message('handleDiv', 'User did not participate in contest')
     return
   }
+
+  if (!rating)
+    rating = ratingsDict[userHandle];
 
   for (var i = 0; i < handles.length; i++) {
     ratings[i] = handles[i] in ratingsDict ? ratingsDict[handles[i]] : rating;
