@@ -108,7 +108,7 @@ function resetData() {
   rank = -1;
 }
 
-function showResult(resluts) {
+function showResult(results) {
   $('#mainSpinner').removeClass('is-active');
   $('#result').removeClass('hidden');
   for (var i = 0; i < results.length; i++) {
