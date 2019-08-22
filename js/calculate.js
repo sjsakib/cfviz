@@ -59,20 +59,9 @@ function process(contestants) {
     contestants.content[i].delta      = parseInt((contestants.content[i].needRating - contestants.content[i].rating) / 2);
   }
 
-
-
-  var tmp;
-  var j = 0;
-  for (var i = 1; i < contestants.content.length; i++) {
-    j = i;
-    while (j > 0 && contestants.content[j].rating > contestants.content[j - 1].rating) {
-      tmp                        = contestants.content[j];
-      contestants.content[j]     = contestants.content[j - 1];
-      contestants.content[j - 1] = tmp;
-      j--;
-    }
-  }
-  
+  contestants.content.sort(function(a, b) {
+    return b.rating - a.rating;
+  });
 
   {
     var sum = 0;
