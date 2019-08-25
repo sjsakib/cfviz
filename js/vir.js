@@ -11,6 +11,8 @@ var contestId = -1;
 var points = -1;
 var rating = -1;
 var rank = -1;
+var penalty = -1;
+var userHandle = null;
 
 $(document).ready(function() {
   $('#inputform').submit(function(e) {
@@ -28,33 +30,42 @@ $(document).ready(function() {
     rating = $('#rating').val().trim();
     points = $('#points').val().trim();
     penalty = $('#penalty').val().trim();
+    userHandle = $('#handle').val().trim();
 
-    if(!(newContestId && rating && points)) {
-      err_message('contestIdDiv', 'All fields required');
+    if(!newContestId) {
+      err_message('contestIdDiv', 'Not valid contest ID');
       return;
     }
-
-    var newContestId = $('#contestId').val().trim();
-    rating = $('#rating').val().trim();
-    points = $('#points').val().trim();
+    if(!points) {
+      err_message('pointsDiv', 'Not valid points');
+      return;
+    }
+    if(!penalty) {
+      err_message('penaltyDiv', 'Not valid penalty');
+      return;
+    }
+    if(!(rating || userHandle)) {
+      err_message('ratingDiv', 'Rating must not be empty without user handle');
+      return;
+    }
 
     if (newContestId != contestId || rows.length == 0 || Object.keys(ratingsDict).length == 0) {
       showMessage("Downloading data can take a few minutes. Thanks for your patience.");
       contestId = newContestId;
 
-      req1 = $.get(api_url + 'contest.standings', { contestId: contestId }, function(data, status) {
+      var req1 = $.get(api_url + 'contest.standings', { contestId: contestId }, function(data, status) {
         rows = data.result.rows;
       }).fail(getDataFailed);
 
       // we need all the participants' ratings before the contest
-      req2 = $.get(api_url + 'contest.ratingChanges', { contestId: contestId }, function(data, status) {
+      var req2 = $.get(api_url + 'contest.ratingChanges', { contestId: contestId }, function(data, status) {
         if (data.result.length == 0) {
           getDataFailed();
           req1.abort();
           return;
         }
         for (var i = 0; i < data.result.length; i++) {
-          change = data.result[i];
+          var change = data.result[i];
           ratingsDict[change.handle] = change.oldRating;
         }
       }).fail(getDataFailed);
@@ -77,6 +88,7 @@ function getDataFailed() {
 }
 
 function refresh() {
+  var handleFound = false;
   for (var i = 0; i < rows.length; i++) {
     // trying to guess what what would have been his rank if he participated in the real contest
     if ((points > rows[i].points || (points == rows[i].points && penalty <= rows[i].penalty))
@@ -85,15 +97,27 @@ function refresh() {
       places.push(rows[i].rank);
       rank = rows[i].rank;
     }
-    places.push(rows[i].rank)
-    handles.push(rows[i].party.members[0].handle);
+    if (userHandle == rows[i].party.members[0].handle) {
+      handleFound = true;
+    } else {
+      places.push(rows[i].rank)
+      handles.push(rows[i].party.members[0].handle);
+    }
   }
+
+  if (userHandle != '' && !handleFound) {
+    err_message('handleDiv', 'User did not participate in contest')
+    return
+  }
+
+  if (!rating)
+    rating = ratingsDict[userHandle];
 
   for (var i = 0; i < handles.length; i++) {
     ratings[i] = handles[i] in ratingsDict ? ratingsDict[handles[i]] : rating;
   }
 
-  results = CalculateRatingChanges(ratings, places, handles);
+  var results = CalculateRatingChanges(ratings, places, handles);
   showResult(results);
 }
 
@@ -107,7 +131,7 @@ function resetData() {
   rank = -1;
 }
 
-function showResult(resluts) {
+function showResult(results) {
   $('#mainSpinner').removeClass('is-active');
   $('#result').removeClass('hidden');
   for (var i = 0; i < results.length; i++) {

@@ -14,12 +14,12 @@ function getSeed(contestants, rating) {
   return result;
 }
 
-function getRatingToRank(contestants, rank) {
+function getRatingToRank(contestants, realRating, rank) {
   var left = 1;
   var right = 8000;
   while (right - left > 1) {
     var mid = parseInt((left + right) / 2);
-    if (getSeed(contestants, mid) < rank) {
+    if (getSeed(contestants, mid) - getEloWinProbability(realRating, mid) < rank) {
       right = mid;
     } else {
       left = mid;
@@ -51,28 +51,17 @@ function process(contestants) {
   }
   reassignRanks(contestants);
   for (var i = 0; i < contestants.content.length; i++) {
-    contestants.content[i].seed = getSeed(contestants, contestants.content[i].rating) - 0.5;
-  }
-  for (var i = 0; i < contestants.content.length; i++) {
-    var midRank = Math.sqrt(contestants.content[i].rank * contestants.content[i].seed);
-    contestants.content[i].needRating = parseInt(getRatingToRank(contestants, midRank));
-    contestants.content[i].delta      = parseInt((contestants.content[i].needRating - contestants.content[i].rating) / 2);
+    var contestant = contestants.content[i];
+    var rating = contestant.rating;
+    contestant.seed = getSeed(contestants, rating) - 0.5;
+    var midRank = Math.sqrt(contestant.rank * contestant.seed);
+    contestant.needRating = parseInt(getRatingToRank(contestants, rating, midRank));
+    contestant.delta      = parseInt((contestant.needRating - contestant.rating) / 2);
   }
 
-
-
-  var tmp;
-  var j = 0;
-  for (var i = 1; i < contestants.content.length; i++) {
-    j = i;
-    while (j > 0 && contestants.content[j].rating > contestants.content[j - 1].rating) {
-      tmp                        = contestants.content[j];
-      contestants.content[j]     = contestants.content[j - 1];
-      contestants.content[j - 1] = tmp;
-      j--;
-    }
-  }
-  
+  contestants.content.sort(function(a, b) {
+    return b.rating - a.rating;
+  });
 
   {
     var sum = 0;
