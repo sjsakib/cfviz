@@ -97,9 +97,10 @@ function refresh() {
       places.push(rows[i].rank);
       rank = rows[i].rank;
     }
-    if (userHandle == rows[i].party.members[0].handle) {
+    let currentHandle = rows[i].party.members[0].handle;
+    if (userHandle == currentHandle) {
       handleFound = true;
-    } else {
+    } else if (currentHandle) {
       places.push(rows[i].rank)
       handles.push(rows[i].party.members[0].handle);
     }
