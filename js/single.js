@@ -555,6 +555,7 @@ function resetData() {
   problems = {};
   totalSub = 0;
   heatmap = {};
+  ratings = {};
   $('#mainSpinner').addClass('is-active');
   $('.to-clear').empty();
   $('.to-hide').addClass('hidden');
