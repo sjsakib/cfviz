@@ -253,11 +253,11 @@ function alignTimeline(r1, r2) {
       j++;
     } else if (compDate(r1[i][0], r2[j][0]) < 0) {
       if (j === 0) ret.push([new Date(r1[i][0] * 1000), r1[i][1], null]);
-      else ret.push([new Date(r1[i][0] * 1000), r1[i][1], r2[j][1]]);
+      else ret.push([new Date(r1[i][0] * 1000), r1[i][1], r2[j - 1][1]]);
       i++;
     } else {
       if (i === 0) ret.push([new Date(r2[j][0] * 1000), null, r2[j][1]]);
-      else ret.push([new Date(r2[j][0] * 1000), r1[i][1], r2[j][1]]);
+      else ret.push([new Date(r2[j][0] * 1000), r1[i - 1][1], r2[j][1]]);
       j++;
     }
 
