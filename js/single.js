@@ -498,7 +498,7 @@ function drawCharts() {
       maxAcProblem = p;
     }
 
-    if (problems[p].solved == problems[p].attempts) solvedWithOneSub++;
+    if (problems[p].solved > 0 && problems[p].attempts == 1) solvedWithOneSub++;
   }
   $('#numbers').removeClass('hidden');
   $('#unsolvedCon').removeClass('hidden');
