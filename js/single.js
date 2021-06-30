@@ -54,45 +54,45 @@ $(document).ready(function() {
       }
 
       // parsing all the submission and saving useful data. Don't remember why from the back
-      for(let i=data.result.length-1;i>=0;i--){
+      for(let i=data.result.length-1;i>=0;i--) {
            let sub=data.result[i];
            // creating unique key for problem {contestID + problem name + problem rating}
            let rating;
-           if(sub.problem.rating===undefined){
+           if(sub.problem.rating === undefined) {
              rating=0;
-           } else{
+           } else {
              rating=sub.problem.rating;
            }
-           let problemId=sub.problem.contestId + '-' + sub.problem.name + '-' +rating;
+           let problemId = sub.problem.contestId + '-' + sub.problem.name + '-' +rating;
            // previous id for removing duplicates
-           let problemIdprev=sub.problem.contestId-1 + '-' + sub.problem.name + '-' +rating ;
+           let problemIdprev = sub.problem.contestId - 1 + '-' + sub.problem.name + '-' +rating ;
            // next id for removing duplicates
-           let problemIdnext=sub.problem.contestId+1 + '-' + sub.problem.name + '-' +rating;
+           let problemIdnext = sub.problem.contestId + 1 + '-' + sub.problem.name + '-' +rating;
 
            // checking if problem previously visited
-           if(problems[problemIdprev]!==undefined){
+           if(problems[problemIdprev] !== undefined) {
                  if(problems[problemIdprev].solved === 0){
                      problems[problemIdprev].attempts++;
                  } 
                  problemId=problemIdprev;
-           } else if(problems[problemIdnext]!==undefined){  
+           } else if(problems[problemIdnext] !== undefined) {  
                 if(problems[problemIdnext].solved === 0){
                     problems[problemIdnext].attempts++;
                 } 
-                problemId=problemIdnext;
-           } else if(problems[problemId]!==undefined){
+                problemId = problemIdnext;
+           } else if(problems[problemId] !== undefined) {
                 if(problems[problemId].solved === 0){
                     problems[problemId].attempts++;
                 }   
            } else {
                 problems[problemId] = {
-                  problemlink:sub.contestId+'-'+sub.problem.index, // link of problem
+                  problemlink:sub.contestId + '-' + sub.problem.index, // link of problem
                   attempts: 1,
                   solved: 0 // We also want to save how many submission got AC, a better name would have been number_of_ac
                 };
            }
 
-           if(sub.verdict=='OK') {
+           if(sub.verdict == 'OK') {
             problems[problemId].solved++;
           }
           
