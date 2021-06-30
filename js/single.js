@@ -54,61 +54,115 @@ $(document).ready(function() {
       }
 
       // parsing all the submission and saving useful data. Don't remember why from the back
-      for (var i = data.result.length - 1; i >= 0; i--) {
-        var sub = data.result[i];
-        var problemId = sub.problem.contestId + '-' + sub.problem.index;
+      for(let i=data.result.length-1;i>=0;i--)
+      {
+           let sub=data.result[i];
+           // creating unique key for problem {contestID + problem name + problem rating}
+           let rating;
+           if(sub.problem.rating===undefined)
+           {
+             rating=0;
+           }
+           else
+           {
+             rating=sub.problem.rating;
+           }
+           let problemId=sub.problem.contestId + '-' + sub.problem.name + '-' +rating;
+           // previous id for removing duplicates
+           let problemIdprev=sub.problem.contestId-1 + '-' + sub.problem.name + '-' +rating ;
+           // next id for removing duplicates
+           let problemIdnext=sub.problem.contestId+1 + '-' + sub.problem.name + '-' +rating;
 
-        if (problems[problemId] === undefined) {
-          // first submission of a problem
-          problems[problemId] = {
-            attempts: 1,
-            solved: 0 // We also want to save how many submission got AC, a better name would have been number_of_ac
-          };
-        } else {
-          //we want to show how many time a problem was attempted by a user before getting first AC
-          if (problems[problemId].solved === 0) problems[problemId].attempts++;
-        }
+           // checking if problem previously visited
+           if(problems[problemIdprev]!==undefined) // checking if problem previously visited
+           {
+                 
+                 if(problems[problemIdprev].solved === 0)
+                 {
+                     problems[problemIdprev].attempts++;
+                 } 
+                 
+                 problemId=problemIdprev;
+            
+           }
+           else if(problems[problemIdnext]!==undefined) // checking if problem previously visited
+           {
+                
+                if(problems[problemIdnext].solved === 0)
+                {
+                    problems[problemIdnext].attempts++;
+                } 
+                
+                problemId=problemIdnext;
+           }
+           else if(problems[problemId]!==undefined)
+           {
+                if(problems[problemId].solved === 0)
+                {
+                    problems[problemId].attempts++;
+                } 
+                
+           }
+           else
+           {
+                problems[problemId] = {
+                  problemlink:sub.contestId+'-'+sub.problem.index, // link of problem
+                  attempts: 1,
+                  solved: 0 // We also want to save how many submission got AC, a better name would have been number_of_ac
+                };
+           }
 
-        if (verdicts[sub.verdict] === undefined) verdicts[sub.verdict] = 1;
-        else verdicts[sub.verdict]++;
-
-        if (langs[sub.programmingLanguage] === undefined)
-          langs[sub.programmingLanguage] = 1;
-        else langs[sub.programmingLanguage]++;
-
-        if (sub.verdict == 'OK') {
-          problems[problemId].solved++;
-        }
-
-        if (problems[problemId].solved === 1 && sub.verdict == 'OK') {
-          sub.problem.tags.forEach(function(t) {
-            if (tags[t] === undefined) tags[t] = 1;
-            else tags[t]++;
-          });
-
-          if (levels[sub.problem.index[0]] === undefined)
-            levels[sub.problem.index[0]] = 1;
-          else levels[sub.problem.index[0]]++;
-
-          if (sub.problem.rating) {
-            ratings[sub.problem.rating] = ratings[sub.problem.rating] + 1 || 1;
+           if(sub.verdict=='OK') 
+          {
+            problems[problemId].solved++;
           }
-        }
+          
+           // modifying level, rating, and tag counter on first AC.
+           if (problems[problemId].solved === 1 && sub.verdict == 'OK') {
+            sub.problem.tags.forEach(function(t) {
+              if (tags[t] === undefined) tags[t] = 1;
+              else tags[t]++;
+            });
+  
+            if (levels[sub.problem.index[0]] === undefined)
+              levels[sub.problem.index[0]] = 1;
+            else levels[sub.problem.index[0]]++;
+  
+            if (sub.problem.rating) {
+              if(ratings[sub.problem.rating]===undefined)
+              {
+                ratings[sub.problem.rating]=1;
+              }
+              else
+              {
+                ratings[sub.problem.rating]++;
+              }
+            }
+          }
+            
+          // changing counter of verdict submission
+          if (verdicts[sub.verdict] === undefined) verdicts[sub.verdict] = 1;
+          else verdicts[sub.verdict]++;
 
-        //updating the heatmap
-        var date = new Date(sub.creationTimeSeconds * 1000); // submission date
-        date.setHours(0, 0, 0, 0);
-        if (heatmap[date.valueOf()] === undefined) heatmap[date.valueOf()] = 1;
-        else heatmap[date.valueOf()]++;
-        totalSub = data.result.length;
+          // changing counter of launguage submission
+          if (langs[sub.programmingLanguage] === undefined)
+            langs[sub.programmingLanguage] = 1;
+          else langs[sub.programmingLanguage]++;
 
-        // how many years are there between first and last submission
-        years =
-          new Date(data.result[0].creationTimeSeconds * 1000).getYear() -
-          new Date(
-            data.result[data.result.length - 1].creationTimeSeconds * 1000
-          ).getYear();
-        years = Math.abs(years) + 1;
+           //updating the heatmap
+            var date = new Date(sub.creationTimeSeconds * 1000); // submission date
+            date.setHours(0, 0, 0, 0);
+            if (heatmap[date.valueOf()] === undefined) heatmap[date.valueOf()] = 1;
+            else heatmap[date.valueOf()]++;
+            totalSub = data.result.length;
+
+            // how many years are there between first and last submission
+            years =
+              new Date(data.result[0].creationTimeSeconds * 1000).getYear() -
+              new Date(
+                data.result[data.result.length - 1].creationTimeSeconds * 1000
+              ).getYear();
+            years = Math.abs(years) + 1;
       }
 
       // finally draw the charts if google charts is already loaded,
@@ -487,15 +541,15 @@ function drawCharts() {
   for (var p in problems) {
     tried++;
     if (problems[p].solved > 0) solved++;
-    if (problems[p].solved === 0) unsolved.push(p);
+    if (problems[p].solved === 0) unsolved.push(problems[p].problemlink);
 
     if (problems[p].attempts > maxAttempt) {
       maxAttempt = problems[p].attempts;
-      maxAttemptProblem = p;
+      maxAttemptProblem = problems[p].problemlink;
     }
     if (problems[p].solved > maxAc) {
       maxAc = problems[p].solved;
-      maxAcProblem = p;
+      maxAcProblem = problems[p].problemlink;
     }
 
     if (problems[p].solved > 0 && problems[p].attempts == 1) solvedWithOneSub++;
