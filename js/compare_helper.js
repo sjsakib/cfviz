@@ -20,7 +20,6 @@ var commonOptions = {
     alignment: 'end'
   },
   animation: {
-    duration: 4000,
     easing: 'in',
     startup: true
   },
