@@ -39,8 +39,7 @@ $(document).ready(function () {
 
     // getting all the submissions of a user
     req1 = $.get(api_url + 'user.status', { handle: handle }, function (data, status) {
-      console.log(data);
-
+     
       $('.sharethis').removeClass('hidden');
 
       if (data.result.length < 1) {
@@ -161,7 +160,7 @@ $(document).ready(function () {
 
     // With this request we get all the rating changes of the user
     req2 = $.get(api_url + 'user.rating', { handle: handle }, function (data, status) {
-      console.log(data);
+      
       if (data.result.length < 1) {
         err_message('handleDiv', 'No contests');
         return;
@@ -505,7 +504,6 @@ function drawCharts() {
   var unsolved = [];
   var solvedWithOneSub = 0;
   for (var p in problems) {
-    console.log(problems[p]);
     tried++;
     if (problems[p].solved > 0) solved++;
     if (problems[p].solved === 0) unsolved.push(problems[p].problemlink);
