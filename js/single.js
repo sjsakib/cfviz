@@ -51,30 +51,53 @@ $(document).ready(function () {
       // parsing all the submission and saving useful data. Don't remember why from the back
       for (var i = data.result.length - 1; i >= 0; i--) {
         var sub = data.result[i];
-        var problemId = sub.problem.contestId + '-' + sub.problem.index;
 
-        if (problems[problemId] === undefined) {
-          // first submission of a problem
+        // creating unique key for problem {contestID + problem name + problem rating}
+        var rating;
+        if (sub.problem.rating === undefined) {
+          rating = 0;
+        } else {
+          rating = sub.problem.rating;
+        }
+
+        var problemId = sub.problem.contestId + '-' + sub.problem.name + '-' + rating;
+
+        // previous id for removing duplicates
+        var problemIdprev =
+          sub.problem.contestId - 1 + '-' + sub.problem.name + '-' + rating;
+
+        // next id for removing duplicates
+        var problemIdnext =
+          sub.problem.contestId + 1 + '-' + sub.problem.name + '-' + rating;
+
+        // checking if problem previously visited
+        if (problems[problemIdprev] !== undefined) {
+          if (problems[problemIdprev].solved === 0) {
+            problems[problemIdprev].attempts++;
+          }
+          problemId = problemIdprev;
+        } else if (problems[problemIdnext] !== undefined) {
+          if (problems[problemIdnext].solved === 0) {
+            problems[problemIdnext].attempts++;
+          }
+          problemId = problemIdnext;
+        } else if (problems[problemId] !== undefined) {
+          if (problems[problemId].solved === 0) {
+            problems[problemId].attempts++;
+          }
+        } else {
           problems[problemId] = {
+            problemlink: sub.contestId + '-' + sub.problem.index, // link of problem
             attempts: 1,
             solved: 0 // We also want to save how many submission got AC, a better name would have been number_of_ac
           };
-        } else {
-          //we want to show how many time a problem was attempted by a user before getting first AC
-          if (problems[problemId].solved === 0) problems[problemId].attempts++;
         }
-
-        if (verdicts[sub.verdict] === undefined) verdicts[sub.verdict] = 1;
-        else verdicts[sub.verdict]++;
-
-        if (langs[sub.programmingLanguage] === undefined)
-          langs[sub.programmingLanguage] = 1;
-        else langs[sub.programmingLanguage]++;
 
         if (sub.verdict == 'OK') {
           problems[problemId].solved++;
         }
 
+        // modifying level, rating, and tag counter on first AC.
         if (problems[problemId].solved === 1 && sub.verdict == 'OK') {
           sub.problem.tags.forEach(function (t) {
             if (tags[t] === undefined) tags[t] = 1;
@@ -86,9 +109,22 @@ $(document).ready(function () {
           else levels[sub.problem.index[0]]++;
 
           if (sub.problem.rating) {
-            ratings[sub.problem.rating] = ratings[sub.problem.rating] + 1 || 1;
+            if (ratings[sub.problem.rating] === undefined) {
+              ratings[sub.problem.rating] = 1;
+            } else {
+              ratings[sub.problem.rating]++;
+            }
           }
         }
+
+        // changing counter of verdict submission
+        if (verdicts[sub.verdict] === undefined) verdicts[sub.verdict] = 1;
+        else verdicts[sub.verdict]++;
+
+        // changing counter of launguage submission
+        if (langs[sub.programmingLanguage] === undefined)
+          langs[sub.programmingLanguage] = 1;
+        else langs[sub.programmingLanguage]++;
 
         //updating the heatmap
         var date = new Date(sub.creationTimeSeconds * 1000); // submission date
@@ -469,21 +505,23 @@ function drawCharts() {
   var unsolved = [];
   var solvedWithOneSub = 0;
   for (var p in problems) {
+    console.log(problems[p]);
     tried++;
     if (problems[p].solved > 0) solved++;
-    if (problems[p].solved === 0) unsolved.push(p);
+    if (problems[p].solved === 0) unsolved.push(problems[p].problemlink);
 
     if (problems[p].attempts > maxAttempt) {
       maxAttempt = problems[p].attempts;
-      maxAttemptProblem = p;
+      maxAttemptProblem = problems[p].problemlink;
     }
     if (problems[p].solved > maxAc) {
       maxAc = problems[p].solved;
-      maxAcProblem = p;
+      maxAcProblem = problems[p].problemlink;
     }
 
     if (problems[p].solved > 0 && problems[p].attempts == 1) solvedWithOneSub++;
   }
+
   $('#numbers').removeClass('hidden');
   $('#unsolvedCon').removeClass('hidden');
   $('.handle-text').html(handle);
