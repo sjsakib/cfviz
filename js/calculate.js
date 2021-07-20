@@ -29,7 +29,7 @@ function getRatingToRank(contestants, realRating, rank) {
 }
 
 function reassignRanks(contestants) {
-  var first  = 0;
+  var first = 0;
   var points = contestants.content[0].rank;
   for (var i = 1; i < contestants.content.length; i++) {
     if (contestants.content[i].rank > points) {
@@ -56,10 +56,10 @@ function process(contestants) {
     contestant.seed = getSeed(contestants, rating) - 0.5;
     var midRank = Math.sqrt(contestant.rank * contestant.seed);
     contestant.needRating = parseInt(getRatingToRank(contestants, rating, midRank));
-    contestant.delta      = parseInt((contestant.needRating - contestant.rating) / 2);
+    contestant.delta = parseInt((contestant.needRating - contestant.rating) / 2);
   }
 
-  contestants.content.sort(function(a, b) {
+  contestants.content.sort(function (a, b) {
     return b.rating - a.rating;
   });
 
@@ -75,9 +75,13 @@ function process(contestants) {
     console.log(inc);
   }
 
-
   var sum = 0;
-  var zeroSumCount = parseInt(Math.min((parseInt(4 * Math.round(Math.sqrt(contestants.content.length)))), contestants.content.length));
+  var zeroSumCount = parseInt(
+    Math.min(
+      parseInt(4 * Math.round(Math.sqrt(contestants.content.length))),
+      contestants.content.length
+    )
+  );
   for (var i = 0; i < zeroSumCount; i++) {
     sum += contestants.content[i].delta;
   }
@@ -88,19 +92,25 @@ function process(contestants) {
   console.log(inc);
 }
 
-
 function CalculateRatingChanges(previousRatings, standingsRows, userId) {
   var arr = [];
   for (var i = 0; i < standingsRows.length; i++) {
-    var currentContestant = {party: userId[i], rank: standingsRows[i], rating: previousRatings[i], seed : 0.0, needRating : 0.0, delta : 0};
+    var currentContestant = {
+      party: userId[i],
+      rank: standingsRows[i],
+      rating: previousRatings[i],
+      seed: 0.0,
+      needRating: 0.0,
+      delta: 0
+    };
     arr.push(currentContestant);
   }
   var memTmp = [];
   var contestants = {
-    content : arr,
-    memSeed : memTmp
+    content: arr,
+    memSeed: memTmp
   };
-  process(contestants);   
+  process(contestants);
   var result = {};
   for (var i = 0; i < contestants.content.length; i++) {
     result[contestants.content[i].party] = contestants.content[i].delta;

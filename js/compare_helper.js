@@ -72,7 +72,7 @@ function getSubData(data) {
     }
 
     if (problems[problemId].solved === 1 && sub.verdict == 'OK') {
-      sub.problem.tags.forEach(function(t) {
+      sub.problem.tags.forEach(function (t) {
         if (ret.tags[t] === undefined) ret.tags[t] = 1;
         else ret.tags[t]++;
       });
@@ -124,7 +124,7 @@ function alignLevels(lev1, lev2) {
   for (l in lev2) {
     ret.push([l, 0, lev2[l]]);
   }
-  ret.sort(function(a, b) {
+  ret.sort(function (a, b) {
     if (a[0] < b[0]) return -1;
     return 1;
   });
@@ -143,13 +143,12 @@ function alignPRatings(lev1, lev2) {
   for (l in lev2) {
     ret.push([l, 0, lev2[l]]);
   }
-  ret.sort(function(a, b) {
+  ret.sort(function (a, b) {
     if (parseInt(a[0]) < parseInt(b[0])) return -1;
     return 1;
   });
   return ret;
 }
-
 
 // aligns tags
 function alignTags(tags1, tags2) {
@@ -164,7 +163,7 @@ function alignTags(tags1, tags2) {
   for (t in tags2) {
     ret.push([t, 0, tags2[t]]);
   }
-  ret.sort(function(a, b) {
+  ret.sort(function (a, b) {
     if (a[1] + a[2] < b[1] + b[2]) return 1;
     return -1;
   });

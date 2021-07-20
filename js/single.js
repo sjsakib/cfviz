@@ -22,16 +22,14 @@ var titleTextStyle = {
 
 google.charts.load('current', { packages: ['corechart', 'calendar'] });
 
-$(document).ready(function() {
+$(document).ready(function () {
   // When the handle form is submitted, this function is called...
-  $('#handleform').submit(function(e) {
+  $('#handleform').submit(function (e) {
     e.preventDefault();
     $('#handle').blur();
     resetData(); // When a new submission is made, clear all the previous data and graphs
 
-    handle = $('#handle')
-      .val()
-      .trim();
+    handle = $('#handle').val().trim();
 
     if (!handle) {
       err_message('handleDiv', 'Enter a name');
@@ -40,10 +38,7 @@ $(document).ready(function() {
     }
 
     // getting all the submissions of a user
-    req1 = $.get(api_url + 'user.status', { handle: handle }, function(
-      data,
-      status
-    ) {
+    req1 = $.get(api_url + 'user.status', { handle: handle }, function (data, status) {
       console.log(data);
 
       $('.sharethis').removeClass('hidden');
@@ -81,7 +76,7 @@ $(document).ready(function() {
         }
 
         if (problems[problemId].solved === 1 && sub.verdict == 'OK') {
-          sub.problem.tags.forEach(function(t) {
+          sub.problem.tags.forEach(function (t) {
             if (tags[t] === undefined) tags[t] = 1;
             else tags[t]++;
           });
@@ -119,20 +114,17 @@ $(document).ready(function() {
         drawCharts();
       }
     })
-      .fail(function(xhr, status) {
+      .fail(function (xhr, status) {
         //console.log(xhr.status);
         if (status != 'abort') err_message('handleDiv', "Couldn't find user");
       })
-      .always(function() {
+      .always(function () {
         $('#mainSpinner').removeClass('is-active');
         $('.share-div').removeClass('hidden');
       });
 
     // With this request we get all the rating changes of the user
-    req2 = $.get(api_url + 'user.rating', { handle: handle }, function(
-      data,
-      status
-    ) {
+    req2 = $.get(api_url + 'user.rating', { handle: handle }, function (data, status) {
       console.log(data);
       if (data.result.length < 1) {
         err_message('handleDiv', 'No contests');
@@ -148,7 +140,7 @@ $(document).ready(function() {
       var maxDownCon = '';
       var tot = data.result.length;
 
-      data.result.forEach(function(con) {
+      data.result.forEach(function (con) {
         // con is a contest
         if (con.rank < best) {
           best = con.rank;
@@ -225,7 +217,7 @@ $(document).ready(function() {
   $('#handleDiv').removeClass('hidden');
 
   // this is to update the heatmap when the form is submitted, contributed
-  $('#heatmapCon input').keypress(function(e) {
+  $('#heatmapCon input').keypress(function (e) {
     var value = $(this).val();
     //Enter pressed
     if (e.which == 13 && value >= 0 && value <= 999) {
@@ -295,9 +287,7 @@ function drawCharts() {
     titleTextStyle: titleTextStyle,
     is3D: true
   };
-  var verChart = new google.visualization.PieChart(
-    document.getElementById('verdicts')
-  );
+  var verChart = new google.visualization.PieChart(document.getElementById('verdicts'));
   verChart.draw(verdicts, verOptions);
 
   //Plotting the languages chart
@@ -342,9 +332,7 @@ function drawCharts() {
     is3D: true,
     colors: colors.slice(0, Math.min(colors.length, langs.getNumberOfRows()))
   };
-  var langChart = new google.visualization.PieChart(
-    document.getElementById('langs')
-  );
+  var langChart = new google.visualization.PieChart(document.getElementById('langs'));
   langChart.draw(langs, langOptions);
 
   //the tags chart
@@ -353,7 +341,7 @@ function drawCharts() {
   for (var tag in tags) {
     tagTable.push([tag + ': ' + tags[tag], tags[tag]]);
   }
-  tagTable.sort(function(a, b) {
+  tagTable.sort(function (a, b) {
     return b[1] - a[1];
   });
   tags = new google.visualization.DataTable();
@@ -382,9 +370,7 @@ function drawCharts() {
     titleTextStyle: titleTextStyle,
     colors: colors.slice(0, Math.min(colors.length, tags.getNumberOfRows()))
   };
-  var tagChart = new google.visualization.PieChart(
-    document.getElementById('tags')
-  );
+  var tagChart = new google.visualization.PieChart(document.getElementById('tags'));
   tagChart.draw(tags, tagOptions);
 
   //Plotting levels
@@ -393,7 +379,7 @@ function drawCharts() {
   for (var level in levels) {
     levelTable.push([level, levels[level]]);
   }
-  levelTable.sort(function(a, b) {
+  levelTable.sort(function (a, b) {
     if (a[0] > b[0]) return -1;
     else return 1;
   });
@@ -422,7 +408,7 @@ function drawCharts() {
   for (var rating in ratings) {
     ratingTable.push([rating, ratings[rating]]);
   }
-  ratingTable.sort(function(a, b) {
+  ratingTable.sort(function (a, b) {
     if (parseInt(a[0]) > parseInt(b[0])) return -1;
     else return 1;
   });
@@ -457,9 +443,7 @@ function drawCharts() {
   heatmapData.addColumn({ type: 'number', id: 'Submissions' });
   heatmapData.addRows(heatmapTable);
 
-  heatmap = new google.visualization.Calendar(
-    document.getElementById('heatmapDiv')
-  );
+  heatmap = new google.visualization.Calendar(document.getElementById('heatmapDiv'));
   var heatmapOptions = {
     height: years * 140 + 30,
     width: Math.max($('#heatmapCon').width(), 900),
@@ -531,14 +515,10 @@ function drawCharts() {
       '%)'
   );
 
-  unsolved.forEach(function(p) {
+  unsolved.forEach(function (p) {
     var url = get_url(p);
     $('#unsolvedList').append(
-      '<div><a href="' +
-        url +
-        '" target="_blank" class="lnk">' +
-        p +
-        '</a></div>'
+      '<div><a href="' + url + '" target="_blank" class="lnk">' + p + '</a></div>'
     );
   });
 }
@@ -570,8 +550,7 @@ function get_url(p) {
   var url = '';
   if (con.length <= 4)
     url = 'https://codeforces.com/contest/' + con + '/problem/' + index;
-  else
-    url = 'https://codeforces.com/problemset/gymProblem/' + con + '/' + index;
+  else url = 'https://codeforces.com/problemset/gymProblem/' + con + '/' + index;
 
   return url;
 }

@@ -14,20 +14,16 @@ var req1, req2, req3, req4;
 
 google.charts.load('current', { packages: ['corechart'] });
 
-$(document).ready(function() {
-  $('#handleform').submit(function(e) {
+$(document).ready(function () {
+  $('#handleform').submit(function (e) {
     e.preventDefault();
     $('#handle1').blur();
     $('#handle2').blur();
 
     resetData();
 
-    handle1 = $('#handle1')
-      .val()
-      .trim();
-    handle2 = $('#handle2')
-      .val()
-      .trim();
+    handle1 = $('#handle1').val().trim();
+    handle2 = $('#handle2').val().trim();
 
     if (!handle1) {
       err_message('handle2Div', 'Enter a name');
@@ -41,17 +37,14 @@ $(document).ready(function() {
     }
 
     //Getting handle1 contest data
-    req1 = $.get(api_url + 'user.rating', { handle: handle1 }, function(
-      data,
-      status
-    ) {
+    req1 = $.get(api_url + 'user.rating', { handle: handle1 }, function (data, status) {
       console.log(data);
       if (data.result.length > 0) conData1 = getContestStat(data);
       else {
         err_message('handle1Div', 'No contests');
         conData1 = null;
       }
-    }).fail(function(xhr, status) {
+    }).fail(function (xhr, status) {
       if (status != 'abort') {
         err_message('handle1Div', "Couldn't find user");
         $('#mainSpinner').removeClass('is-active');
@@ -59,27 +52,23 @@ $(document).ready(function() {
     });
 
     //Getting handle2 contest data
-    req2 = $.get(api_url + 'user.rating', { handle: handle2 }, function(
-      data,
-      status
-    ) {
+    req2 = $.get(api_url + 'user.rating', { handle: handle2 }, function (data, status) {
       console.log(data);
       if (data.result.length > 0) conData2 = getContestStat(data);
       else {
         err_message('handle2Div', 'No contests');
         conData2 = null;
       }
-    }).fail(function(xhr, status) {
+    }).fail(function (xhr, status) {
       if (status != 'abort') {
         err_message('handle2Div', "Couldn't find user");
         $('#mainSpinner').removeClass('is-active');
       }
     });
 
-    $.when(req1, req2).then(function() {
+    $.when(req1, req2).then(function () {
       if (typeof google.visualization === 'undefined') {
-        if (conData1 && conData2)
-          google.charts.setOnLoadCallback(drawConCharts);
+        if (conData1 && conData2) google.charts.setOnLoadCallback(drawConCharts);
       } else {
         if (conData1 && conData2) drawConCharts();
       }
@@ -87,10 +76,7 @@ $(document).ready(function() {
       // getting handle1 submission data
       // firefox doesn't allow more then 3 active connections at a time
       // that's why we have to send req3 and req4 when req1 and req2 is done
-      req3 = $.get(api_url + 'user.status', { handle: handle1 }, function(
-        data,
-        status
-      ) {
+      req3 = $.get(api_url + 'user.status', { handle: handle1 }, function (data, status) {
         console.log(data);
         if (data.result.length > 0) subData1 = getSubData(data);
         else {
@@ -98,10 +84,7 @@ $(document).ready(function() {
           subData1 = null;
         }
       });
-      req4 = $.get(api_url + 'user.status', { handle: handle2 }, function(
-        data,
-        status
-      ) {
+      req4 = $.get(api_url + 'user.status', { handle: handle2 }, function (data, status) {
         console.log(data);
         if (data.result.length > 0) subData2 = getSubData(data);
         else {
@@ -110,10 +93,9 @@ $(document).ready(function() {
         }
       });
 
-      $.when(req3, req4).then(function() {
+      $.when(req3, req4).then(function () {
         if (typeof google.visualization === 'undefined') {
-          if (subData1 && subData2)
-            google.charts.setOnLoadCallback(drawSubCharts);
+          if (subData1 && subData2) google.charts.setOnLoadCallback(drawSubCharts);
         } else {
           if (subData1 && subData2) drawSubCharts();
         }
@@ -218,14 +200,12 @@ function drawConCharts() {
   $('#user2Con').html(handle2);
   var con_url = 'https://codeforces.com/contest/';
   var commonContests = getCommonContests(conData1.all, conData2.all);
-  commonContests.sort(function(a, b) {
+  commonContests.sort(function (a, b) {
     return a.contestId - b.contestId;
   });
-  commonContests.forEach(function(con) {
-    var handle1El =
-      '<td><span class="handle1Color">' + con.handle1 + '</span></td>';
-    var handle2El =
-      '<td><span class="handle2Color">' + con.handle2 + '</span></td>';
+  commonContests.forEach(function (con) {
+    var handle1El = '<td><span class="handle1Color">' + con.handle1 + '</span></td>';
+    var handle2El = '<td><span class="handle2Color">' + con.handle2 + '</span></td>';
     var dis = con.handle2 - con.handle1;
     dis =
       dis > 0
@@ -271,12 +251,7 @@ function drawSubCharts() {
   solvedTriedChart.draw(solvedTried, solvedTriedOptions);
 
   plotTwo('unsolved', subData1.unsolved, subData2.unsolved, 'Unsolved');
-  plotTwo(
-    'averageSub',
-    subData1.averageSub,
-    subData2.averageSub,
-    'Average Submission'
-  );
+  plotTwo('averageSub', subData1.averageSub, subData2.averageSub, 'Average Submission');
   plotTwo('maxSub', subData1.maxSub, subData2.maxSub, 'Max submission');
   plotTwo('maxAc', subData1.maxAc, subData2.maxAc, 'Max AC');
   plotTwo(
@@ -330,7 +305,6 @@ function drawSubCharts() {
     document.getElementById('levels')
   );
   levelsChart.draw(levelsView, levelsOptions);
-
 
   /* Problem Ratings */
   $('#pRatings').removeClass('hidden');
@@ -407,9 +381,7 @@ function drawSubCharts() {
     annotations: annotation,
     chartArea: { top: 100, bottom: 120, left: 100, right: 75 }
   });
-  var tagsChart = new google.visualization.ColumnChart(
-    document.getElementById('tags')
-  );
+  var tagsChart = new google.visualization.ColumnChart(document.getElementById('tags'));
   tagsChart.draw(tagsView, tagsOptions);
 }
 
@@ -429,9 +401,7 @@ function plotTwo(div, n1, n2, title) {
     },
     legend: 'none'
   });
-  var chart = new google.visualization.ColumnChart(
-    document.getElementById(div)
-  );
+  var chart = new google.visualization.ColumnChart(document.getElementById(div));
   $('#' + div).removeClass('hidden');
   chart.draw(table, options);
 }
@@ -452,10 +422,8 @@ function get_url(p) {
   var index = p.split('-')[1];
 
   var url = '';
-  if (con.length < 4)
-    url = 'https://codeforces.com/contest/' + con + '/problem/' + index;
-  else
-    url = 'https://codeforces.com/problemset/gymProblem/' + con + '/' + index;
+  if (con.length < 4) url = 'https://codeforces.com/contest/' + con + '/problem/' + index;
+  else url = 'https://codeforces.com/problemset/gymProblem/' + con + '/' + index;
 
   return url;
 }
