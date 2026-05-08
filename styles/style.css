@@ -313,3 +313,24 @@ body {
 .content {
     max-width: 1080px;
 }
+
+#searchButton {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-left: 30px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Hover effect */
+  #searchButton:hover {
+    background-color: #0b7dda;
+  }
