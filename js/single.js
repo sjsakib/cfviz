@@ -502,10 +502,14 @@ function drawCharts() {
   var maxAc = '';
   var maxAcProblem = '';
   var unsolved = [];
+  var solvedL = [];
   var solvedWithOneSub = 0;
   for (var p in problems) {
     tried++;
-    if (problems[p].solved > 0) solved++;
+    if (problems[p].solved > 0) {
+      solved++;
+      solvedL.unshift(problems[p].problemlink);
+    }
     if (problems[p].solved === 0) unsolved.push(problems[p].problemlink);
 
     if (problems[p].attempts > maxAttempt) {
@@ -522,6 +526,8 @@ function drawCharts() {
 
   $('#numbers').removeClass('hidden');
   $('#unsolvedCon').removeClass('hidden');
+  $('#solvedCon').removeClass('hidden');
+  $('#showMoreButton').removeClass('hidden');
   $('.handle-text').html(handle);
   $('#tried').html(tried);
   $('#solved').html(solved);
@@ -550,7 +556,33 @@ function drawCharts() {
       (solved ? ((solvedWithOneSub / solved) * 100).toFixed(2) : 0) +
       '%)'
   );
-
+  function renderSolvedList(solvedList) {
+    $('#solvedList').empty(); // Clear existing list
+    solvedList.forEach(function (p) {
+      var url = get_url(p);
+      $('#solvedList').append(
+        '<div><a href="' + url + '" target="_blank" class="lnk">' + p + '</a></div>'
+      );
+    });
+  }  
+  // Initially display only 20 questions
+  var limitedSolvedL = solvedL.slice(0, 20);
+  renderSolvedList(limitedSolvedL);  
+  // Show more button functionality
+  $("#showMoreButton").unbind('click');
+  $('#showMoreButton').click(function () {
+    var buttonText = $(this).text().trim();
+    
+    if (buttonText === 'Show More') {
+      // Display all questions
+      renderSolvedList(solvedL);
+      $(this).text('Show Less');
+    } else {
+      // Display only 20 questions
+      renderSolvedList(limitedSolvedL);
+      $(this).text('Show More');
+    }
+  });
   unsolved.forEach(function (p) {
     var url = get_url(p);
     $('#unsolvedList').append(
@@ -575,6 +607,7 @@ function resetData() {
   $('#mainSpinner').addClass('is-active');
   $('.to-clear').empty();
   $('.to-hide').addClass('hidden');
+  $('#showMoreButton').text('Show More');
 }
 
 // receives the problem id like 650-A
