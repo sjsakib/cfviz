@@ -141,8 +141,27 @@ a {
     padding: 30px 20px 50px 50px;
     background-color: white;
 }
+#solvedCon {
+    padding: 30px 20px 50px 50px;
+    background-color: white;
+    position: relative;
+}
+
+#showMoreButton {
+    position: absolute;
+    bottom: 10px; 
+    right: 10px;
+    margin-top: 5px; 
+  }
 
 #unsolvedTitle, #commonContestTitle {
+    color: #393939;
+    font-weight: 500;
+    font-size: 20px;
+    margin: -20px;
+}
+
+#solvedTitle, #commonContestTitle {
     color: #393939;
     font-weight: 500;
     font-size: 20px;
